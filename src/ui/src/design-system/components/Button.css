@@ -1,0 +1,73 @@
+/* Compose Button's typography and state styles in the shared CSS sheet. */
+@utility button-link-style {
+  @apply ui:font-(family-name:--ui-link-text-family)
+    ui:text-(length:--ui-link-text-size)
+    ui:leading-(--ui-link-text-line)
+    ui:font-(weight:--ui-link-text-weight)
+    ui:[letter-spacing:var(--ui-link-text-letter-spacing,normal)]
+    ui:[text-transform:var(--ui-link-text-transform,none)]
+    ui:text-(--ui-link-color)!
+    ui:active:[opacity:var(--ui-link-pressed-opacity)]
+    ui:data-disabled:not-aria-busy:text-(--ui-link-disabled-color)!
+    ui:data-disabled:not-aria-busy:no-underline
+    ui:data-disabled:not-aria-busy:opacity-100
+    ui:motion-safe:transition-[color,background-color,border-color,box-shadow,opacity]
+    ui:motion-safe:duration-(--ui-link-motion-duration)
+    ui:motion-safe:ease-(--ui-link-motion-easing);
+}
+
+@utility button-nav-label {
+  @apply ui:[&_svg]:text-(length:--ui-bottom-nav-icon-size)
+    ui:[&_svg]:text-(color:--ui-bottom-nav-item-color)
+    ui:[&>span]:block
+    ui:[&>span]:mt-xxs
+    ui:[&>span]:mb-none
+    ui:[&>span]:text-(color:--ui-bottom-nav-item-color)
+    ui:[&>span]:font-(family-name:--ui-bottom-nav-label-text-family)
+    ui:[&>span]:text-(length:--ui-bottom-nav-label-text-size)
+    ui:[&>span]:leading-(--ui-bottom-nav-label-text-line)
+    ui:[&>span]:font-(weight:--ui-bottom-nav-label-text-weight)
+    ui:[&>span]:[letter-spacing:var(--ui-bottom-nav-label-text-letter-spacing,normal)]
+    ui:[&>span]:[text-transform:var(--ui-bottom-nav-label-text-transform,none)];
+}
+
+@utility button-input-type {
+  @apply ui:font-(family-name:--ui-input-text-family)
+    ui:text-(length:--ui-input-text-size)
+    ui:leading-(--ui-input-text-line)
+    ui:font-(weight:--ui-input-text-weight)
+    ui:[letter-spacing:var(--ui-input-text-letter-spacing,normal)]
+    ui:[text-transform:var(--ui-input-text-transform,none)]
+    ui:not-data-disabled:[&:not([data-input-trigger=header]:focus)]:hover:bg-[color:var(--ui-input-hover-background,var(--ui-input-background))]
+    ui:not-data-disabled:[&:not([data-input-trigger=header]:focus)]:hover:[box-shadow:var(--ui-input-hover-shadow,var(--ui-input-shadow))]
+    ui:not-data-disabled:[&:not([data-input-trigger=header]:focus)]:hover:text-[color:var(--ui-input-hover-text-color,var(--ui-input-text-color))];
+}
+
+@utility button-capsule-label {
+  @apply ui:[&>div]:text-(--ui-capsule-inactive-color)
+    ui:[&>div]:font-(family-name:--ui-tabs-text-family)
+    ui:[&>div]:text-(length:--ui-tabs-text-size)
+    ui:[&>div]:leading-(--ui-tabs-text-line)
+    ui:[&>div]:font-(weight:--ui-tabs-text-weight)
+    ui:[&>div]:[letter-spacing:var(--ui-tabs-text-letter-spacing,normal)]
+    ui:[&>div]:[text-transform:var(--ui-tabs-text-transform,none)];
+}
+
+@utility button-context-layout {
+  @apply ui:[&>span]:flex-1
+    ui:[&>span]:min-w-[0]
+    ui:[&>span]:truncate
+    ui:[&_svg]:shrink-0
+    ui:[&_img]:shrink-0
+    ui:[&_img]:size-(--ui-input-trigger-icon)
+    ui:[&_img]:object-contain;
+}
+
+@utility button-capsule-text {
+  @apply ui:font-(family-name:--ui-tabs-text-family)
+    ui:text-(length:--ui-tabs-text-size)
+    ui:leading-(--ui-tabs-text-line)
+    ui:font-(weight:--ui-tabs-text-weight)
+    ui:[letter-spacing:var(--ui-tabs-text-letter-spacing,normal)]
+    ui:[text-transform:var(--ui-tabs-text-transform,none)];
+}

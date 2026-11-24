@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-DIS-004",
+  "fixture": "promotions",
+  "route": "/promotions",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "promotions-results-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='promotions']",
+      "file": "website-promotions-desktop.png",
+      "alt": "Desktop promotions page with synthetic active offers"
+    },
+    {
+      "id": "promotions-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='promotion-details-dialog']",
+      "file": "website-promotions-details-desktop.png",
+      "alt": "Promotion details with coupon terms and available businesses"
+    },
+    {
+      "id": "promotions-results-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='promotions']",
+      "file": "website-promotions-mobile.png",
+      "alt": "Mobile promotions page with synthetic active offers"
+    },
+    {
+      "id": "promotions-search-empty-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='promotions']",
+      "file": "website-promotions-search-empty.png",
+      "alt": "Promotions page with no offers matching the local search"
+    },
+    {
+      "id": "promotions-error-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='promotions']",
+      "file": "website-promotions-error.png",
+      "alt": "Promotions page showing an offer-loading error"
+    },
+    {
+      "id": "promotions-empty-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='promotions']",
+      "file": "website-promotions-empty.png",
+      "alt": "Promotions page when the API returns no offers"
+    }
+  ]
+}

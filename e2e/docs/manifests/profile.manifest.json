@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-004",
+  "fixture": "profile",
+  "route": "/profile?view=account",
+  "readiness": {
+    "selectors": ["[data-doc-section='user-profile'][data-doc-state='editable']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "profile-account-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='user-profile']",
+      "capture_mode": "section",
+      "file": "website-profile-account-desktop.png",
+      "alt": "Desktop Website profile account form with synthetic customer details in its editable pre-save state"
+    },
+    {
+      "id": "profile-account-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='user-profile']",
+      "capture_mode": "viewport",
+      "file": "website-profile-account-mobile.png",
+      "alt": "Mobile Website profile account form with synthetic customer details and no submitted changes"
+    }
+  ]
+}

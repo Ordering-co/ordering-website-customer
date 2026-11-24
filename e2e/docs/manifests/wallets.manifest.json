@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-007",
+  "fixture": "wallets",
+  "route": "/wallets?wallet=cash",
+  "readiness": {
+    "selectors": ["[data-doc-section='wallets']", "[data-doc-section='wallet-balance']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 400, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "wallet-cash-desktop", "project": "desktop-chromium", "route": "/wallets?wallet=cash", "selector": "[data-doc-section='cash-wallet']", "capture_mode": "section", "file": "website-wallet-cash-desktop.png", "alt": "Desktop Website Cash Wallet view showing 125 synthetic wallet credits and two activity entries" },
+    { "id": "wallet-cash-mobile", "project": "mobile-chromium", "route": "/wallets?wallet=cash", "selector": "[data-doc-section='cash-wallet']", "capture_mode": "viewport", "file": "website-wallet-cash-mobile.png", "alt": "Mobile Website Cash Wallet view showing a responsive synthetic balance and activity list" },
+    { "id": "wallet-points-desktop", "project": "desktop-chromium", "route": "/wallets?wallet=credit_point", "selector": "[data-doc-section='credit-points-wallet']", "capture_mode": "section", "file": "website-wallet-points-desktop.png", "alt": "Desktop Website Loyalty Points view showing 420 synthetic points, a loyalty level, and activity" },
+    { "id": "wallet-points-mobile", "project": "mobile-chromium", "route": "/wallets?wallet=credit_point", "selector": "[data-doc-section='credit-points-wallet']", "capture_mode": "viewport", "file": "website-wallet-points-mobile.png", "alt": "Mobile Website Loyalty Points view showing a responsive synthetic balance and activity list" },
+    { "id": "wallet-no-activity-desktop", "project": "desktop-chromium", "route": "/wallets?wallet=cash", "selector": "[data-doc-section='cash-wallet']", "capture_mode": "section", "file": "website-wallet-no-activity-desktop.png", "alt": "Desktop Website Cash Wallet view showing a synthetic balance and the no transactions state" }
+  ]
+}

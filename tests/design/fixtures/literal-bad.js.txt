@@ -1,0 +1,43 @@
+// One of each: the expected findings are listed in tests/design/guards.test.mjs.
+import styled, { css, keyframes } from 'styled-components'
+import { themeSpace } from '~/utils/themeTokens'
+
+export const Hex = styled.div`
+  color: #266DF0;
+  background: ${({ theme, $on }) => $on ? '#fff' : theme.css.colors.surface};
+`
+export const Rgb = styled(Link)`
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.5);
+  border-color: hsl(10, 20%, 30%);
+`
+export const Lengths = styled.div.attrs(props => ({ 'data-x': props.x }))`
+  padding: 12px ${({ theme }) => themeSpace(theme, 'sm')};
+  margin-top: 1.5rem;
+  transition: all 0.3s ease, color 200ms;
+  width: calc(100% - 16px);
+`
+export const Font = styled.p`
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+`
+export const Spin = keyframes`
+  to { transform: translateY(8px) }
+`
+export const Shared = css`
+  gap: 4px;
+`
+const fn = () => css`
+  border: ${({ theme }) => theme.css.border} solid ${({ $x }) => $x ? 'rgb(1, 2, 3)' : 'tomato'};
+`
+export const inlineStyle = { color: '#abc', fontFamily: 'Georgia, serif', width: '24px' }
+export const motion = { transition: '300ms' }
+export const Named = styled.div`
+  color: white;
+  background-color: black;
+  border-top: 0 solid red;
+`
+export const namedStyle = { fill: 'yellow' }
+export const computed = (c) => darken(c, 0.1)
+export const mixed = (c) => lighten(c, 0.1)
+export const cssMix = css`background: color-mix(in srgb, ${({ c }) => c} 50%, white);`
+export const klass = 'ui:min-h-[44px] ui:bg-[#fff] ui:p-md'
+export const svg = <svg><path fill='#123456' /></svg>

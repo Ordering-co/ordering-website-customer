@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CAR-003",
+  "fixture": "payment-methods",
+  "route": "/checkout/synthetic-cart-payment",
+  "readiness": {
+    "selectors": ["[data-doc-section='checkout-payment-section']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 150,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "payment-methods-list-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='checkout-payment-section']",
+      "file": "website-payment-methods-list-desktop.png",
+      "alt": "Desktop Website checkout showing Cash and Card on delivery as available payment methods"
+    },
+    {
+      "id": "payment-methods-cash-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='checkout-payment-section']",
+      "file": "website-payment-methods-cash-desktop.png",
+      "alt": "Desktop Website checkout with Cash selected and the optional cash amount field visible"
+    },
+    {
+      "id": "payment-methods-list-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='checkout-payment-section']",
+      "file": "website-payment-methods-list-mobile.png",
+      "alt": "Mobile Website checkout showing Cash and Card on delivery as available payment methods"
+    }
+  ]
+}

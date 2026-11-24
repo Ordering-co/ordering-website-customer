@@ -1,0 +1,99 @@
+{
+  "extends": "sign-in-create-account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "store_segment_id": "",
+    "store_facebook_pixel_id": ""
+  },
+  "firstLoad": {
+    "configs": {
+      "track_id_google_analytics": {"key": "track_id_google_analytics", "value": "0"},
+      "segment_track_id": {"key": "segment_track_id", "value": ""},
+      "facebook_id": {"key": "facebook_id", "value": ""}
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/auth/spoonity$",
+      "assert": { "count": 0 },
+      "response": { "error": true, "result": ["Synthetic integration handoff stayed local."] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "settings": {} } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9301,
+          "name": "Synthetic Integration Customer",
+          "lastname": "Fixture Customer",
+          "email": "docs-integration@example.invalid",
+          "cellphone": "2025550199",
+          "country_phone_code": "1",
+          "birthdate": "2000-01-01",
+          "session_strategy": "jwt_session",
+          "enabled": true,
+          "email_verified": true,
+          "phone_verified": true,
+          "session": { "access_token": "docs-fixture-integration-session-token" }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "user_id": 9301, "type": 2, "carts": [] } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [], "pagination": { "total": 0, "from": 0, "to": 0, "current_page": 1, "page_size": 0, "total_pages": 1 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/synthetic-integration-store(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 3 },
+      "response": { "error": false, "result": [], "pagination": { "total": 0, "from": 0, "to": 0, "current_page": 1, "page_size": 0, "total_pages": 1 } }
+    }
+  ]
+}

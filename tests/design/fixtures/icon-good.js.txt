@@ -1,0 +1,12 @@
+import React from 'react'
+import { Icon } from '~ui/src/design-system/components/Icon'
+import { AppleIcon } from '~ui/src/components/Icon/brands'
+import { OrderIcon } from '~ui/src/components/Icon/lucideRegistry'
+
+export const Good = () => (
+  <>
+    <Icon name='Check' />
+    <AppleIcon />
+    <OrderIcon />
+  </>
+)

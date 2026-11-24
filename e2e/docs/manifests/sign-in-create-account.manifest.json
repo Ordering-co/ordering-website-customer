@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-001",
+  "fixture": "sign-in-create-account",
+  "route": "/home",
+  "readiness": {
+    "selectors": ["[data-doc-section='authentication-login'], [data-doc-section='authentication-signup']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 150,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "authentication-email-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='header-authentication-dialog']",
+      "capture_mode": "section",
+      "file": "website-authentication-email-desktop.png",
+      "alt": "Desktop Website Login dialog with empty Email and Password fields, reset-password link, and account creation link"
+    },
+    {
+      "id": "authentication-phone-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='header-authentication-dialog']",
+      "capture_mode": "section",
+      "file": "website-authentication-phone-desktop.png",
+      "alt": "Desktop Website Login dialog on the empty Phone password tab with the Login with SMS option"
+    },
+    {
+      "id": "authentication-sms-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='header-authentication-dialog']",
+      "capture_mode": "section",
+      "file": "website-authentication-sms-desktop.png",
+      "alt": "Desktop Website Login dialog in the empty SMS pre-send state before requesting a verification code"
+    },
+    {
+      "id": "authentication-signup-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='header-authentication-dialog']",
+      "capture_mode": "section",
+      "file": "website-authentication-signup-desktop.png",
+      "alt": "Desktop Website Sign up dialog with empty synthetic-profile fields, password, promotions choice, and Create an account action"
+    },
+    {
+      "id": "authentication-email-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='sidebar-authentication-dialog']",
+      "capture_mode": "viewport",
+      "file": "website-authentication-email-mobile.png",
+      "alt": "Mobile Website Login dialog opened from the sidebar with empty Email and Password fields"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CAR-002",
+  "fixture": "complete-checkout",
+  "route": "/checkout/synthetic-cart-checkout",
+  "readiness": {
+    "selectors": [
+      "[data-doc-section='checkout']",
+      "[data-doc-section='checkout-customer-details']",
+      "[data-doc-section='checkout-order-summary']",
+      "[data-doc-section='checkout-totals']",
+      "[data-doc-section='checkout-payment-section']"
+    ],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 150,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "checkout-overview-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='checkout']",
+      "capture_mode": "viewport",
+      "file": "website-checkout-overview-desktop.png",
+      "alt": "Desktop Website checkout showing synthetic customer, fulfillment, order summary, payment, totals, and Place Order areas"
+    },
+    {
+      "id": "checkout-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='checkout-details']",
+      "capture_mode": "section",
+      "file": "website-checkout-details-desktop.png",
+      "alt": "Desktop Website checkout showing synthetic business, customer, fulfillment address, and product summary details"
+    },
+    {
+      "id": "checkout-review-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='checkout-review-and-submit']",
+      "capture_mode": "section",
+      "file": "website-checkout-review-desktop.png",
+      "alt": "Desktop Website checkout showing taxes and fees, order total, and the Place Order action"
+    },
+    {
+      "id": "checkout-overview-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='checkout']",
+      "capture_mode": "viewport",
+      "file": "website-checkout-overview-mobile.png",
+      "alt": "Mobile Website checkout with synthetic details and Cash selected and Place Order available"
+    }
+  ]
+}

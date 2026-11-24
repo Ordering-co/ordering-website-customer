@@ -1,0 +1,245 @@
+{
+  "extends": "profile",
+  "localStorage": {
+    "country-code": "US"
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"value": "pickup", "type": 2},
+      "order_types_allowed": {"value": "2"},
+      "unaddressed_order_types_allowed": {"key": "unaddressed_order_types_allowed", "value": "2"},
+      "format_time": {"key": "format_time", "value": "12"},
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "guest_checkout_enabled": {"key": "guest_checkout_enabled", "value": "0"},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"},
+      "location_default_latitude": {"key": "location_default_latitude", "value": "30.2672"},
+      "location_default_longitude": {"key": "location_default_longitude", "value": "-97.7431"}
+    },
+    "site": {
+      "business_url_template": "/store/:business_slug",
+      "product_url_template": "/store/:business_slug/:category_slug/:product_slug"
+    },
+    "theme": {
+      "values": {
+        "tokens": {
+          "layout": {
+            "mode": "appointments"
+          }
+        },
+        "visibility": {
+          "business_listing.cities": false
+        },
+        "pages": {
+          "business": {
+            "sections": [
+              {
+                "key": "near_business",
+                "visible": false
+              },
+              {
+                "key": "order_it_again",
+                "visible": false
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "response": { "error": false, "result": [], "pagination": { "current_page": 1, "total_pages": 1, "total": 0 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/countries(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9901,
+            "slug": "synthetic-appointments",
+            "name": "Synthetic Appointment Studio",
+            "description": "Reserved fixture services and appointment context.",
+            "header": "/e2e/docs/assets/synthetic-business-header.svg",
+            "logo": "",
+            "address": "100 Synthetic Appointment Avenue",
+            "location": { "lat": 30.2672, "lng": -97.7431 },
+            "open": true,
+            "enabled": true,
+            "featured": true,
+            "timezone": "America/Chicago",
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            "reviews": { "total": 4.8 },
+            "delivery_price": 0,
+            "pickup_time": "00:15",
+            "offers": [],
+            "ribbon": { "enabled": false },
+            "categories": []
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 1, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": { "error": false, "result": [{ "id": 9902, "name": "Synthetic Wellness" }] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/synthetic-appointments(?:\\?.*)?$",
+      "assert": { "count": 0 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9901,
+          "slug": "synthetic-appointments",
+          "name": "Synthetic Appointment Studio",
+          "description": "Reserved fixture services and appointment context.",
+          "header": "/e2e/docs/assets/synthetic-business-header.svg",
+          "logo": "",
+          "address": "100 Synthetic Appointment Avenue",
+          "location": { "lat": 30.2672, "lng": -97.7431 },
+          "open": true,
+          "enabled": true,
+          "vertical": "service",
+          "food": false,
+          "timezone": "America/Chicago",
+          "today": { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+          "schedule": [
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] }
+          ],
+          "reviews": { "total": 4.8, "reviews": [] },
+          "favorite": false,
+          "offers": [],
+          "ribbon": { "enabled": false },
+          "configs": [],
+          "types": [{ "id": 9902, "name": "Synthetic Wellness" }],
+          "lazy_load_products_recommended": false,
+          "available_products_count": 1,
+          "valid_service": true,
+          "professionals": [
+            {
+              "id": 9911,
+              "name": "Synthetic",
+              "lastname": "Fixture Professional",
+              "last_name": "Fixture Professional",
+              "photo": "",
+              "favorite": false,
+              "occupation": { "name": "Fixture Specialist" },
+              "schedule": [
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] },
+                { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 17, "minute": 0 } }] }
+              ],
+              "busy_times": [{ "start": "2026-08-11T18:00:00Z", "end": "2026-08-11T19:00:00Z" }],
+              "products": [9921]
+            },
+            {
+              "id": 9912,
+              "name": "Fixture",
+              "lastname": "Synthetic Professional",
+              "last_name": "Synthetic Professional",
+              "photo": "",
+              "favorite": false,
+              "occupation": { "name": "Docs Consultant" },
+              "schedule": null,
+              "busy_times": [],
+              "products": [9921]
+            }
+          ],
+          "categories": [
+            {
+              "id": 9931,
+              "slug": "services",
+              "name": "Synthetic Services",
+              "rank": 1,
+              "subcategories": [],
+              "products": [
+                {
+                  "id": 9921,
+                  "business_id": 9901,
+                  "category_id": 9931,
+                  "category": { "id": 9931, "slug": "services" },
+                  "slug": "synthetic-consultation",
+                  "name": "Synthetic Consultation",
+                  "description": "A reserved fixture service for appointment documentation.",
+                  "type": "service",
+                  "price": 30,
+                  "duration": 30,
+                  "images": "/e2e/docs/assets/synthetic-business-header.svg",
+                  "gallery": [],
+                  "extras": [],
+                  "ingredients": [],
+                  "inventoried": false,
+                  "quantity": 100,
+                  "minimum_per_order": 1,
+                  "maximum_per_order": 1,
+                  "enabled": true,
+                  "favorite": false,
+                  "ribbon": { "enabled": false }
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/9901/categories/services/products/synthetic-consultation\\?type=2&moment=null&version=v2$",
+      "assert": { "count": 0 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9921,
+          "business_id": 9901,
+          "category_id": 9931,
+          "category": { "id": 9931, "slug": "services" },
+          "slug": "synthetic-consultation",
+          "name": "Synthetic Consultation",
+          "description": "A reserved fixture service for appointment documentation.",
+          "type": "service",
+          "price": 30,
+          "duration": 30,
+          "images": "/e2e/docs/assets/synthetic-business-header.svg",
+          "gallery": [],
+          "extras": [],
+          "ingredients": [],
+          "inventoried": false,
+          "quantity": 100,
+          "minimum_per_order": 1,
+          "maximum_per_order": 1,
+          "enabled": true,
+          "favorite": false,
+          "ribbon": { "enabled": false }
+        }
+      }
+    },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/tracking_events$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic tracking was blocked."] } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/carts/(?:add_product|update_product)$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic booking write was blocked."] } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/users/9301/favorite_users$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic favorite write was blocked."] } },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/favorite_users/\\d+$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic favorite write was blocked."] } },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/order_options$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic order option write was blocked."] } }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-005",
+  "fixture": "addresses",
+  "route": "/profile/addresses",
+  "readiness": {
+    "selectors": ["[data-doc-section='address-list']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "addresses-list-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='address-list']", "capture_mode": "section", "file": "website-addresses-list-desktop.png", "alt": "Desktop Website saved-address page with a synthetic current address and a saved Office address with edit and delete actions" },
+    { "id": "addresses-list-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='address-list']", "capture_mode": "viewport", "file": "website-addresses-list-mobile.png", "alt": "Mobile Website saved-address page with a synthetic current address and saved Office address" },
+    { "id": "addresses-add-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='address-form']", "capture_mode": "section", "file": "website-addresses-add-desktop.png", "alt": "Desktop Website blank Add address form before address search or submission" },
+    { "id": "addresses-add-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='address-form']", "capture_mode": "viewport", "file": "website-addresses-add-mobile.png", "alt": "Mobile Website blank Add address form before address search or submission" },
+    { "id": "addresses-edit-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='address-form']", "capture_mode": "section", "file": "website-addresses-edit-desktop.png", "alt": "Desktop Website Edit address form populated with a reserved synthetic Office address" },
+    { "id": "addresses-delete-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='address-delete-confirmation']", "capture_mode": "section", "file": "website-addresses-delete-confirm-desktop.png", "alt": "Desktop Website confirmation asking whether to delete a saved synthetic address before acceptance" },
+    { "id": "addresses-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='address-list']", "capture_mode": "section", "file": "website-addresses-empty-desktop.png", "alt": "Desktop Website Saved places page showing the empty-address state" }
+  ]
+}

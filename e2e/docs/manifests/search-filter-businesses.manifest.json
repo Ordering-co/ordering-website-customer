@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-DIS-003",
+  "fixture": "search-filter-businesses",
+  "route": "/business_search?lat=12.3456&lng=-45.6789",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "business-search-results-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search']",
+      "file": "website-search-businesses-desktop.png",
+      "alt": "Desktop business search results with supported filter controls"
+    },
+    {
+      "id": "business-search-results-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-search']",
+      "file": "website-search-businesses-mobile.png",
+      "alt": "Mobile business search results with order context and filters"
+    },
+    {
+      "id": "business-search-price-filter-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search-filter-dialog']",
+      "file": "website-search-price-filter.png",
+      "alt": "Price filter dialog with a synthetic price level selected"
+    },
+    {
+      "id": "business-search-category-filter-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-search-filter-dialog']",
+      "file": "website-search-category-filter-mobile.png",
+      "alt": "Mobile category filter dialog with a synthetic business type selected"
+    },
+    {
+      "id": "business-search-product-results-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search']",
+      "file": "website-search-product-results.png",
+      "alt": "Business search results with matching synthetic products"
+    },
+    {
+      "id": "business-search-product-dialog-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search-product-dialog']",
+      "file": "website-search-product-dialog.png",
+      "alt": "Product details opened from a business search result"
+    },
+    {
+      "id": "business-search-empty-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search-results']",
+      "file": "website-search-businesses-empty.png",
+      "alt": "Business search with no results for a synthetic term"
+    },
+    {
+      "id": "business-search-map-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-search']",
+      "file": "website-search-businesses-map.png",
+      "alt": "Desktop business search route with list and deterministic map markers"
+    }
+  ]
+}

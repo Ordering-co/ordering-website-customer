@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 320" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic offline illustration</title>
+  <desc id="desc">A disconnected cloud and browser window used only in documentation fixtures.</desc>
+  <rect width="640" height="320" rx="28" fill="#f4f7fb"/>
+  <rect x="128" y="74" width="384" height="196" rx="18" fill="#fff" stroke="#243b53" stroke-width="10"/>
+  <path d="M128 116h384" stroke="#243b53" stroke-width="10"/>
+  <circle cx="158" cy="96" r="7" fill="#e35252"/><circle cx="182" cy="96" r="7" fill="#f4b942"/><circle cx="206" cy="96" r="7" fill="#55a96b"/>
+  <path d="M245 205c-24 0-42-17-42-39 0-20 15-36 35-39 9-29 36-49 67-49 38 0 69 29 71 66 23 3 41 22 41 45 0 25-21 46-47 46H245z" fill="#dce8f5" stroke="#46637f" stroke-width="8"/>
+  <path d="M256 153l128 84M384 153l-128 84" stroke="#d34f4f" stroke-width="14" stroke-linecap="round"/>
+</svg>

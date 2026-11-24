@@ -1,0 +1,133 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-favorites-businesses-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Favorites",
+      "lastname": "Synthetic Customer",
+      "email": "docs@e.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-favorites-businesses-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"value": "pickup"},
+      "preorder_status_enabled": {"key": "preorder_status_enabled", "value": "1"},
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"}
+    },
+    "theme": {
+      "values": {
+        "tokens": {
+          "layout": {
+            "mode": "original"
+          }
+        },
+        "visibility": {
+          "orders.review_order_button": false,
+          "orders.reorder_button": false
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 7801, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7802, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7803, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 7811, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7801, "code": "name", "name": "Name", "type": "text" } },
+          { "id": 7812, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7802, "code": "lastname", "name": "Last name", "type": "text" } },
+          { "id": 7813, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7803, "code": "email", "name": "Email", "type": "email" } }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": { "error": false, "result": { "id": 9301, "name": "Synthetic Favorites", "lastname": "Synthetic Customer", "email": "docs@e.invalid", "cellphone": "2025550199", "country_phone_code": "1", "enabled": true, "email_verified": true, "phone_verified": true, "session": { "access_token": "docs-fixture-favorites-businesses-token" } } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": { "user_id": 9301, "type": 2, "address": { "address": "100 Synthetic Market Street", "location": { "lat": 0, "lng": 0 } }, "carts": [] } }
+    },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/favorite_businesses\\?page=1&page_size=10$",
+      "assert": { "count": 1 },
+      "response": { "error": false, "result": [{ "id": 9801, "object_id": 8101 }, { "id": 9802, "object_id": 8102 }], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 2, "from": 1, "to": 2 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 8101, "name": "Synthetic Kitchen", "description": "Synthetic bowls", "header": "", "logo": "", "location": { "lat": 0, "lng": 0 }, "address": "100 Synthetic Market Street", "ribbon": { "enabled": false }, "timezone": "America/Chicago", "schedule": [], "today": { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] }, "open": true, "delivery_price": 0, "distance": 0, "delivery_time": "00:20", "pickup_time": "00:10", "reviews": { "total": 4.8 }, "featured": true, "offers": [], "food": true, "slug": "synthetic-kitchen", "enabled": true, "disabled_reason": null, "available_drivers_count": 2, "activated_orders": 1, "favorite": true },
+          { "id": 8102, "name": "Fixture Bakery", "description": "Synthetic preorder bakery", "header": "", "logo": "", "location": { "lat": 0, "lng": 0 }, "address": "200 Fixture Bakery Avenue", "ribbon": { "enabled": false }, "timezone": "America/Chicago", "schedule": [], "today": { "enabled": false, "lapses": [] }, "open": false, "delivery_price": 0, "distance": 0, "delivery_time": "00:30", "pickup_time": "00:15", "reviews": { "total": 4.5 }, "featured": false, "offers": [], "food": true, "slug": "fixture-bakery", "enabled": true, "disabled_reason": null, "available_drivers_count": 0, "activated_orders": 0, "favorite": true }
+        ],
+        "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 2 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/favorite_products\\?page=1&page_size=10$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [
+        { "id": 9811, "object_id": 8201, "product": { "id": 8201, "name": "Synthetic Bowl", "description": "A synthetic favorite", "price": 12, "images": "", "favorite": true, "inventoried": false, "quantity": 10, "category": { "id": 8301 }, "businesses": [{ "id": 8101, "name": "Synthetic Kitchen", "slug": "synthetic-kitchen", "logo": "" }] } },
+        { "id": 9812, "object_id": 8202, "product": { "id": 8202, "name": "Synthetic Berry Treat", "description": "A synthetic saved treat", "price": 7, "images": "", "favorite": true, "inventoried": true, "quantity": 0, "category": { "id": 8302 }, "businesses": [] } }
+      ], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 2, "from": 1, "to": 2 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/favorite_orders\\?page=1&page_size=10$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [{ "id": 9821, "object_id": 8401 }], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 1, "from": 1, "to": 1 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [{ "id": 8401, "status": 1, "delivery_type": 2, "delivery_datetime": "2026-08-01 12:00:00", "total": 19, "favorite": true, "products": [{ "id": 8201, "name": "Synthetic Bowl" }], "business_id": 8101, "business": { "id": 8101, "name": "Synthetic Kitchen", "slug": "synthetic-kitchen", "logo": "" } }], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 1 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/favorite_users\\?page=1&page_size=10$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [
+        { "id": 9831, "object_id": 8501, "user": { "id": 8501, "name": "Synthetic Avery", "last_name": "", "email": "docs-professional@example.invalid", "photo": "", "favorite": true, "occupation": { "name": "Fixture Stylist" } } },
+        { "id": 9832, "object_id": 8502, "user": { "id": 8502, "name": "Fixture Morgan", "last_name": "", "email": "docs-professional@example.invalid", "photo": "", "favorite": true, "occupation": { "name": "Synthetic Specialist" } } }
+      ], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 2, "from": 1, "to": 2 } }
+    },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/favorite_businesses/8102$", "assert": { "count": 0 }, "response": { "error": false, "result": { "object_id": 8102 } } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/users/9301/favorite_businesses$", "assert": { "count": 0 }, "response": { "error": false, "result": { "object_id": 8102 } } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/tracking_events$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } }
+  ]
+}

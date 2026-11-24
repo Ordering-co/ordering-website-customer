@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ORD-002",
+  "fixture": "order-details-tracking",
+  "route": "/orders/docs-order-active",
+  "readiness": { "selectors": ["[data-doc-section='order-details']"], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 250, "network": { "quietMs": 350, "timeout": 7000 } },
+  "captures": [
+    { "id": "order-details-active-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-details-active']", "capture_mode": "section", "file": "website-order-details-active-desktop.png", "alt": "Desktop Website active order showing synthetic status, progress, item summary, totals, and delivery address" },
+    { "id": "order-details-active-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='order-details']", "capture_mode": "viewport", "file": "website-order-details-active-mobile.png", "alt": "Mobile Website active order showing responsive synthetic status and order summary" },
+    { "id": "order-details-terminal-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-details-terminal']", "capture_mode": "section", "file": "website-order-details-terminal-desktop.png", "alt": "Desktop Website delivered order showing synthetic items, saved totals, address, Review, and Order again" },
+    { "id": "order-details-terminal-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='order-details']", "capture_mode": "viewport", "file": "website-order-details-terminal-mobile.png", "alt": "Mobile Website delivered order showing a responsive synthetic summary and passive Order again action" },
+    { "id": "order-details-not-found-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-details']", "capture_mode": "section", "file": "website-order-details-not-found-desktop.png", "alt": "Desktop Website order details showing the bounded requested-order-not-found state" },
+    { "id": "multi-orders-desktop", "project": "desktop-chromium", "route": "/multi-orders/docs-group", "selector": "[data-doc-section='multi-order-details']", "capture_mode": "section", "file": "website-multi-orders-desktop.png", "alt": "Desktop Website multi-business order summary showing two synthetic business orders and combined totals" },
+    { "id": "multi-orders-mobile", "project": "mobile-chromium", "route": "/multi-orders/docs-group", "selector": "[data-doc-section='multi-order-details']", "capture_mode": "section", "file": "website-multi-orders-mobile.png", "alt": "Mobile Website multi-business order summary showing responsive synthetic customer, totals, and two business order cards" }
+  ]
+}

@@ -1,0 +1,31 @@
+import React from 'react'
+import styled from 'styled-components'
+import { Button as LegacyButton, IconButton } from '~ui/src/styles/Buttons'
+import { Input } from '~ui/src/styles/Inputs'
+import { Modal } from '~ui/src/components/Modal'
+import { BottomSheet } from '~ui/src/components/BottomSheet'
+import { Button } from '~ui/src/design-system/components/Button'
+
+const Raw = styled.button`
+  color: ${({ theme }) => theme.css.colors.text};
+`
+const Field = styled.input`
+  color: ${({ theme }) => theme.css.colors.text};
+`
+const Restyled = styled(Button)`
+  margin: 0;
+`
+export const Bad = () => (
+  <>
+    <button type='button'>one</button>
+    <input type='text' />
+    <Raw />
+    <Field />
+    <Restyled />
+    <LegacyButton />
+    <IconButton />
+    <Input />
+    <Modal />
+    <BottomSheet />
+  </>
+)

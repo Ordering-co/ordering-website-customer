@@ -1,0 +1,17 @@
+{
+  "extends": "sign-in-create-account",
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/forgot$",
+      "assert": { "count": 0 },
+      "response": { "error": true, "result": ["Synthetic recovery request was not sent."] }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/reset$",
+      "assert": { "count": 0 },
+      "response": { "error": true, "result": ["Synthetic password reset was not completed."] }
+    }
+  ]
+}

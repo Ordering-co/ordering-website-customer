@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-BRW-001",
+  "fixture": "business-menu",
+  "route": "/store/synthetic-market?lat=30.2672&lng=-97.7431&order_type=2",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "business-menu-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-menu-capture-frame']",
+      "file": "website-business-menu-desktop.png",
+      "alt": "Desktop business page with business details, category navigation, and grouped menu products"
+    },
+    {
+      "id": "business-menu-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-menu-capture-frame']",
+      "file": "website-business-menu-mobile.png",
+      "alt": "Mobile business page with order context, business details, categories, and menu products"
+    },
+    {
+      "id": "business-menu-closed-desktop",
+      "project": "desktop-chromium",
+      "route": "/store/fixture-bakery?lat=30.2672&lng=-97.7431&order_type=2",
+      "selector": "[data-doc-section='business-menu-header']",
+      "file": "website-business-menu-closed.png",
+      "alt": "Closed business header with a preorder entry point and fulfillment details"
+    },
+    {
+      "id": "business-menu-empty-desktop",
+      "project": "desktop-chromium",
+      "route": "/store/empty-fixture-market?lat=30.2672&lng=-97.7431&order_type=2",
+      "selector": "[data-doc-section='business-menu-capture-frame']",
+      "file": "website-business-menu-empty.png",
+      "alt": "Business page with an empty menu and no products available"
+    },
+    {
+      "id": "business-menu-information-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-information-dialog']",
+      "file": "website-business-menu-information.png",
+      "alt": "Business information dialog with a description, weekly schedule, and fulfillment times"
+    }
+  ]
+}

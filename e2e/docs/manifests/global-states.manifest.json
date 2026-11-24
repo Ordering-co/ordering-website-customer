@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-STA-001",
+  "fixture": "global-states",
+  "route": "/home",
+  "readiness": { "selectors": [], "allowBrokenImages": false, "imageTimeout": 2500, "settleMs": 250, "network": { "quietMs": 350, "timeout": 10000 } },
+  "captures": [
+    { "id": "global-loading-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='global-boot-loading']", "capture_mode": "viewport", "file": "website-global-loading-desktop.png", "alt": "Desktop Website showing the full-viewport startup loading animation before routed content appears" },
+    { "id": "global-loading-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='global-boot-loading']", "capture_mode": "viewport", "file": "website-global-loading-mobile.png", "alt": "Mobile Website showing the full responsive startup loading animation before routed content appears" },
+    { "id": "global-offline-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='global-offline']", "capture_mode": "section", "file": "website-global-offline-desktop.png", "alt": "Desktop Website offline notice showing No internet connection, synthetic illustration, explanatory copy, and Refresh" },
+    { "id": "global-offline-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='global-offline']", "capture_mode": "section", "file": "website-global-offline-mobile.png", "alt": "Mobile Website offline notice showing responsive connection guidance, synthetic illustration, and Refresh" },
+    { "id": "global-page-not-found-desktop", "project": "desktop-chromium", "route": "/docs-global/missing/route/fallback", "selector": "[data-doc-section='global-page-not-found']", "capture_mode": "section", "file": "website-global-page-not-found-desktop.png", "alt": "Desktop Website global route fallback showing PAGE NOT FOUND with a link to the marketplace home" },
+    { "id": "global-page-not-found-mobile", "project": "mobile-chromium", "route": "/docs-global/missing/route/fallback", "selector": "[data-doc-section='global-page-not-found']", "capture_mode": "section", "file": "website-global-page-not-found-mobile.png", "alt": "Mobile Website global route fallback showing the responsive PAGE NOT FOUND presentation" },
+    { "id": "global-cookie-consent-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='global-cookie-consent']", "capture_mode": "viewport", "file": "website-global-cookie-consent-desktop.png", "alt": "Desktop Website with the passive cookie-consent dialog, internal policy links, Opt Out, and Got it" },
+    { "id": "global-cookie-consent-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='global-cookie-consent']", "capture_mode": "viewport", "file": "website-global-cookie-consent-mobile.png", "alt": "Mobile Website with a responsive passive cookie-consent dialog above the page content" },
+    { "id": "global-site-out-of-service-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='global-site-out-of-service']", "capture_mode": "section", "file": "website-global-site-out-of-service-desktop.png", "alt": "Desktop Website SITE OUT OF SERVICE replacement showing synthetic archived-site guidance and untouched controls" },
+    { "id": "global-site-out-of-service-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='global-site-out-of-service']", "capture_mode": "section", "file": "website-global-site-out-of-service-mobile.png", "alt": "Mobile Website SITE OUT OF SERVICE replacement showing responsive synthetic guidance, blank Email, Contact us, and Send" }
+  ]
+}

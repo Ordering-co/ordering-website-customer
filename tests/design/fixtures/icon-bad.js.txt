@@ -1,0 +1,18 @@
+import React from 'react'
+import { FaBeer } from 'react-icons/fa'
+import { MdHome } from '@meronex/icons/md'
+import { Check } from 'lucide-react'
+import { Icon } from '~ui-icon'
+import { Icon as LegacyIcon } from '~ui/src/components/Icon'
+
+export const Bad = () => (
+  <>
+    <FaBeer />
+    <MdHome />
+    <Check />
+    <Icon name='Check' />
+    <Icon name='Home' />
+    <LegacyIcon name='Home' />
+    <svg viewBox='0 0 24 24'><path d='M0 0' /></svg>
+  </>
+)

@@ -1,0 +1,14 @@
+import React from 'react'
+import { StoreList } from '~ui/src/components/StoreList'
+import { Banner } from '~ui/src/components/Banner'
+import { Cart } from '~ui/src/components/Cart'
+import { Totals } from '~ui/src/components/Totals'
+
+export const Store = () => (
+  <>
+    <Banner />
+    <StoreList />
+    <Cart />
+    <Totals />
+  </>
+)

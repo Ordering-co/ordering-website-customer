@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-DIS-005",
+  "fixture": "favorites",
+  "route": "/favorite",
+  "readiness": {
+    "selectors": ["[data-doc-section='favorites']", "[data-doc-section='favorites-list']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "favorites-businesses-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "section", "file": "website-favorites-businesses-desktop.png", "alt": "Desktop Website My Favorites page showing one open and one closed synthetic saved business" },
+    { "id": "favorites-businesses-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "viewport", "file": "website-favorites-businesses-mobile.png", "alt": "Mobile Website My Favorites page showing responsive tabs and synthetic saved businesses" },
+    { "id": "favorites-products-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "section", "file": "website-favorites-products-desktop.png", "alt": "Desktop Website Products favorites tab showing two representative synthetic saved products" },
+    { "id": "favorites-orders-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "section", "file": "website-favorites-orders-desktop.png", "alt": "Desktop Website Orders favorites tab showing a minimal synthetic saved order" },
+    { "id": "favorites-professionals-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "section", "file": "website-favorites-professionals-desktop.png", "alt": "Desktop Website Professionals favorites tab showing two synthetic professionals in the appointments layout" },
+    { "id": "favorites-empty-businesses-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='favorites']", "capture_mode": "section", "file": "website-favorites-empty-businesses-desktop.png", "alt": "Desktop Website Businesses favorites tab showing the successful empty state" }
+  ]
+}

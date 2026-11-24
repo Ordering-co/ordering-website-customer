@@ -1,0 +1,139 @@
+{
+  "shadcnTag": "shadcn@4.21.0",
+  "shadcnCommit": "7c9eaba1c0a6404c990c144a654792e3313c650d",
+  "generatorExecuted": false,
+  "sourceFiles": [
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/button.tsx",
+      "local": null,
+      "sha256": "74f982d7ad7a764e3c95a519fc063a671e66ad758ea31dc89d747838e20c2487",
+      "adaptedAs": "src/ui/src/design-system/components/Button.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/input.tsx",
+      "local": null,
+      "sha256": "00213ec177e4556e69b6680128c18023d859a8e4eaf4106fbcf6abdc4f2c419b",
+      "adaptedAs": "src/ui/src/design-system/components/Input.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/dialog.tsx",
+      "local": null,
+      "sha256": "aba6df6cbf51a1edcc22e415a3a46a666fc8cb66729e47b3ed2ecd97f166adff",
+      "adaptedAs": "src/ui/src/design-system/components/Dialog.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/sheet.tsx",
+      "local": null,
+      "sha256": "5816119da5f3468b0b91d2c65bcf6befe1d769b7867e236b9f18db83908581cb",
+      "adaptedAs": "src/ui/src/design-system/components/Sheet.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/avatar.tsx",
+      "local": null,
+      "sha256": "d9850dc6f9aaccf9f7aab3c730c3aef62b42ef8cd9404b2d7133f771e14a6cbd",
+      "adaptedAs": "src/ui/src/design-system/components/Avatar.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/checkbox.tsx",
+      "local": null,
+      "sha256": "67d7935d6fd74b026cd464acd0c4f60dd8519667364b4ca2c584c0c486c72f3a",
+      "adaptedAs": "src/ui/src/design-system/components/Checkbox.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/radio-group.tsx",
+      "local": null,
+      "sha256": "c27fecb49f924d324d8c3d1354434508be0b59f202878d9713b8c1af1ebf5afa",
+      "adaptedAs": "src/ui/src/design-system/components/Choice.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/popover.tsx",
+      "local": null,
+      "sha256": "935bab728b60fd867384ebc6097d6a46c937423e015503e0251999b686f38bb7",
+      "adaptedAs": "src/ui/src/design-system/components/Popover.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/select.tsx",
+      "local": null,
+      "sha256": "6348d30035b68867d5efffe9b0b1611718226bef9fdeef9554349d6b98252110",
+      "adaptedAs": "src/ui/src/design-system/components/Select.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/tabs.tsx",
+      "local": null,
+      "sha256": "1eda25325a7aae9184224247d837b94f98f162d4f697740cc2b1bd53bd35cec6",
+      "adaptedAs": "src/ui/src/design-system/components/Tabs.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/textarea.tsx",
+      "local": null,
+      "sha256": "8f527c89dec40a9b372376dc93d2ebb149bfd82f209856d110ead1aabec19c6a",
+      "adaptedAs": "src/ui/src/design-system/components/Textarea.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/LICENSE.md",
+      "local": null,
+      "sha256": "1564074e13439397221ffd522e2e504d56561994a23d371aa5e3ad43e4f5423f"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/switch.tsx",
+      "local": null,
+      "sha256": "87aaf20b3209fabbcf0a9520c8b34733ddf2c91524c80ec72ed3dd3684f1bca3",
+      "adaptedAs": "src/ui/src/design-system/components/Switch.jsx"
+    },
+    {
+      "url": "https://raw.githubusercontent.com/shadcn-ui/ui/7c9eaba1c0a6404c990c144a654792e3313c650d/apps/v4/registry/bases/base/ui/tooltip.tsx",
+      "local": null,
+      "sha256": "dc5ec917d8276af9d66e7c951b0608d67c149bcb311072166bc8ce67ee2b7488",
+      "adaptedAs": "src/ui/src/design-system/components/Tooltip.jsx"
+    }
+  ],
+  "packages": [
+    {
+      "name": "@base-ui/react",
+      "version": "1.8.0",
+      "license": "MIT"
+    },
+    {
+      "name": "class-variance-authority",
+      "version": "0.7.1",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "tailwind-merge",
+      "version": "3.7.0",
+      "license": "MIT"
+    },
+    {
+      "name": "tailwindcss",
+      "version": "4.1.18",
+      "license": "MIT"
+    },
+    {
+      "name": "clsx",
+      "version": "2.1.1",
+      "license": "MIT"
+    },
+    {
+      "name": "lucide-react",
+      "version": "1.75.0",
+      "license": "ISC"
+    },
+    {
+      "name": "@tailwindcss/vite",
+      "version": "4.1.18",
+      "license": "MIT"
+    }
+  ],
+  "adaptations": [
+    "TypeScript to JSX without changing React/Vite",
+    "Button and Input keep shadcn's structure (Base UI primitive, cva variants, data-slot, cn(variants(), className)); the cn-* class names of the registry are replaced by Tailwind 4 utilities with the ui: prefix that read the --ui-<component>-* variables componentVars writes from components.button / components.input / components.spinner of the store's theme",
+    "shadcn's variant/size axes (default, outline, secondary, ghost, destructive, link; xs, sm, lg, icon...) are replaced by the theme's own: color and appearance of components.button, its sizes and its icon shape",
+    "Input adds prefix/suffix slots (Icon), invalid and the theme's border_sides; Button adds loading and cta (components.button.base.cta_full_width)",
+    "Dialog and Sheet keep shadcn's Base UI Dialog parts and API; values from components.modal and its close slot through componentVars on the portal element; Icon closeMd; Base UI Viewport to center; open and close transitions with data-starting-style/data-ending-style and the theme's motion; phone='sheet' is an own addition",
+    "Checkbox.jsx and Choice.jsx both draw from the pinned checkbox.tsx and radio-group.tsx sources. Choice integrates them as an indicator for an interactive row."
+  ],
+  "limits": [
+    "No upstream copy is kept in this repository (local: null); the hashes identify the files adapted",
+    "The upstream license text (MIT) is at the LICENSE.md URL above"
+  ]
+}

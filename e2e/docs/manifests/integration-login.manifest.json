@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-006",
+  "fixture": "integration-login",
+  "route": "/",
+  "readiness": {
+    "selectors": ["[data-doc-section='integration-login']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 150,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "integration-login-loading-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='integration-login']",
+      "capture_mode": "section",
+      "file": "website-integration-login-loading-desktop.png",
+      "alt": "Desktop Website supported-integration handoff showing its generic loading state"
+    },
+    {
+      "id": "integration-login-loading-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='integration-login']",
+      "capture_mode": "viewport",
+      "file": "website-integration-login-loading-mobile.png",
+      "alt": "Mobile Website supported-integration handoff showing its responsive generic loading state"
+    }
+  ]
+}

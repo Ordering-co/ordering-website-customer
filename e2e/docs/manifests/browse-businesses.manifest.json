@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-DIS-002",
+  "fixture": "browse-businesses",
+  "route": "/search?lat=30.2672&lng=-97.7431&order_type=1",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "business-results-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='businesses-list']",
+      "file": "website-browse-businesses-desktop.png",
+      "alt": "Desktop business results with open and preorder businesses"
+    },
+    {
+      "id": "business-results-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='businesses-list']",
+      "file": "website-browse-businesses-mobile.png",
+      "alt": "Mobile business results showing availability and order context"
+    },
+    {
+      "id": "business-preorder-entry-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-preorder-dialog']",
+      "file": "website-browse-businesses-preorder.png",
+      "alt": "Initial preorder modal opened from a closed business card"
+    },
+    {
+      "id": "business-empty-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-list-results']",
+      "file": "website-browse-businesses-empty.png",
+      "alt": "Empty business results at an address with an option to change it"
+    },
+    {
+      "id": "business-empty-address-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='address-form']",
+      "file": "website-browse-businesses-add-address.png",
+      "alt": "Address form opened from an empty business list"
+    }
+  ]
+}

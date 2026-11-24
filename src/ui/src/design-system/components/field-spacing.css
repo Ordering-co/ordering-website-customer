@@ -1,0 +1,55 @@
+@layer utilities {
+  [data-slot][data-field-padding] {
+    --ui-field-border-delta: 0px;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    [data-slot][data-field-padding]:not([data-field-padding='select']):enabled:hover:not(:focus, [aria-invalid='true']) {
+      --ui-field-border-delta: var(--ui-field-hover-delta);
+    }
+  }
+
+  [data-slot][data-field-padding]:not([data-field-padding='select']):enabled:focus:not([aria-invalid='true']),
+  [data-slot][data-field-padding='select']:enabled:is([data-popup-open], [data-own-focus]:focus-visible):not([aria-invalid='true']) {
+    --ui-field-border-delta: var(--ui-field-focus-delta);
+  }
+
+  [data-slot][data-field-padding]:not(:disabled)[aria-invalid='true'] {
+    --ui-field-border-delta: var(--ui-field-error-delta);
+  }
+
+  [data-slot][data-field-padding][data-field-border='all'] {
+    padding-inline-start: calc(var(--ui-field-start-space, var(--ui-input-padding-x)) - var(--ui-field-border-delta));
+    padding-inline-end: calc(var(--ui-field-end-space, var(--ui-input-padding-x)) - var(--ui-field-border-delta));
+  }
+
+  [data-slot][data-field-padding='textarea'][data-field-border='all'] {
+    padding-block-start: calc(var(--ui-input-padding-x) - var(--ui-field-border-delta));
+  }
+
+  [data-slot][data-field-padding='textarea'] {
+    padding-block-end: calc(var(--ui-input-padding-x) - var(--ui-field-border-delta));
+  }
+
+  /* The migrated searches reserve the room of their decoration (the Clear action, the magnifier, the leading icon) at
+     rest, hovered and focused: a long text never runs under it. Only the border's change is taken from the padding. */
+  [data-slot][data-field-padding='input'][data-field-border='bottom'] {
+    padding-block-start: max(0px, var(--ui-field-border-delta));
+    padding-block-end: max(0px, calc(0px - var(--ui-field-border-delta)));
+  }
+
+  /* A pointer-focused, closed select keeps the resting border. Keyboard focus
+     uses the configured focus border when it is also the focus indicator. */
+  [data-slot][data-field-padding='select']:enabled:focus:not([data-popup-open], [data-own-focus]:focus-visible, [aria-invalid='true'])[data-field-border='all'] {
+    border: var(--ui-input-border);
+  }
+
+  [data-slot][data-field-padding='select']:enabled:focus:not([data-popup-open], [data-own-focus]:focus-visible, [aria-invalid='true'])[data-field-border='bottom'] {
+    border-bottom: var(--ui-input-border);
+  }
+
+  [data-slot][data-field-padding='select']:enabled[data-popup-open] {
+    background-color: var(--ui-input-focus-background, var(--ui-input-background));
+    box-shadow: var(--ui-input-focus-shadow, var(--ui-input-shadow));
+  }
+}

@@ -1,0 +1,342 @@
+{
+  "extends": "business-catalog",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "localStorage": {
+    "options": "{\"type\":2,\"address\":{\"address\":\"100 Synthetic Market Street\",\"location\":{\"lat\":30.2672,\"lng\":-97.7431}}}"
+  },
+  "firstLoad": {
+    "configs": {
+      "use_parent_category": {"value": "1"}
+    }
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/synthetic-market(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 8301,
+          "slug": "synthetic-market",
+          "name": "Synthetic Market Kitchen",
+          "open": true,
+          "enabled": true,
+          "header": "/e2e/docs/assets/synthetic-business-header.svg",
+          "logo": "",
+          "address": "100 Synthetic Market Street",
+          "location": { "lat": 30.2672, "lng": -97.7431 },
+          "description": "Fixture-made bowls, soups, and drinks.",
+          "about": "A synthetic business used only for documentation capture.",
+          "vertical": "food",
+          "food": true,
+          "timezone": "America/Chicago",
+          "today": {
+            "enabled": true,
+            "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }]
+          },
+          "schedule": [
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 9, "minute": 0 }, "close": { "hour": 21, "minute": 0 } }] }
+          ],
+          "delivery_price": 2.5,
+          "service_fee": 0,
+          "delivery_time": "00:25",
+          "pickup_time": "00:15",
+          "minimum": 0,
+          "reviews": {
+            "total": 4.8,
+            "reviews": [
+              {
+                "id": 8391,
+                "total": 5,
+                "comment": "Synthetic review.",
+                "created_at": "2026-08-01T12:00:00Z"
+              }
+            ]
+          },
+          "ribbon": { "enabled": false },
+          "offers": [],
+          "gallery": [],
+          "professionals": [],
+          "previously_products": [],
+          "configs": [],
+          "types": [{ "id": 1, "name": "Restaurant" }],
+          "favorite": false,
+          "front_layout": "original",
+          "lazy_load_products_recommended": false,
+          "available_products_count": 3,
+          "valid_service": true,
+          "categories": [
+            {
+              "id": 8311,
+              "slug": "bowls",
+              "name": "Bowls",
+              "description": "Synthetic bowls",
+              "rank": 1,
+              "children": [
+                { "category_id": 8311, "parent_category_id": 8311 },
+                { "category_id": 8313, "parent_category_id": 8311 },
+                { "category_id": 8314, "parent_category_id": 8311 }
+              ],
+              "subcategories": [
+                {
+                  "id": 8313,
+                  "slug": "warm-bowls",
+                  "name": "Warm Bowls",
+                  "rank": 1,
+                  "level": 2,
+                  "parent_category_id": 8311,
+                  "children": [{ "category_id": 8313, "parent_category_id": 8313 }],
+                  "subcategories": [],
+                  "products": []
+                },
+                {
+                  "id": 8314,
+                  "slug": "fresh-bowls",
+                  "name": "Fresh Bowls",
+                  "rank": 2,
+                  "level": 2,
+                  "parent_category_id": 8311,
+                  "children": [{ "category_id": 8314, "parent_category_id": 8314 }],
+                  "subcategories": [],
+                  "products": []
+                }
+              ],
+              "products": [
+                {
+                  "id": 8321,
+                  "slug": "market-bowl",
+                  "name": "Synthetic Market Bowl",
+                  "description": "Roasted fixture vegetables, citrus dressing, and grains.",
+                  "price": 12.5,
+                  "category_id": 8313,
+                  "category": { "id": 8313, "slug": "warm-bowls" },
+                  "extras": [],
+                  "inventoried": false,
+                  "quantity": 100,
+                  "featured": false,
+                  "rank": 1,
+                  "enabled": true
+                },
+                {
+                  "id": 8322,
+                  "slug": "garden-bowl",
+                  "name": "Fixture Jardín Bowl",
+                  "description": "Crisp greens with a synthetic herb dressing.",
+                  "price": 11,
+                  "category_id": 8314,
+                  "category": { "id": 8314, "slug": "fresh-bowls" },
+                  "extras": [],
+                  "inventoried": false,
+                  "quantity": 100,
+                  "featured": false,
+                  "rank": 1,
+                  "enabled": true
+                }
+              ]
+            },
+            {
+              "id": 8312,
+              "slug": "drinks",
+              "name": "Drinks",
+              "description": "Synthetic drinks",
+              "rank": 2,
+              "children": [
+                { "category_id": 8312, "parent_category_id": 8312 }
+              ],
+              "subcategories": [],
+              "products": [
+                {
+                  "id": 8323,
+                  "slug": "citrus-sparkler",
+                  "name": "Synthetic Citrus Sparkler",
+                  "description": "A bright non-alcoholic fixture drink.",
+                  "price": 4.5,
+                  "category_id": 8312,
+                  "category": { "id": 8312, "slug": "drinks" },
+                  "extras": [],
+                  "inventoried": false,
+                  "quantity": 100,
+                  "featured": false,
+                  "rank": 1,
+                  "enabled": true
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/fixture-bakery(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 8302,
+          "slug": "fixture-bakery",
+          "name": "Fixture Bakery",
+          "open": false,
+          "enabled": true,
+          "header": "/e2e/docs/assets/synthetic-business-header.svg",
+          "logo": "",
+          "address": "200 Fixture Bakery Avenue",
+          "location": { "lat": 30.2673, "lng": -97.7432 },
+          "description": "Synthetic breads available for a future order.",
+          "about": "A closed synthetic business used only for documentation capture.",
+          "vertical": "food",
+          "food": true,
+          "timezone": "America/Chicago",
+          "today": { "enabled": false, "lapses": [] },
+          "schedule": [
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] }
+          ],
+          "delivery_price": 3,
+          "service_fee": 0,
+          "delivery_time": "00:35",
+          "pickup_time": "00:20",
+          "minimum": 0,
+          "reviews": { "total": 4.6, "reviews": [] },
+          "ribbon": { "enabled": false },
+          "offers": [],
+          "gallery": [],
+          "professionals": [],
+          "previously_products": [],
+          "configs": [],
+          "types": [{ "id": 2, "name": "Bakery" }],
+          "favorite": false,
+          "front_layout": "original",
+          "lazy_load_products_recommended": false,
+          "available_products_count": 1,
+          "valid_service": true,
+          "categories": [
+            {
+              "id": 8331,
+              "slug": "breads",
+              "name": "Breads",
+              "rank": 1,
+              "subcategories": [],
+              "products": [
+                {
+                  "id": 8332,
+                  "slug": "fixture-loaf",
+                  "name": "Fixture Country Loaf",
+                  "description": "A synthetic preorder bread.",
+                  "price": 8,
+                  "category_id": 8331,
+                  "category": { "id": 8331, "slug": "breads" },
+                  "extras": [],
+                  "inventoried": false,
+                  "quantity": 100,
+                  "featured": false,
+                  "rank": 1,
+                  "enabled": true
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/empty-fixture-market(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 8303,
+          "slug": "empty-fixture-market",
+          "name": "Empty Fixture Market",
+          "open": true,
+          "enabled": true,
+          "header": "",
+          "logo": "",
+          "address": "300 Synthetic Empty Market Road",
+          "location": { "lat": 30.2674, "lng": -97.7433 },
+          "description": "This synthetic business has no current menu items.",
+          "about": "An empty synthetic business used only for documentation capture.",
+          "vertical": "food",
+          "food": true,
+          "timezone": "America/Chicago",
+          "today": { "enabled": true, "lapses": [] },
+          "schedule": [],
+          "delivery_price": 0,
+          "service_fee": 0,
+          "delivery_time": "00:00",
+          "pickup_time": "00:00",
+          "minimum": 0,
+          "reviews": { "total": 0, "reviews": [] },
+          "ribbon": { "enabled": false },
+          "offers": [],
+          "gallery": [],
+          "professionals": [],
+          "previously_products": [],
+          "configs": [],
+          "types": [{ "id": 1, "name": "Restaurant" }],
+          "favorite": false,
+          "front_layout": "original",
+          "lazy_load_products_recommended": false,
+          "available_products_count": 0,
+          "valid_service": true,
+          "categories": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/missing-business(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": null }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/banner(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$",
+      "response": { "error": false, "result": {} }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/countries(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/search/searchbox/v1/suggest(?:\\?.*)?$",
+      "response": { "suggestions": [] }
+    }
+  ]
+}

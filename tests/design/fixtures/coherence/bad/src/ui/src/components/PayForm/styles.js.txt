@@ -1,0 +1,13 @@
+import styled from 'styled-components'
+
+export const Form = styled.form`
+  margin: 8px;
+  padding: 16px 24px;
+  gap: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  color: #333;
+  background: #fafafa;
+  font-size: 14px;
+  transition: opacity 150ms;
+`

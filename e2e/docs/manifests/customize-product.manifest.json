@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-BRW-003",
+  "fixture": "customize-product",
+  "route": "/store/synthetic-market/bowls/synthetic-custom-bowl",
+  "readiness": {
+    "selectors": ["[data-doc-section='product-customization']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "product-overview-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='product-customization-dialog']",
+      "file": "website-product-customization-desktop.png",
+      "alt": "Desktop product customization dialog for Synthetic Custom Bowl"
+    },
+    {
+      "id": "product-options-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='product-options']",
+      "file": "website-product-options-desktop.png",
+      "alt": "Required sauce and optional topping choices in a product form"
+    },
+    {
+      "id": "product-ingredients-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='product-ingredients']",
+      "file": "website-product-ingredients-desktop.png",
+      "alt": "Ingredient controls for a customizable product"
+    },
+    {
+      "id": "product-instructions-quantity-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='product-actions']",
+      "file": "website-product-instructions-quantity-desktop.png",
+      "alt": "Additional instructions, quantity controls, and Add to cart action"
+    },
+    {
+      "id": "product-sold-out-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='product-details']",
+      "file": "website-product-sold-out-details-desktop.png",
+      "alt": "Sold-out product details showing its name, description, and base price"
+    },
+    {
+      "id": "product-sold-out-action-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='product-actions']",
+      "file": "website-product-sold-out-action-desktop.png",
+      "alt": "Disabled Sold out action in the product customization dialog"
+    },
+    {
+      "id": "product-customization-mobile",
+      "project": "mobile-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='product-customization-dialog']",
+      "file": "website-product-customization-mobile.png",
+      "alt": "Mobile product customization form with selected options"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-005",
+  "fixture": "website-modes",
+  "route": "/search",
+  "readiness": { "allowBrokenImages": false, "imageTimeout": 2500, "settleMs": 300, "network": { "quietMs": 350, "timeout": 7000 } },
+  "captures": [
+    { "id": "website-mode-marketplace-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='businesses-list']", "file": "website-mode-marketplace-desktop.png", "alt": "Desktop multi-business Website showing two synthetic businesses" },
+    { "id": "website-mode-marketplace-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='businesses-list']", "file": "website-mode-marketplace-mobile.png", "alt": "Mobile multi-business Website showing synthetic business choices" },
+    { "id": "website-mode-single-store-desktop", "project": "desktop-chromium", "route": "/", "selector": "[data-doc-section='business-menu-capture-frame']", "file": "website-mode-single-store-desktop.png", "alt": "Desktop Website opened directly to a synthetic single-store menu" },
+    { "id": "website-mode-single-store-mobile", "project": "mobile-chromium", "route": "/", "selector": "[data-doc-section='business-menu-capture-frame']", "file": "website-mode-single-store-mobile.png", "alt": "Mobile Website opened directly to a synthetic single-store menu" },
+    { "id": "website-mode-franchise-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='business-menu-capture-frame']", "file": "website-mode-franchise-desktop.png", "alt": "Desktop franchise-configured Website opened to a synthetic participating store with a store switcher" },
+    { "id": "website-mode-kiosk-desktop", "project": "desktop-chromium", "route": "/", "selector": "[data-doc-section='website-home']", "file": "website-mode-kiosk-desktop.png", "alt": "Desktop kiosk-oriented Website home with a synthetic location and search entry" },
+    { "id": "website-mode-kiosk-mobile", "project": "mobile-chromium", "route": "/", "selector": "[data-doc-section='website-home']", "file": "website-mode-kiosk-mobile.png", "alt": "Mobile kiosk-oriented Website home with a synthetic location and search entry" }
+  ]
+}

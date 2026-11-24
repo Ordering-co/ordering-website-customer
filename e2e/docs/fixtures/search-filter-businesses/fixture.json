@@ -1,0 +1,296 @@
+{
+  "extends": "common",
+  "apiOrigins": ["https://api.docs.invalid", "https://maps.googleapis.com", "https://static.addtoany.com"],
+  "localStorage": {
+    "options": "{\"type\":1,\"address\":{\"address\":\"100 Synthetic Market Street, Fixture City\",\"zipcode\":\"TEST-000\",\"country_code\":\"ZZ\",\"location\":{\"lat\":12.3456,\"lng\":-45.6789}}}"
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"type": 1},
+      "unaddressed_order_types_allowed": {"key": "unaddressed_order_types_allowed", "value": "1|2"},
+      "add_product_with_one_click": {"key": "add_product_with_one_click", "value": "0", "enabled": false},
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "currency": {"key": "currency", "value": "USD"},
+      "currency_position": {"key": "currency_position", "value": "left"},
+      "currency_decimal_separator": {"key": "currency_decimal_separator", "value": "."},
+      "currency_thousand_separator": {"key": "currency_thousand_separator", "value": ","},
+      "currency_number_decimals": {"key": "currency_number_decimals", "value": "2"},
+      "format_number_currency": {"key": "format_number_currency", "value": "$"},
+      "distance_unit": {"key": "distance_unit", "value": "km"},
+      "filter_search_options": {"key": "filter_search_options", "value": "price_range|brands|max_delivery_fee|max_delivery_time|max_distance|business_categories"},
+      "location_default_latitude": {"key": "location_default_latitude", "value": "12.3456"},
+      "location_default_longitude": {"key": "location_default_longitude", "value": "-45.6789"},
+      "google_maps_api_key": {"key": "google_maps_api_key", "value": "docs-fixture-google-key"},
+      "preorder_status_enabled": {"key": "preorder_status_enabled", "value": "0"},
+      "max_product_amount": {"key": "max_product_amount", "value": "100"}
+    },
+    "site": {
+      "business_url_template": "/store/:business_slug",
+      "product_url_template": "/store/:business_slug?category=:category_id&product=:product_id"
+    },
+    "theme": {
+      "values": {
+        "visibility": {
+          "business_listing.cities": false
+        }
+      }
+    }
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "pattern": "^/menu/page\\.js(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "transport": {
+        "contentType": "application/javascript",
+        "body": "window.a2a = window.a2a || {};"
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/maps/api/js(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "transport": {
+        "contentType": "application/javascript",
+        "body": "(() => { class LatLng { constructor(lat, lng) { this._lat = Number(lat); this._lng = Number(lng); } lat() { return this._lat; } lng() { return this._lng; } } class LatLngBounds { constructor() { this.points = []; } extend(point) { this.points.push(point); } isEmpty() { return this.points.length === 0; } } class Map { constructor(element) { this.element = element; element.setAttribute('data-doc-map-ready', 'true'); element.style.cssText += ';position:relative;background-color:#e8efe9;background-image:linear-gradient(28deg,transparent 46%,#fff 47%,#fff 52%,transparent 53%),linear-gradient(118deg,transparent 46%,#d5e2d8 47%,#d5e2d8 52%,transparent 53%),linear-gradient(#dfe9e1 1px,transparent 1px),linear-gradient(90deg,#dfe9e1 1px,transparent 1px);background-size:240px 180px,300px 220px,48px 48px,48px 48px'; } fitBounds() {} setCenter() {} setZoom() {} } class Marker { constructor(options) { this.position = options.position; this.map = options.map; this.listeners = {}; const marker = document.createElement('button'); marker.type = 'button'; marker.setAttribute('aria-label', 'Synthetic business map marker'); marker.setAttribute('data-doc-control', 'business-search-map-marker'); marker.style.cssText = 'position:absolute;left:' + (42 + document.querySelectorAll('[data-doc-control=business-search-map-marker]').length * 12) + '%;top:48%;width:34px;height:34px;border-radius:50%;border:3px solid white;background:#2f6f5e;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:3'; marker.addEventListener('click', () => this.listeners.click && this.listeners.click()); options.map.element.appendChild(marker); this.element = marker; } addListener(name, listener) { this.listeners[name] = listener; } setMap() { this.element && this.element.remove(); } getPosition() { return this.position; } } class InfoWindow { setContent(content) { this.content = content; } open() {} close() {} addListener() {} } class Size { constructor(width, height) { this.width = width; this.height = height; } } window.google = { maps: { Map, Marker, LatLng, LatLngBounds, InfoWindow, Size } }; setTimeout(() => window.googleAsyncInit && window.googleAsyncInit(), 0); })();"
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/search\\?(?=.*(?:^|[?&])term=noresult(?:&|$)).*$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/search\\?(?=.*(?:^|[?&])term=synthetic(?:&|$)).*$",
+      "assert": { "minCount": 0, "maxCount": 3 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 8101,
+            "name": "Synthetic Kitchen",
+            "slug": "synthetic-kitchen",
+            "description": "Fresh synthetic bowls and salads",
+            "header": "",
+            "logo": "",
+            "location": { "lat": 12.3461, "lng": -45.6793 },
+            "address": "Synthetic Kitchen test address",
+            "city_id": 7101,
+            "open": true,
+            "enabled": true,
+            "timezone": "America/Chicago",
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+            "delivery_price": 2.5,
+            "distance": 1.2,
+            "delivery_time": "00:25",
+            "pickup_time": "00:15",
+            "reviews": { "total": 4.8 },
+            "featured": true,
+            "offers": [],
+            "ribbon": { "enabled": false },
+            "categories": [
+              {
+                "id": 8301,
+                "slug": "synthetic-bowls",
+                "name": "Synthetic Bowls",
+                "products": [
+                  {
+                    "id": 8201,
+                    "business_id": 8101,
+                    "category_id": 8301,
+                    "name": "Synthetic Market Bowl",
+                    "description": "A synthetic bowl for documentation capture.",
+                    "price": 12,
+                    "offer_price": null,
+                    "in_offer": false,
+                    "enabled": true,
+                    "inventoried": false,
+                    "quantity": 100,
+                    "minimum_per_order": 1,
+                    "maximum_per_order": 10,
+                    "images": "",
+                    "ingredients": [],
+                    "extras": [],
+                    "tags": [],
+                    "ribbon": { "enabled": false },
+                    "favorite": false
+                  },
+                  {
+                    "id": 8202,
+                    "business_id": 8101,
+                    "category_id": 8301,
+                    "name": "Fixture Sold-out Salad",
+                    "description": "A sold-out synthetic product.",
+                    "price": 9,
+                    "enabled": true,
+                    "inventoried": true,
+                    "quantity": 0,
+                    "minimum_per_order": 1,
+                    "maximum_per_order": 10,
+                    "images": "",
+                    "ingredients": [],
+                    "extras": [],
+                    "tags": [],
+                    "ribbon": { "enabled": false },
+                    "favorite": false
+                  }
+                ]
+              }
+            ]
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 1, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/search(?:\\?.*)?$",
+      "assert": { "minCount": 1, "maxCount": 10 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 8101,
+            "name": "Synthetic Kitchen",
+            "slug": "synthetic-kitchen",
+            "description": "Fresh synthetic bowls and salads",
+            "header": "",
+            "logo": "",
+            "location": { "lat": 12.3461, "lng": -45.6793 },
+            "address": "Synthetic Kitchen test address",
+            "city_id": 7101,
+            "open": true,
+            "enabled": true,
+            "timezone": "America/Chicago",
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+            "delivery_price": 2.5,
+            "distance": 1.2,
+            "delivery_time": "00:25",
+            "pickup_time": "00:15",
+            "reviews": { "total": 4.8 },
+            "featured": true,
+            "offers": [],
+            "ribbon": { "enabled": false },
+            "categories": []
+          },
+          {
+            "id": 8102,
+            "name": "Fixture Bakery",
+            "slug": "fixture-bakery",
+            "description": "Synthetic breads and pastries",
+            "header": "",
+            "logo": "",
+            "location": { "lat": 12.3472, "lng": -45.6804 },
+            "address": "Fixture Bakery test address",
+            "city_id": 7101,
+            "open": true,
+            "enabled": true,
+            "timezone": "America/Chicago",
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+            "delivery_price": 3,
+            "distance": 2.1,
+            "delivery_time": "00:35",
+            "pickup_time": "00:20",
+            "reviews": { "total": 4.6 },
+            "featured": false,
+            "offers": [],
+            "ribbon": { "enabled": false },
+            "categories": []
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 2, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/franchises(?:\\?.*)?$",
+      "assert": { "minCount": 1, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 8501, "name": "Synthetic Group", "enabled": true },
+          { "id": 8502, "name": "Fixture Disabled Group", "enabled": false }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 8601, "name": "Restaurant", "enabled": true, "image": null },
+          { "id": 8602, "name": "Bakery", "enabled": true, "image": null }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 2, "page_size": 25 }
+      }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/tracking_events$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "id": "synthetic-tracking-event" } }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_businesses$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "business_id": 8101 } }
+    },
+    {
+      "method": "DELETE",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_businesses/8101$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "business_id": 8101 } }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_products$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "product_id": 8201 } }
+    },
+    {
+      "method": "DELETE",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_products/8201$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "product_id": 8201 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$",
+      "response": { "error": false, "result": {} }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/countries(?:\\?.*)?$",
+      "assert": { "maxCount": 2 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/banner(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    }
+  ]
+}

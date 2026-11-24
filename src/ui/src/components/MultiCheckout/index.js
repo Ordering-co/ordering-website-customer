@@ -1,0 +1,763 @@
+import React, { useState, useEffect, useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
+import { useTheme } from 'styled-components'
+import parsePhoneNumber from 'libphonenumber-js'
+import {
+  Container,
+  WrapperLeftContainer,
+  WrapperLeftContent,
+  WrapperRightContainer,
+  UserDetailsContainer,
+  WrapperUserDetails,
+  CartContainer,
+  CartHeader,
+  DriverTipDivider,
+  MultiCartPriceContainer,
+  PaymentMethodContainer,
+  WrapperPlaceOrderButton,
+  WarningText,
+  DriverTipContainer,
+  CouponContainer,
+  AuthButtonList,
+  AuthButtonSlot,
+  WarningMessage,
+  BackAction,
+  SectionDivider
+} from './styles'
+
+import { MultiCheckout as MultiCheckoutController } from '~components/components/MultiCheckout'
+import { useLanguage } from '~components/contexts/LanguageContext'
+import { useUtils } from '~components/contexts/UtilsContext'
+import { useCustomer } from '~components/contexts/CustomerContext'
+import { useConfig } from '~components/contexts/ConfigContext'
+import { isWalletEnabled as isWalletConfigEnabled } from '~components/utils/configHelpers'
+import { useSession } from '~components/contexts/SessionContext'
+import { useValidationFields } from '~components/contexts/ValidationsFieldsContext'
+import { normalizeCartUuid } from '~components/utils/normalizeCartUuid'
+import { useOrder } from '~components/contexts/OrderContext'
+import { useToast, ToastType } from '~components/contexts/ToastContext'
+
+import { DriverTips } from '~ui/src/components/DriverTips'
+import { NotFoundSource } from '~ui/src/components/NotFoundSource'
+import { Button } from '~ui/src/design-system/components/Button'
+import { Icon as BaseIcon } from '~ui/src/design-system/components/Icon'
+import { Cart } from '~ui/src/components/Cart'
+import { Alert } from '~ui/src/components/Confirm'
+import { DialogOverlay } from '~ui/src/components/Overlay/overlays'
+import { SignUpForm } from '~ui/src/components/SignUpForm'
+import { LoginForm } from '~ui/src/components/LoginForm'
+import { UserDetails } from '~ui/src/components/UserDetails'
+import { AddressDetails } from '~ui/src/components/AddressDetails'
+import { MultiCartsPaymethodsAndWallets } from '~ui/src/components/MultiCartsPaymethodsAndWallets'
+import { CouponControl } from '~ui/src/components/CouponControl'
+import { CheckoutStudentDetails } from '~ui/src/components/CheckoutStudentDetails'
+import { doesAnySchoolCartNeedStudent, isSchoolCart } from '~ui/src/components/CheckoutStudentDetails/schoolCartStudent'
+import { generalUtilities } from '~ui/utils'
+import { useBusinessVerticals } from '~ui/hooks/useBusinessVerticals'
+import { useGuestCheckoutPermission } from '~ui/hooks/useGuestCheckoutPermission'
+import { isSingleStore } from '~/utils/siteSettings'
+import settings from '../../../../config'
+import { themeColor } from '~/utils/themeColors'
+import { themeVisible } from '~/utils/themeVisibility'
+import { isCustomerDetailRequirement, normalizeCheckoutFieldsState } from '~ui/src/utils/checkoutFields'
+import { usePageSections } from '~ui/hooks/usePageSections'
+import { useWindowSize } from '~ui/hooks/useWindowSize'
+import { sectionItems } from '~ui/src/components/Checkout/checkoutTheme'
+import { slotButtonOptions } from '~/utils/themeGroups'
+
+const mapConfigs = {
+  mapZoom: 16,
+  mapSize: {
+    width: 640,
+    height: 190
+  }
+}
+
+const pickupTypes = [2, 8]
+// The place order's slot of the width (its size, color and appearance; never an icon shape)
+const placeOrderOptions = (theme, width) => {
+  const { shape, ...options } = slotButtonOptions(theme, 'checkout', width < 576 ? 'place_order_mobile' : 'place_order', { color: 'primary', size: 'md' })
+  return options
+}
+
+// the sections of the details column that head it, not separated by dividers
+const MULTI_CHECKOUT_HEAD_SECTIONS = ['back', 'title']
+const disabledStatusses = ['payment_incomplete', 'succeeded']
+
+const MultiCheckoutUI = (props) => {
+  const {
+    placing,
+    isCustomerMode,
+    openCarts,
+    loyaltyPlansState,
+    handleGroupPlaceOrder,
+    paymethodSelected,
+    handleSelectPaymethod,
+    handleSelectWallet,
+    handlePaymethodDataChange,
+    onRedirectPage,
+    cartGroup,
+    cartUuid,
+    totalCartsFee,
+    walletState,
+    handleSearchRedirect,
+    checkoutFieldsState: apiCheckoutFieldsState,
+    actionsBeforePlace,
+    getMultiCart
+  } = props
+  // An order type's field left unset takes the project's
+  const checkoutFieldsState = useMemo(() => normalizeCheckoutFieldsState(apiCheckoutFieldsState), [apiCheckoutFieldsState])
+
+  const [, t] = useLanguage()
+  const [{ configs }] = useConfig()
+  const [{ parsePrice }] = useUtils()
+  const [customerState] = useCustomer()
+  const [validationFields] = useValidationFields()
+  const [{ user, loading: userLoading }, { login }] = useSession()
+  const [orderState] = useOrder()
+  const theme = useTheme()
+  // implementation notesmulti-checkout covers several businesses at once, so only a
+  // One store site (not an entered-store match) lets a guest check out
+  // ignoring the guest checkout settings
+  const guestStore = isSingleStore(theme, settings)
+  const { guestCheckoutAllowed, guestOrderBlocked, canUseGuestCheckout, canPlaceOrder } = useGuestCheckoutPermission({
+    configs,
+    orderType: orderState?.options?.type,
+    user,
+    guestStore
+  })
+  const history = useHistory()
+  const [, { showToast }] = useToast()
+  // the sections of /multi-checkout, ordered and hidden by the theme (pages.multi_checkout)
+  const { sections, isVisible: isSectionVisible } = usePageSections('multi_checkout')
+  // the note under the total
+  const showDescription = themeVisible(theme, 'multi_checkout.description')
+  const windowSize = useWindowSize()
+  const hideDriverTipsSubtitle = !themeVisible(theme, 'checkout.driver_tips.subtitle')
+  const { walletName } = generalUtilities()
+  const [cardList, setCardList] = useState([])
+  const [userErrors, setUserErrors] = useState([])
+  const [isUserDetailsEdit, setIsUserDetailsEdit] = useState(null)
+  const [requiredFields, setRequiredFields] = useState([])
+  const [isSuccess, setIsSuccess] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
+  const [allowedGuest, setAllowedGuest] = useState(false)
+  const [openModal, setOpenModal] = useState({ login: false, signup: false, isGuest: false })
+  const [alertState, setAlertState] = useState({ open: false, content: [] })
+  const [productLoading, setProductLoading] = useState(false)
+  const [assignedStudents, setAssignedStudents] = useState({})
+  const businessVerticals = useBusinessVerticals(openCarts.map((cart) => cart?.business_id))
+
+  useEffect(() => {
+    if (!guestCheckoutAllowed) setAllowedGuest(false)
+  }, [guestCheckoutAllowed])
+
+  const studentCarts = openCarts.map((cart) => {
+    const contextCart = orderState?.carts?.[`businessId:${cart?.business_id}`]
+    return {
+      ...cart,
+      business: {
+        ...cart?.business,
+        vertical: cart?.business?.vertical ?? contextCart?.business?.vertical ?? businessVerticals[String(cart?.business_id)],
+        slug: cart?.business?.slug ?? contextCart?.business?.slug
+      },
+      student_id: cart?.student_id ?? contextCart?.student_id ?? null,
+      student: cart?.student ?? contextCart?.student
+    }
+  })
+  const studentCartByUuid = Object.fromEntries(studentCarts.map((cart) => [cart.uuid, cart]))
+  const schoolNeedsStudent = doesAnySchoolCartNeedStudent(studentCarts, assignedStudents)
+  const handleStudentAssigned = (cartUuid, studentId) => {
+    setAssignedStudents((prev) => ({ ...prev, [cartUuid]: studentId }))
+  }
+
+  const walletCarts = (Object.values(orderState?.carts)?.filter(cart => cart?.products && cart?.products?.length && cart?.status !== 2 && cart?.valid_schedule && cart?.valid_products && cart?.valid_address && cart?.valid_maximum && cart?.valid_minimum && cart?.wallets?.length > 0) || null) || []
+  const isDisablePlaceOrderButton = cartGroup?.loading ||
+    guestOrderBlocked ||
+    schoolNeedsStudent ||
+    (!(paymethodSelected?.paymethod_id || paymethodSelected?.wallet_id) && cartGroup?.result?.balance > 0) ||
+    (paymethodSelected?.paymethod?.gateway === 'stripe' && !paymethodSelected?.paymethod_data) ||
+    (paymethodSelected?.gateway === 'stripe' && cardList?.cards?.length === 0) ||
+    walletCarts.length > 0
+
+  const notFields = ['coupon', 'driver_tip', 'mobile_phone', 'address', 'zipcode', 'address_notes', 'comments']
+  const isMultiDriverTips = configs?.checkout_multi_business_enabled?.value === '1'
+  const driverTipsOptions = typeof configs?.driver_tip_options?.value === 'string'
+    ? JSON.parse(configs?.driver_tip_options?.value) || []
+    : configs?.driver_tip_options?.value || []
+  const allowDriverTipPickup = configs?.driver_tip_allowed_at_pickup?.value === '1' && pickupTypes.includes(orderState?.options?.type)
+
+  const totalCartsPrice = cartGroup?.result?.balance
+  const methodsPay = ['global_google_pay', 'global_apple_pay']
+  const stripePaymethods = ['stripe', 'stripe_direct', 'stripe_connect', 'stripe_redirect']
+  const creditPointGeneralPlan = loyaltyPlansState?.result?.find((loyal) => loyal.type === 'credit_point')
+  const loyalBusinessAvailable = creditPointGeneralPlan?.businesses?.filter((b) => b.accumulates) ?? []
+  const isWalletEnabled = configs?.cash_wallet?.value && isWalletConfigEnabled(configs)
+  const checkoutFields = useMemo(() => checkoutFieldsState?.fields?.filter(field => field.order_type_id === orderState?.options?.type), [checkoutFieldsState, orderState?.options])
+
+  const hexTest = /[0-9A-Fa-f]{6}/g
+  const primaryColor = themeColor(theme, 'primary').split('#')[1]
+  const accumulationRateBusiness = (businessId) => {
+    const value = loyalBusinessAvailable?.find((loyal) => loyal.business_id === businessId)?.accumulation_rate ?? 0
+    return value || (creditPointGeneralPlan?.accumulation_rate ?? 0)
+  }
+
+  const getIncludedTaxes = (cart) => {
+    if (cart?.taxes === null || !cart?.taxes) {
+      return cart?.business?.tax_type === 1 ? cart?.tax : 0
+    } else {
+      return cart?.taxes.reduce((taxIncluded, tax) => {
+        return taxIncluded + (tax.type === 1 ? tax.summary?.tax : 0)
+      }, 0)
+    }
+  }
+
+  const clearAmount = (value) => parseFloat((Math.trunc(value * 100) / 100).toFixed(configs.format_number_decimal_length?.value ?? 2))
+  const loyaltyRewardValue = openCarts.reduce((sum, cart) => sum + clearAmount((cart?.subtotal + getIncludedTaxes(cart)) * accumulationRateBusiness(cart?.business_id)), 0)
+
+  const handlePlaceOrder = () => {
+    if (!canPlaceOrder()) return
+    if (schoolNeedsStudent) return
+    if (!user && !canUseGuestCheckout()) {
+      setOpenModal({ ...openModal, signup: true, isGuest: false })
+      return
+    }
+    if (stripePaymethods.includes(paymethodSelected?.gateway) && user?.guest_id) {
+      setOpenModal({ ...openModal, signup: true, isGuest: true })
+      return
+    }
+
+    if ((!userErrors.length && !requiredFields?.length) || (requiredFields?.length === 1 && isCustomerMode && requiredFields?.includes('email'))) {
+      handleGroupPlaceOrder && handleGroupPlaceOrder(actionsBeforePlace)
+      return
+    }
+    if (requiredFields?.length) {
+      setIsOpen(true)
+      return
+    }
+    setAlertState({
+      open: true,
+      content: Object.values(userErrors).map(error => error)
+    })
+    setIsUserDetailsEdit(true)
+  }
+
+  const handlePlaceOrderAsGuest = () => {
+    if (!canPlaceOrder(true)) return
+    if (schoolNeedsStudent) return
+    setIsOpen(false)
+    handleGroupPlaceOrder && handleGroupPlaceOrder(actionsBeforePlace)
+  }
+
+  const closeAlert = () => {
+    setAlertState({
+      open: false,
+      content: []
+    })
+    setIsUserDetailsEdit(false)
+  }
+
+  const checkGuestValidationFields = () => {
+    const userSelected = isCustomerMode ? customerState.user : user
+    const _requiredFields = checkoutFieldsState?.fields
+      .filter((field) => (field?.order_type_id === orderState?.options?.type) && field?.enabled && field?.required_with_guest &&
+        isCustomerDetailRequirement(field?.validation_field?.code) &&
+        !notFields.includes(field?.validation_field?.code) &&
+        userSelected && !userSelected[field?.validation_field?.code])
+    const requiredFieldsCode = _requiredFields.map((item) => item?.validation_field?.code)
+    const guestCheckoutCellPhone = checkoutFieldsState?.fields?.find((field) => field.order_type_id === orderState?.options?.type && field?.validation_field?.code === 'mobile_phone')
+    if (
+      userSelected &&
+      !userSelected?.cellphone &&
+      ((guestCheckoutCellPhone?.enabled &&
+        guestCheckoutCellPhone?.required_with_guest) ||
+        configs?.verification_phone_required?.value === '1')
+    ) {
+      requiredFieldsCode.push('cellphone')
+    }
+    setRequiredFields(requiredFieldsCode)
+  }
+
+  const checkValidationFields = () => {
+    setUserErrors([])
+    const errors = []
+    const userSelected = isCustomerMode ? customerState.user : user
+    const _requiredFields = []
+    Object.values(checkoutFieldsState?.fields).map(field => {
+      if (orderState.options?.type === field?.order_type_id &&
+        field?.enabled &&
+        field?.required &&
+        !notFields.includes(field?.validation_field?.code)
+      ) {
+        if (userSelected && !userSelected[field?.validation_field?.code]) {
+          _requiredFields.push(field?.validation_field?.code)
+        }
+      }
+    })
+    const mobilePhoneField = Object.values(checkoutFieldsState?.fields)?.find(field => field?.order_type_id === orderState?.options?.type && field?.validation_field?.code === 'mobile_phone')
+    if (
+      userSelected &&
+      !userSelected?.cellphone &&
+      ((mobilePhoneField?.enabled &&
+        mobilePhoneField?.required) ||
+        configs?.verification_phone_required?.value === '1')
+    ) {
+      _requiredFields.push('cellphone')
+    }
+    setRequiredFields(_requiredFields)
+    if (userSelected && userSelected?.cellphone) {
+      if (userSelected?.country_phone_code) {
+        let phone = null
+        phone = `+${userSelected?.country_phone_code}${userSelected?.cellphone.replace(`+${userSelected?.country_phone_code}`, '')}`
+        const phoneNumber = parsePhoneNumber(phone)
+        if (!phoneNumber?.isValid()) {
+          errors.push(t('VALIDATION_ERROR_MOBILE_PHONE_INVALID', 'The field Phone number is invalid.'))
+        }
+      } else {
+        errors.push(t('INVALID_ERROR_COUNTRY_CODE_PHONE_NUMBER', 'The country code of the phone number is invalid'))
+      }
+    }
+
+    setUserErrors(errors)
+  }
+
+  const handleSuccessSignup = (user) => {
+    login({
+      user,
+      token: user?.session?.access_token
+    })
+    openModal?.isGuest && handlePlaceOrderAsGuest()
+    setOpenModal({ ...openModal, signup: false, isGuest: false })
+  }
+
+  const handleSuccessLogin = (user) => {
+    if (user) setOpenModal({ ...openModal, login: false })
+  }
+
+  useEffect(() => {
+    if (checkoutFieldsState?.loading || customerState.loading || userLoading) return
+    if (user?.guest_id) {
+      checkGuestValidationFields()
+    } else {
+      checkValidationFields()
+    }
+  }, [checkoutFieldsState, user, customerState, orderState?.options?.type])
+
+  const singleCartUuid = openCarts.length === 1 ? normalizeCartUuid(openCarts[0]?.uuid) : null
+  const invalidSingleCart = openCarts.length === 1 && !singleCartUuid
+
+  useEffect(() => {
+    if (openCarts.length || cartGroup.loading) {
+      if (singleCartUuid) {
+        onRedirectPage?.({
+          page: 'checkout',
+          params: { cartUuid: singleCartUuid }
+        })
+      }
+      return
+    }
+    if (cartGroup?.result?.status !== 'completed') {
+      onRedirectPage && onRedirectPage({ page: 'search' })
+    }
+  }, [openCarts, cartGroup, singleCartUuid])
+
+  const contextDriverTips = openCarts.map((cart) => Number(orderState?.carts?.[`businessId:${cart?.business_id}`]?.driver_tip ?? 0)).join('|')
+  const groupDriverTips = openCarts.map((cart) => Number(cart?.driver_tip ?? 0)).join('|')
+
+  useEffect(() => {
+    if (orderState?.loading || cartGroup?.loading || !openCarts.length) return
+    if (contextDriverTips !== groupDriverTips) getMultiCart && getMultiCart()
+  }, [contextDriverTips, orderState?.loading])
+
+  useEffect(() => {
+    if (walletState.error) {
+      showToast(ToastType.Error, t(walletState.error, walletState.error?.[0]?.replace(/_/g, ' ')))
+    }
+  }, [walletState.error])
+
+  useEffect(() => {
+    if (methodsPay.includes(paymethodSelected?.paymethod?.gateway) && typeof paymethodSelected?.paymethod_data === 'string') {
+      const hasSource = JSON.parse(paymethodSelected?.paymethod_data)?.source_id
+      if (hasSource) {
+        handlePlaceOrder()
+      }
+    }
+  }, [paymethodSelected])
+
+  // The sections of the details column in the theme's order
+  // (pages.multi_checkout, group main); the alerts of the payment go with it
+  const mainSections = {
+    // going back is an icon button of the theme
+    back: () => (
+      <BackAction>
+        <Button type='button' shape='icon' color='neutral' appearance='ghost' size='md' aria-label={t('BACK', 'Back')} onClick={() => history.goBack()}>
+          <BaseIcon name='arrowLeft' />
+        </Button>
+      </BackAction>
+    ),
+    title: () => (
+      <h1 className='checkout-title'>{t('CHECKOUT', 'Checkout')}</h1>
+    ),
+    address: () => (
+      <AddressDetails
+        isMultiCheckout
+        openCarts={openCarts}
+        apiKey={configs?.google_maps_api_key?.value}
+        mapConfigs={mapConfigs}
+        isCustomerMode={isCustomerMode}
+        primaryColor={hexTest.test(primaryColor || '') ? `0x${primaryColor}` : 'red'}
+        isCartPending={cartGroup?.result?.status === 'payment_incomplete'}
+      />
+    ),
+    customer: () => (
+      <UserDetailsContainer>
+        <WrapperUserDetails>
+          {(user?.guest_id && (!allowedGuest || !guestCheckoutAllowed))
+            ? (
+              <AuthButtonList>
+                <h2>{t('CUSTOMER_DETAILS', 'Customer details')}</h2>
+                <AuthButtonSlot>
+                  <Button color='primary' size='md' fullWidth onClick={() => setOpenModal({ ...openModal, signup: true })}>
+                    {t('SIGN_UP', 'Sign up')}
+                  </Button>
+                </AuthButtonSlot>
+                <AuthButtonSlot>
+                  <Button color='primary' appearance='outline' size='md' fullWidth onClick={() => setOpenModal({ ...openModal, login: true })}>
+                    {t('LOGIN', 'Login')}
+                  </Button>
+                </AuthButtonSlot>
+                {guestCheckoutAllowed && (
+                  <AuthButtonSlot>
+                    <Button color='inverse' appearance='outline' size='md' fullWidth onClick={() => canUseGuestCheckout() && setAllowedGuest(true)}>
+                      {t('CONTINUE_AS_GUEST', 'Continue as guest')}
+                    </Button>
+                  </AuthButtonSlot>
+                )}
+              </AuthButtonList>
+              )
+            : (
+              <UserDetails
+                isUserDetailsEdit={isUserDetailsEdit}
+                useDefualtSessionManager
+                useSessionUser={!isCustomerMode}
+                isCustomerMode={isCustomerMode}
+                userData={isCustomerMode && customerState.user}
+                userId={isCustomerMode && customerState?.user?.id}
+                isCheckout
+                isSuccess={isSuccess}
+                isOrderTypeValidationField
+                requiredFields={requiredFields}
+                checkoutFields={checkoutFields}
+                cartStatus={cartGroup?.result?.status}
+                isCheckoutSection
+              />
+              )}
+        </WrapperUserDetails>
+      </UserDetailsContainer>
+    ),
+    payment_methods: () => (
+      <>
+        {!cartGroup.loading && cartGroup?.result?.status === 'payment_incomplete' && (
+          <WarningMessage $variant='info'>
+            <BaseIcon name="warning" />
+            <p>
+              {t('CART_STATUS_PENDING_MESSAGE', 'Your order is being processed, please wait a little more. if you\'ve been waiting too long, please reload the page')}
+            </p>
+          </WarningMessage>
+        )}
+        {!cartGroup.loading && cartGroup?.result?.status === 'payment_failed' && (
+          <WarningMessage $variant='danger' style={{ marginTop: 20 }}>
+            <BaseIcon name="warning" />
+            <p>
+              {t('CART_STATUS_CANCEL_MESSAGE', 'The payment has not been successful, please try again')}
+            </p>
+          </WarningMessage>
+        )}
+        <PaymentMethodContainer data-doc-section='multi-checkout-payment' data-doc-state={paymethodSelected?.paymethod_id || paymethodSelected?.wallet_id ? 'selected' : 'unselected'}>
+          <h2>{t('PAYMENT_METHODS', 'Payment Methods')}</h2>
+          <MultiCartsPaymethodsAndWallets
+            userId={props.userId}
+            openCarts={openCarts}
+            balance={cartGroup?.result?.balance}
+            walletsPaymethod={cartGroup?.result?.wallets}
+            paymethodSelected={paymethodSelected}
+            handleSelectPaymethod={handleSelectPaymethod}
+            handleSelectWallet={handleSelectWallet}
+            handlePaymethodDataChange={handlePaymethodDataChange}
+            cartUuid={cartUuid}
+            isCustomerMode={isCustomerMode}
+            cartGroup={cartGroup}
+            setCardList={setCardList}
+            handlePlaceOrder={handlePlaceOrder}
+          />
+        </PaymentMethodContainer>
+      </>
+    ),
+    coupon: () => validationFields?.fields?.checkout?.coupon?.enabled &&
+      openCarts.every(cart => cart.business_id && cart.status !== 2) &&
+      configs?.multi_business_checkout_coupon_input_style?.value === 'group' && (
+        <DriverTipContainer>
+          <h2>{t('DISCOUNT_COUPON', 'Discount coupon')}</h2>
+          <CouponContainer>
+            <CouponControl
+              carts={openCarts}
+              businessIds={openCarts.map(cart => cart.business_id)}
+              price={openCarts.reduce((total, cart) => total + cart.total, 0)}
+            />
+          </CouponContainer>
+        </DriverTipContainer>
+    ),
+    driver_tips: () => isMultiDriverTips &&
+      (orderState?.options?.type === 1 || allowDriverTipPickup) &&
+      validationFields?.fields?.checkout?.driver_tip?.enabled &&
+      openCarts.every(cart => cart.business_id && cart.status !== 2) &&
+      driverTipsOptions.length > 0 && (
+        <DriverTipContainer $driverTips>
+          <h2>{t('DRIVER_TIPS', 'Driver Tips')}</h2>
+          {!hideDriverTipsSubtitle && <p>{t('100%_OF_THE_TIP_YOUR_DRIVER', '100% of the tip goes to your driver')}</p>}
+          <DriverTips
+            isMulti
+            carts={openCarts}
+            businessIds={openCarts.map(cart => cart.business_id)}
+            driverTipsOptions={driverTipsOptions}
+            isFixedPrice={parseInt(configs?.driver_tip_type?.value, 10) === 1}
+            isDriverTipUseCustom={!!parseInt(configs?.driver_tip_use_custom?.value, 10)}
+            driverTip={parseInt(configs?.driver_tip_type?.value, 10) === 1
+              ? openCarts?.reduce((sum, cart) => sum + cart?.driver_tip, 0)
+              : openCarts[0]?.driver_tip_rate}
+            useOrderContext
+          />
+        </DriverTipContainer>
+    )
+  }
+
+  // A divider between every two painted content sections of the column,
+  // whatever the theme's order (not around the back action and the title)
+  const renderMainSections = () => {
+    const nodes = []
+    let afterContent = false
+    sectionItems(sections, 'main', mainSections).forEach((item) => {
+      const isContent = !MULTI_CHECKOUT_HEAD_SECTIONS.includes(item.key)
+      if (isContent && afterContent) nodes.push(<SectionDivider key={`${item.key}-divider`} />)
+      nodes.push(<React.Fragment key={item.key}>{item.node}</React.Fragment>)
+      afterContent = isContent
+    })
+    return nodes
+  }
+
+  return (
+    <>
+      {((!cartGroup?.loading && openCarts.length === 0) || invalidSingleCart || !cartUuid)
+        ? (
+          <NotFoundSource
+            headingLevel='h1'
+            variant='empty'
+            icon='bag'
+            content={t('NO_CARTS_YET', "You don't have any carts yet")}
+            subtitle={t('NO_CARTS_YET_DESC', 'Add items from a business to start an order.')}
+            btnTitle={t('SEARCH_REDIRECT', 'Go to Businesses')}
+            onClickButton={handleSearchRedirect}
+          />
+          )
+        : (
+          <Container data-doc-section='multi-checkout' data-doc-state={cartGroup?.result?.status || 'loading'}>
+            <WrapperLeftContainer>
+              <WrapperLeftContent data-doc-section='multi-checkout-details'>
+                {renderMainSections()}
+              </WrapperLeftContent>
+            </WrapperLeftContainer>
+            <WrapperRightContainer data-doc-section='multi-checkout-review-and-submit'>
+              <CartContainer>
+                <CartHeader>
+                  <h2>{t('MOBILE_FRONT_YOUR_ORDER', 'Your order')}</h2>
+                </CartHeader>
+                <div data-doc-section='multi-checkout-order-summary'>
+                {openCarts.map((cart, index) => (
+                  <div key={cart.uuid} data-doc-section='multi-checkout-business-cart' data-doc-business-index={index}>
+                    {isSchoolCart(studentCartByUuid[cart.uuid]) && (
+                      <CheckoutStudentDetails
+                        cart={studentCartByUuid[cart.uuid]}
+                        onStudentAssigned={(studentId) => handleStudentAssigned(cart.uuid, studentId)}
+                      />
+                    )}
+                    <Cart
+                      cart={cart}
+                      isMultiCheckout
+                      isCartPending={cart?.status === 2}
+                      hideCouponInput={configs?.multi_business_checkout_coupon_input_style?.value === 'group'}
+                      isProducts={cart?.products?.length || 0}
+                      hideDeliveryFee={configs?.checkout_multi_business_enabled?.value === '1' && configs?.multi_business_checkout_show_combined_delivery_fee?.value === '1'}
+                      hideDriverTip={configs?.checkout_multi_business_enabled?.value === '1' && configs?.multi_business_checkout_show_combined_driver_tip?.value === '1'}
+                      businessConfigs={cart?.business?.configs}
+                      productLoading={productLoading}
+                      setProductLoading={setProductLoading}
+                      callbackAfterUpdateCart={getMultiCart}
+                    />
+                    <DriverTipDivider />
+                  </div>
+
+                ))}
+                </div>
+                {schoolNeedsStudent && (
+                  <WarningText>
+                    {t('SCHOOL_SELECT_STUDENT_TO_PLACE', 'Please select a student to place the order.')}
+                  </WarningText>
+                )}
+                {walletCarts.length > 0 && (
+                  <WarningText>
+                    {t('WARNING_PARTIAL_WALLET_CARTS', 'Important: One or more carts can`t be completed due a partial payment with cash/points wallet and requires to be paid individually')}
+                  </WarningText>
+                )}
+                {openCarts.length > 0 && (
+                  <MultiCartPriceContainer>
+                    {!!totalCartsFee &&
+                      configs?.multi_business_checkout_show_combined_delivery_fee?.value === '1' &&
+                      (
+                        <span>
+                          <p>{t('TOTAL_DELIVERY_FEE', 'Total delivery fee')}</p>
+                          <p>{parsePrice(totalCartsFee)}</p>
+                        </span>
+                      )}
+                    {openCarts.reduce((sum, cart) => sum + cart?.driver_tip, 0) > 0 &&
+                      configs?.multi_business_checkout_show_combined_driver_tip?.value === '1' &&
+                      (
+                        <span>
+                          <p>{t('DRIVER_TIP', 'Driver tip')}</p>
+                          <p>{parsePrice(openCarts.reduce((sum, cart) => sum + cart?.driver_tip, 0))}</p>
+                        </span>
+                      )}
+                    {cartGroup?.result?.payment_events?.length > 0 && (
+                      <>
+                        {cartGroup?.result?.payment_events?.map(event => (
+                          <>
+                            <span>
+                              <p>{walletName[cartGroup?.result?.wallets?.find(wallet => wallet?.wallet_id === event?.wallet_id)?.type || cartGroup?.result?.wallets?.find(wallet => wallet?.wallet_id === event?.wallet_id)?.wallet?.type]?.name}</p>
+                              <p>-{parsePrice(event?.amount, { isTruncable: true })}</p>
+                            </span>
+                          </>
+                        ))}
+                      </>
+                    )}
+                    <div>
+                      <span>{t('TOTAL_FOR_ALL_CARTS', 'Total for all Carts')}</span>
+                      <span>{parsePrice(totalCartsPrice)}</span>
+                    </div>
+                    {/* the rewards row: a section of the page (pages.multi_checkout rewards) */}
+                    {isSectionVisible('rewards') && isWalletEnabled && !!loyaltyRewardValue && isFinite(loyaltyRewardValue) && (
+                      <span>
+                        <p>&nbsp;</p>
+                        <p>{t('REWARD_LOYALTY_POINT', 'Reward :amount: on loyalty points').replace(':amount:', loyaltyRewardValue)}</p>
+                      </span>
+                    )}
+                    {showDescription && (
+                      <p>
+                        {t('MULTI_CHECKOUT_DESCRIPTION', 'You will receive a receipt for each business. The payment is not combined between multiple stores. Each payment is processed by the store')}
+                      </p>
+                    )}
+                  </MultiCartPriceContainer>
+                )}
+              </CartContainer>
+              {!disabledStatusses.includes(cartGroup?.result?.status) && (
+                <WrapperPlaceOrderButton>
+                  {guestOrderBlocked && (
+                    <WarningText role='alert'>
+                      {t('GUEST_CHECKOUT_DISABLED', 'Guest checkout is not available for this order type.')}
+                    </WarningText>
+                  )}
+                  {/* one button: its slot changes with the width, there is no bar */}
+                  <Button
+                    data-doc-control='multi-checkout-place-order'
+                    {...placeOrderOptions(theme, windowSize?.width)}
+                    fullWidth
+                    busy={placing}
+                    disabled={isDisablePlaceOrderButton || cartGroup?.loading}
+                    onClick={handlePlaceOrder}
+                  >
+                    {placing ? t('PLACING', 'Placing') : t('PLACE_ORDER', 'Place Order')}
+                  </Button>
+                </WrapperPlaceOrderButton>
+              )}
+            </WrapperRightContainer>
+
+            <Alert
+              title={t('CHECKOUT ', 'Checkout')}
+              content={alertState.content}
+              acceptText={t('ACCEPT', 'Accept')}
+              open={alertState.open}
+              onClose={() => closeAlert()}
+              onAccept={() => closeAlert()}
+              closeOnBackdrop={false}
+            />
+            {isOpen && (
+              <DialogOverlay
+                open={isOpen}
+                size='xl'
+                onClose={() => setIsOpen(false)}
+              >
+                <UserDetails
+                  isUserDetailsEdit={isUserDetailsEdit}
+                  useDefualtSessionManager
+                  useSessionUser={!isCustomerMode}
+                  isCustomerMode={isCustomerMode}
+                  userData={isCustomerMode && customerState.user}
+                  userId={isCustomerMode && customerState?.user?.id}
+                  requiredFields={requiredFields}
+                  isOrderTypeValidationField
+                  checkoutFields={checkoutFields}
+                  isCheckoutPlace
+                  setIsSuccess={setIsSuccess}
+                  isCheckout
+                  isEdit
+                  isModal
+                  handlePlaceOrderAsGuest={handlePlaceOrderAsGuest}
+                  isAllowGuest={guestCheckoutAllowed && (paymethodSelected?.gateway === 'cash' || paymethodSelected?.gateway === 'card_delivery')}
+                  onClose={() => {
+                    if (!canPlaceOrder()) return
+                    setIsOpen(false)
+                    handlePlaceOrder()
+                  }}
+                />
+              </DialogOverlay>
+            )}
+            {openModal.signup && (
+              <DialogOverlay
+                open={openModal.signup}
+                size='xl'
+                onClose={() => setOpenModal({ ...openModal, signup: false, isGuest: false })}
+              >
+                <SignUpForm
+                  useLoginByCellphone
+                  useChekoutFileds
+                  handleSuccessSignup={handleSuccessSignup}
+                  isPopup
+                  isGuest
+                />
+              </DialogOverlay>
+            )}
+            {openModal.login && (
+              <DialogOverlay
+                open={openModal.login}
+                size='xl'
+                onClose={() => setOpenModal({ ...openModal, login: false })}
+              >
+                <LoginForm
+                  handleSuccessLogin={handleSuccessLogin}
+                  isPopup
+                  isGuest
+                />
+              </DialogOverlay>
+            )}
+          </Container>
+          )}
+    </>
+  )
+}
+
+export const MultiCheckout = (props) => {
+  const multiCheckoutProps = {
+    ...props,
+    UIComponent: MultiCheckoutUI,
+    isListenCartUpdate: true
+  }
+  return <MultiCheckoutController {...multiCheckoutProps} />
+}

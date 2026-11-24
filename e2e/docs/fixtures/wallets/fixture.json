@@ -1,0 +1,104 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-wallets-cash-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Wallet",
+      "lastname": "Synthetic Customer",
+      "email": "docs@e.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-wallets-cash-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"value": "pickup"},
+      "cash_wallet": {"key": "cash_wallet", "value": "1"},
+      "wallet_enabled": {"key": "wallet_enabled", "value": "1"},
+      "wallet_cash_enabled": {"key": "wallet_cash_enabled", "value": "1"},
+      "wallet_credit_point_enabled": {"key": "wallet_credit_point_enabled", "value": "1"},
+      "general_date_format": {"key": "general_date_format", "value": "MM/DD/YYYY"}
+    },
+    "theme": {
+      "values": {
+        "images": {
+          "empty.transactions": "",
+          "placeholder.loyalty_level": ""
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 7901, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7902, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7903, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": { "error": false, "result": [
+        { "id": 7911, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7901, "code": "name", "name": "Name", "type": "text" } },
+        { "id": 7912, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7902, "code": "lastname", "name": "Last name", "type": "text" } },
+        { "id": 7913, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7903, "code": "email", "name": "Email", "type": "email" } }
+      ] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301\\?params=loyalty_level$",
+      "assert": { "minCount": 2, "maxCount": 2 },
+      "response": { "error": false, "result": { "loyalty_level": { "name": "Synthetic Gold", "image": "" }, "loyalty_level_points": 420 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301\\?params=settings$",
+      "assert": { "count": 1 },
+      "response": { "error": false, "result": { "id": 9301, "name": "Synthetic Wallet", "lastname": "Synthetic Customer", "email": "docs@e.invalid", "cellphone": "2025550199", "country_phone_code": "1", "enabled": true, "email_verified": true, "phone_verified": true, "session": { "access_token": "docs-fixture-wallets-cash-token" } } }
+    },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 2 }, "response": { "error": false, "result": { "user_id": 9301, "type": 2, "carts": [] } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/wallets$",
+      "assert": { "minCount": 2, "maxCount": 2 },
+      "response": { "error": false, "result": [
+        { "id": 9701, "type": "cash", "balance": 125 },
+        { "id": 9702, "type": "credit_point", "balance": 420 }
+      ] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/wallets/9701/events\\?orderBy=-id$",
+      "assert": { "minCount": 0, "maxCount": 4 },
+      "response": { "error": false, "result": [
+        { "id": 9711, "description": "Synthetic wallet credit", "amount": 25, "created_at": "2026-07-15T12:00:00Z" },
+        { "id": 9712, "description": "Synthetic wallet use", "amount": -8, "created_at": "2026-07-10T12:00:00Z" }
+      ] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/wallets/9702/events\\?orderBy=-id$",
+      "assert": { "minCount": 0, "maxCount": 4 },
+      "response": { "error": false, "result": [
+        { "id": 9721, "description": "Synthetic loyalty award", "amount": 40, "created_at": "2026-07-20T12:00:00Z" },
+        { "id": 9722, "description": "Synthetic points use", "amount": -15, "created_at": "2026-07-18T12:00:00Z" }
+      ] }
+    }
+  ]
+}

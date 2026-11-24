@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ORD-005",
+  "fixture": "messages",
+  "route": "/messages",
+  "readiness": { "selectors": ["[data-doc-section='messages-inbox']"], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 250, "network": { "quietMs": 400, "timeout": 8000 } },
+  "captures": [
+    { "id": "messages-inbox-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='messages-inbox']", "capture_mode": "section", "file": "website-messages-inbox-desktop.png", "alt": "Desktop Website Messages inbox showing two synthetic orders and the selected business conversation" },
+    { "id": "messages-inbox-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='messages-inbox']", "capture_mode": "section", "file": "website-messages-inbox-mobile.png", "alt": "Mobile Website Messages inbox showing a responsive selected synthetic business conversation and order list" },
+    { "id": "messages-ended-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='messages-inbox']", "capture_mode": "section", "file": "website-messages-ended-desktop.png", "alt": "Desktop Website Messages inbox showing a selected finished synthetic order and unavailable composer notice" },
+    { "id": "messages-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='messages-inbox']", "capture_mode": "section", "file": "website-messages-empty-desktop.png", "alt": "Desktop Website Messages inbox showing the successful no-conversations-yet state and passive Go to home action" },
+    { "id": "order-business-chat-desktop", "project": "desktop-chromium", "route": "/orders/docs-order-active", "selector": "[data-doc-section='order-messages']", "capture_mode": "section", "file": "website-order-business-chat-desktop.png", "alt": "Desktop Website active order business conversation showing synthetic text history and an untouched composer" },
+    { "id": "order-driver-chat-desktop", "project": "desktop-chromium", "route": "/orders/docs-order-active", "selector": "[data-doc-section='order-messages']", "capture_mode": "viewport", "file": "website-order-driver-chat-desktop.png", "alt": "Desktop Website active order internal-driver conversation showing complete chat context, synthetic text history, and an untouched composer" }
+  ]
+}

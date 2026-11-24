@@ -1,0 +1,14 @@
+{
+  "extends": "manage-cart",
+  "firstLoad": {
+    "configs": {}
+  },
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/carts/change_paymethod$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": {} }
+    }
+  ]
+}

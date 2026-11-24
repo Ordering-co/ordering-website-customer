@@ -1,0 +1,209 @@
+{
+  "extends": "common",
+  "apiOrigins": ["https://api.docs.invalid", "https://api.mapbox.com", "https://google-redirect.plugins.orderingplus.com"],
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"type": 1},
+      "unaddressed_order_types_allowed": {"key": "unaddressed_order_types_allowed", "value": ""},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"},
+      "map_box_token": {"key": "map_box_token", "value": "docs-fixture-mapbox-token"},
+      "google_autocomplete_selection_required": {"key": "google_autocomplete_selection_required", "value": "1"},
+      "preorder_status_enabled": {"key": "preorder_status_enabled", "value": "0"}
+    }
+  },
+  "edgeXhr": {
+    "translations": {
+      "result": {"WEBSITE_HOW_WILL_YOU_DELIVERY_TYPE": "How would you like to receive your order?"}
+    }
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/banner(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/search/searchbox/v1/suggest(?:\\?.*)?$",
+      "response": {
+        "suggestions": [
+          {
+            "mapbox_id": "synthetic-location-100",
+            "name": "100 Synthetic Market Street",
+            "full_address": "100 Synthetic Market Street, Test City, TX 78701",
+            "context": { "address": { "address_number": "docs-fixture-100" } }
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/search/searchbox/v1/retrieve/synthetic-location-100(?:\\?.*)?$",
+      "response": {
+        "features": [
+          {
+            "geometry": { "coordinates": [-97.7431, 30.2672] },
+            "properties": {
+              "full_address": "100 Synthetic Market Street, Test City, TX 78701",
+              "mapbox_id": "synthetic-location-100",
+              "context": {
+                "country": { "name": "United States", "country_code": "US" },
+                "region": { "name": "Test Texas", "region_code": "TX" },
+                "place": { "name": "Test City" },
+                "postcode": { "name": "78701" },
+                "street": { "name": "Docs Fixture Avenue" },
+                "address": { "address_number": "docs-fixture-100" }
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9101,
+          "guest_id": "synthetic-guest-9101",
+          "session": { "access_token": "synthetic-session-token" }
+        }
+      }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/9101/addresses$",
+      "assert": {
+        "minCount": 0,
+        "maxCount": 2
+      },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9201,
+          "address": "100 Synthetic Market Street, Test City, TX 78701",
+          "zipcode": "78701",
+          "country_code": "US",
+          "location": { "lat": 30.2672, "lng": -97.7431 },
+          "default": true
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 3 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9301,
+          "user_id": 9101,
+          "type": 2,
+          "address": {
+            "id": 9201,
+            "address": "100 Synthetic Market Street, Test City, TX 78701",
+            "zipcode": "78701",
+            "country_code": "US",
+            "location": { "lat": 30.2672, "lng": -97.7431 }
+          },
+          "carts": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9101(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9101,
+          "guest_id": "synthetic-guest-9101",
+          "session": { "access_token": "synthetic-session-token" }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9101/addresses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9201,
+            "address": "100 Synthetic Market Street, Test City, TX 78701",
+            "zipcode": "78701",
+            "country_code": "US",
+            "location": { "lat": 30.2672, "lng": -97.7431 },
+            "default": true
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": {
+          "user_id": 9101,
+          "type": 2,
+          "address": {
+            "id": 9201,
+            "address": "100 Synthetic Market Street, Test City, TX 78701",
+            "zipcode": "78701",
+            "country_code": "US",
+            "location": { "lat": 30.2672, "lng": -97.7431 }
+          },
+          "carts": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$",
+      "response": { "error": false, "result": {} }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/countries(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    }
+  ]
+}

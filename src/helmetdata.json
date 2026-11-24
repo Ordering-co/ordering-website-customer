@@ -1,0 +1,128 @@
+{
+  "app": {
+    "title": "My Site",
+    "robots": "index, follow"
+  },
+  "home": {
+    "title": "Home",
+    "robots": "index, follow"
+  },
+  "profile": {
+    "title": "Profile",
+    "robots": "index, follow"
+  },
+  "orders": {
+    "title": "Orders",
+    "robots": "index, follow"
+  },
+  "search": {
+    "title": "Search",
+    "robots": "index, follow"
+  },
+  "pickup": {
+    "title": "pickup",
+    "robots": "index, follow"
+  },
+  "filter": {
+    "title": "filter",
+    "robots": "index, follow"
+  },
+  "feature": {
+    "title": "feature",
+    "robots": "index, follow"
+  },
+  "business": {
+    "title": "Business",
+    "robots": "index, follow"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "robots": "index, follow"
+  },
+  "order_details": {
+    "title": "Order details",
+    "robots": "index, follow"
+  },
+  "pages": {
+    "title": "Pages",
+    "robots": "index, follow"
+  },
+  "help": {
+    "title": "Help",
+    "robots": "index, follow"
+  },
+  "signup_business": {
+    "title": "SignUp for business",
+    "robots": "index, follow"
+  },
+  "messages": {
+    "title": "Messages",
+    "robots": "index, follow"
+  },
+  "wallets": {
+    "title": "Wallets",
+    "robots": "index, follow"
+  },
+  "user-verification": {
+    "title": "User Verification",
+    "robots": "index, follow"
+  },
+  "business_search": {
+    "title": "Business Search",
+    "robots": "index, follow"
+  },
+  "resetpassword": {
+    "title": "Reset Password",
+    "robots": "index, follow"
+  },
+  "sessions": {
+    "title": "Sessions",
+    "robots": "index, follow"
+  },
+  "signup_driver": {
+    "title": "SignUp for driver",
+    "robots": "index, follow"
+  },
+  "promotions": {
+    "title": "Promotions",
+    "robots": "index, follow"
+  },
+  "addresses": {
+    "title": "Addresses",
+    "robots": "index, follow"
+  },
+  "cards": {
+    "title": "My cards",
+    "robots": "index, follow"
+  },
+  "favorite": {
+    "title": "Favorite",
+    "robots": "index, follow"
+  },
+  "multi_checkout": {
+    "title": "Multi checkout",
+    "robots": "index, follow"
+  },
+  "multi_orders": {
+    "title": "Multi Orders",
+    "robots": "index, follow"
+  },
+  "multi_cart": {
+    "title": "Multi Cart",
+    "robots": "index, follow"
+  },
+  "complete-profile": {
+    "title": "Complete your profile",
+    "robots": "index, follow"
+  },
+  "tracking_home": {
+    "title": "Follow your order",
+    "description": "Open the link we sent you to see the status of your order.",
+    "keywords": "order, tracking, delivery",
+    "robots": "noindex, nofollow"
+  },
+  "page_not_found": {
+    "title": "Page not found",
+    "robots": "noindex, nofollow"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "website-overview",
+  "firstLoad": {
+    "configs": {
+      "verification_email_required": { "key": "verification_email_required", "value": "0" },
+      "verification_phone_required": { "key": "verification_phone_required", "value": "0" },
+      "profile_completion_skip_enabled": { "key": "profile_completion_skip_enabled", "value": "0" },
+      "facebook_login_enabled": { "key": "facebook_login_enabled", "value": "0" },
+      "google_login_enabled": { "key": "google_login_enabled", "value": "0" },
+      "apple_login_enabled": { "key": "apple_login_enabled", "value": "0" },
+      "device_code_login_enabled": { "key": "device_code_login_enabled", "value": "0" },
+      "security_recaptcha_auth": { "key": "security_recaptcha_auth", "value": "0" }
+    }
+  }
+}

@@ -1,0 +1,231 @@
+{
+  "extends": "common",
+  "apiOrigins": ["https://api.docs.invalid", "https://api.mapbox.com", "https://google-redirect.plugins.orderingplus.com"],
+  "firstLoad": {
+    "theme": {
+      "values": {
+        "components": {
+          "business_listing_page": { "base": { "layout": "grid", "rows": 3 } }
+        }
+      }
+    },
+    "configs": {
+      "default_order_type": {"type": 1},
+      "unaddressed_order_types_allowed": {"key": "unaddressed_order_types_allowed", "value": "1|2"},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"},
+      "map_box_token": {"key": "map_box_token", "value": "docs-fixture-mapbox-token"},
+      "google_autocomplete_selection_required": {"key": "google_autocomplete_selection_required", "value": "1"},
+      "preorder_status_enabled": {"key": "preorder_status_enabled", "value": "1"},
+      "max_days_preorder": {"key": "max_days_preorder", "value": "7"},
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "advanced_business_search_enabled": {"key": "advanced_business_search_enabled", "value": "0"},
+      "activate_single_store_automatically": {"key": "activate_single_store_automatically", "value": "0"},
+      "filter_search_options": {"key": "filter_search_options", "value": "price_range|max_delivery_fee|max_delivery_time|max_distance|business_categories"},
+      "location_default_latitude": {"key": "location_default_latitude", "value": "30.2672"},
+      "location_default_longitude": {"key": "location_default_longitude", "value": "-97.7431"}
+    }
+  },
+  "edgeXhr": {
+    "translations": {
+      "result": {"WHERE_DO_WE_DELIVERY": "Where do we deliver?"}
+    }
+  },
+  "routes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses\\?(?=.*order_type_id=2).*$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": null,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses\\?(?=.*disabled_business=true).*$",
+      "assert": { "count": 0 },
+      "response": {
+        "error": null,
+        "result": [
+          {
+            "id": 8103,
+            "name": "Test Grocery",
+            "description": "Unavailable synthetic grocery fixture",
+            "header": "",
+            "logo": "",
+            "types": [{ "id": 3, "name": "Grocery" }],
+            "location": { "lat": 30.2682, "lng": -97.7448 },
+            "address": "Test Grocery address",
+            "ribbon": { "enabled": false },
+            "timezone": "America/Chicago",
+            "schedule": [],
+            "today": { "enabled": false, "lapses": [] },
+            "open": false,
+            "delivery_price": 0,
+            "distance": 3.4,
+            "delivery_time": "00:50",
+            "pickup_time": "00:30",
+            "reviews": { "total": 4.1 },
+            "featured": false,
+            "offers": [],
+            "slug": "test-grocery",
+            "configs": {},
+            "enabled": false,
+            "disabled_reason": "Unavailable in this synthetic area",
+            "available_drivers_count": 0,
+            "activated_orders": 0
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 1, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": null,
+        "result": [
+          {
+            "id": 8101,
+            "name": "Synthetic Kitchen",
+            "description": "Fresh synthetic bowls and salads",
+            "header": "",
+            "logo": "",
+            "types": [{ "id": 1, "name": "Restaurant" }],
+            "location": { "lat": 30.2673, "lng": -97.7432 },
+            "address": "Synthetic Kitchen address",
+            "ribbon": { "enabled": true, "text": "Popular", "color": "#2f6f5e", "shape": 1 },
+            "timezone": "America/Chicago",
+            "schedule": [
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] }
+            ],
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 0, "minute": 0 }, "close": { "hour": 23, "minute": 59 } }] },
+            "open": true,
+            "delivery_price": 2.5,
+            "distance": 1.2,
+            "delivery_time": "00:25",
+            "pickup_time": "00:15",
+            "reviews": { "total": 4.8 },
+            "featured": true,
+            "offers": [{ "rate": 15 }],
+            "slug": "synthetic-kitchen",
+            "configs": {},
+            "enabled": true,
+            "disabled_reason": null,
+            "available_drivers_count": 3,
+            "activated_orders": 2
+          },
+          {
+            "id": 8102,
+            "name": "Fixture Bakery",
+            "description": "Synthetic breads available by preorder",
+            "header": "",
+            "logo": "",
+            "types": [{ "id": 2, "name": "Bakery" }],
+            "location": { "lat": 30.2678, "lng": -97.744 },
+            "address": "Fixture Bakery address",
+            "ribbon": { "enabled": false },
+            "timezone": "America/Chicago",
+            "schedule": [
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] }
+            ],
+            "today": { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 22, "minute": 0 } }] },
+            "open": false,
+            "delivery_price": 3,
+            "distance": 2.1,
+            "delivery_time": "00:35",
+            "pickup_time": "00:20",
+            "reviews": { "total": 4.6 },
+            "featured": false,
+            "offers": [],
+            "slug": "fixture-bakery",
+            "configs": {},
+            "enabled": true,
+            "disabled_reason": null,
+            "available_drivers_count": 1,
+            "activated_orders": 0
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 2, "page_size": 25 }
+      }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/tracking_events$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "id": "synthetic-tracking-event" } }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_businesses$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "business_id": 8101 } }
+    },
+    {
+      "method": "DELETE",
+      "pattern": "^/v400/en/docsmarket/users/9101/favorite_businesses/8101$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": { "business_id": 8101 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/banner(?:\\?.*)?$",
+      "assert": { "minCount": 1, "maxCount": 3 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "minCount": 1, "maxCount": 3 },
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$",
+      "response": { "error": false, "result": {} }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": [],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 0, "page_size": 10 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/countries(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/search/searchbox/v1/suggest(?:\\?.*)?$",
+      "response": { "suggestions": [] }
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+import React from 'react'
+import { Wrap } from './styles'
+
+export const Cart = () => <Wrap>Cart</Wrap>

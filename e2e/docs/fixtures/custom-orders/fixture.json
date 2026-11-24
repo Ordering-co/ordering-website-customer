@@ -1,0 +1,140 @@
+{
+  "extends": "account",
+  "localStorage": {
+    "country-code": "US"
+  },
+  "authSession": {
+    "token": "docs-fixture-custom-order-session-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Customer",
+      "lastname": "Synthetic Profile",
+      "email": "docs@e.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "birthdate": "2000-01-01",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session_strategy": "jwt_session",
+      "session": {"access_token": "docs-fixture-custom-order-session-token"}
+    }
+  },
+  "runtimeConfig": {
+    "use_kiosk": false,
+    "franchiseSlug": "",
+    "store_google_analytics_id": "",
+    "store_segment_id": "",
+    "store_facebook_pixel_id": "",
+    "sentry_key": ""
+  },
+  "firstLoad": {
+    "configs": {
+      "custom_order_enabled": {"key": "custom_order_enabled", "value": "1"},
+      "google_maps_api_key": {"key": "google_maps_api_key", "value": "docs-fixture-google-maps-key"},
+      "notifications_enabled": {"key": "notifications_enabled", "value": "0"},
+      "analytics_enabled": {"key": "analytics_enabled", "value": "0"},
+      "track_id_google_analytics": {"key": "track_id_google_analytics", "value": ""},
+      "segment_track_id": {"key": "segment_track_id", "value": ""},
+      "facebook_id": {"key": "facebook_id", "value": ""},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "0"}
+    },
+    "theme": {
+      "values": {
+        "visibility": {
+          "footer": false
+        },
+        "site": {
+          "third_party_code": {
+            "head": "",
+            "body": ""
+          }
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 9921, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 9922, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 9923, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": { "settings": {} } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 9921, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 9921, "code": "name", "name": "Name", "type": "text" } },
+          { "id": 9922, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 9922, "code": "lastname", "name": "Last name", "type": "text" } },
+          { "id": 9923, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 9923, "code": "email", "name": "Email", "type": "email" } }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9301,
+          "name": "Synthetic Customer",
+          "lastname": "Synthetic Profile",
+          "email": "docs@e.invalid",
+          "cellphone": "2025550199",
+          "country_phone_code": "1",
+          "birthdate": "2000-01-01",
+          "enabled": true,
+          "email_verified": true,
+          "phone_verified": true,
+          "addresses": [
+            {
+              "id": 9701,
+              "user_id": 9301,
+              "address": "200 Synthetic Delivery Way, Docs City",
+              "location": { "lat": 30.2672, "lng": -97.7431 },
+              "country_code": "US",
+              "default": true
+            }
+          ],
+          "session": { "access_token": "docs-fixture-custom-order-session-token" }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "user_id": 9301,
+          "type": 1,
+          "address_id": 9701,
+          "address": {
+            "id": 9701,
+            "user_id": 9301,
+            "address": "200 Synthetic Delivery Way, Docs City",
+            "location": { "lat": 30.2672, "lng": -97.7431 },
+            "country_code": "US",
+            "default": true
+          },
+          "carts": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": [{ "id": 9701, "user_id": 9301, "address": "200 Synthetic Delivery Way, Docs City", "location": { "lat": 30.2672, "lng": -97.7431 }, "country_code": "US", "default": true }]
+      }
+    }
+  ]
+}

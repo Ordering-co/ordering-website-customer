@@ -1,0 +1,65 @@
+{
+  "extends": "account",
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website",
+    "use_kiosk": false,
+    "use_project_domain": false,
+    "use_project_subdomain": false,
+    "isCancellation": false,
+    "store_google_analytics_id": null,
+    "store_segment_id": null,
+    "store_facebook_pixel_id": null
+  },
+  "firstLoad": {
+    "configs": {
+      "cookie_consent_enabled": {"key": "cookie_consent_enabled", "value": "0"},
+      "track_id_google_analytics": {"key": "track_id_google_analytics", "value": ""},
+      "segment_track_id": {"key": "segment_track_id", "value": ""},
+      "facebook_id": {"key": "facebook_id", "value": ""},
+      "onesignal_orderingweb_id": {"key": "onesignal_orderingweb_id", "value": ""},
+      "braintree_forter_enabled": {"key": "braintree_forter_enabled", "value": "0"},
+      "custom_order_enabled": {"key": "custom_order_enabled", "value": "0"}
+    },
+    "theme": {
+      "values": {
+        "visibility": {
+          "footer": false
+        },
+        "site": {
+          "third_party_code": {
+            "head": "",
+            "body": ""
+          }
+        }
+      }
+    }
+  },
+  "edgeXhr": {
+    "translations": {
+      "result": {
+        "CANCELLATION_TITLE": "SITE OUT OF SERVICE",
+        "CANCELLATION_SUBTITLE": "This synthetic Website is currently archived or suspended.",
+        "CANCELLATION_OWNER_TEXT": "Review the synthetic Website status before returning later.",
+        "CANCELLATION_CONTACT_US": "Contact us",
+        "CANCELLATION_INPUT_PLACEHOLDER": "Email",
+        "CANCELLATION_CUSTOMER_TEXT": "Enter a synthetic email address to review the contact form.",
+        "CANCELLATION_SEND_BUTTON": "Send",
+        "COOKIE_TERMS_URL": "/pages/terms_of_use",
+        "COOKIE_PRIVACY_URL": "/pages/privacy_policy"
+      }
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/frontends/first_load(?:\\?.*)?$",
+      "assert": { "count": 0 },
+      "response": { "error": false, "result": {} }
+    },
+    { "method": "POST", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "PUT", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "PATCH", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "DELETE", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } }
+  ]
+}

@@ -1,0 +1,65 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+/.vitest-reports/
+/e2e/docs/test-results
+
+# production
+/build
+/dist
+/dev-dist
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# cloudflare wrangler
+.wrangler/
+.dev.vars
+.gstack/
+
+# debug / temporary artifacts
+.playwright-mcp/
+configs-keys.json
+
+# i18n translate-keys working batches (do not commit)
+i18n/batch-*.json
+i18n/sync-dumps/
+# keep demo helpers tracked; only runtime batch/dump artifacts ignored
+
+# i18n live sync secrets (keep .env.example)
+i18n/.env
+
+# translate-keys working batches
+i18n/batches/
+/e2e/design/test-results
+
+# Landing SSR bundle (pnpm build, vite.ssr.config.js)
+/worker/generated/
+
+__pycache__/
+*.pyc
+
+/.env
+/src/config.local.json
+/src/config.local.json.*.tmp
+/.marketplace-local/
+/scripts/marketplace/connection/.env
+/scripts/marketplace/connection/.login/
+/scripts/marketplace/connection/.api-audit.log
+/scripts/marketplace/connection/.marketplace-project.json
+/scripts/marketplace/connection/.marketplace-project.json.*.tmp

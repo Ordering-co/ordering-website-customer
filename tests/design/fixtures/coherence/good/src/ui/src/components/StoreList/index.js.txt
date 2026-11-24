@@ -1,0 +1,5 @@
+import React from 'react'
+import { Button } from '~ui/src/design-system/components/Button'
+import { List } from './styles'
+
+export const StoreList = () => <List><Button>Order</Button></List>

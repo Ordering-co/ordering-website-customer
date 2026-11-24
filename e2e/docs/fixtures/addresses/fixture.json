@@ -1,0 +1,158 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com", "https://api.mapbox.com"],
+  "localStorage": {
+    "country-code": "US",
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-addresses-session-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Profile",
+      "lastname": "Synthetic Customer",
+      "email": "docs@e.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "birthdate": "2000-01-01",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-addresses-session-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"},
+      "map_box_token": {"key": "map_box_token", "value": "docs-fixture-mapbox-token"},
+      "google_autocomplete_selection_required": {"key": "google_autocomplete_selection_required", "value": "1"},
+      "country_autocomplete": {"key": "country_autocomplete", "value": "US"}
+    },
+    "validation_fields": [
+      {"id": 6501, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 6502, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 6503, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 6511, "code": "address", "name": "Address", "type": "text", "validate": "address", "enabled": true, "required": true},
+      {"id": 6512, "code": "zipcode", "name": "Zipcode", "type": "text", "validate": "address", "enabled": true, "required": false},
+      {"id": 6513, "code": "internal_number", "name": "Internal number", "type": "text", "validate": "address", "enabled": true, "required": false},
+      {"id": 6514, "code": "address_notes", "name": "Address notes", "type": "text", "validate": "address", "enabled": true, "required": false}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 6501, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 6501, "code": "name", "name": "Name", "type": "text" } },
+          { "id": 6502, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 6502, "code": "lastname", "name": "Last name", "type": "text" } },
+          { "id": 6503, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 6503, "code": "email", "name": "Email", "type": "email" } }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9301,
+          "name": "Synthetic Profile",
+          "lastname": "Synthetic Customer",
+          "email": "docs@e.invalid",
+          "cellphone": "2025550199",
+          "country_phone_code": "1",
+          "birthdate": "2000-01-01",
+          "enabled": true,
+          "email_verified": true,
+          "phone_verified": true,
+          "session": { "access_token": "docs-fixture-addresses-session-token" }
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/addresses$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9401,
+            "user_id": 9301,
+            "address": "100 Synthetic Market Street",
+            "address_notes": "Synthetic front entrance",
+            "internal_number": "Docs 1",
+            "zipcode": "00000",
+            "location": { "lat": 30.2672, "lng": -97.7431 },
+            "country": "United States",
+            "country_code": "US",
+            "city": "Synthetic City",
+            "state": "Test State",
+            "tag": "home",
+            "default": true,
+            "map_data": { "library": "synthetic", "place_id": "docs-address-home" }
+          },
+          {
+            "id": 9402,
+            "user_id": 9301,
+            "address": "200 Synthetic Office Avenue",
+            "address_notes": "Synthetic reception",
+            "internal_number": "Docs 2",
+            "zipcode": "00000",
+            "location": { "lat": 30.2682, "lng": -97.7441 },
+            "country": "United States",
+            "country_code": "US",
+            "city": "Synthetic City",
+            "state": "Test State",
+            "tag": "office",
+            "default": false,
+            "map_data": { "library": "synthetic", "place_id": "docs-address-office" }
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "user_id": 9301,
+          "type": 1,
+          "address_id": 9401,
+          "address": {
+            "id": 9401,
+            "user_id": 9301,
+            "address": "100 Synthetic Market Street",
+            "address_notes": "Synthetic front entrance",
+            "internal_number": "Docs 1",
+            "zipcode": "00000",
+            "location": { "lat": 30.2672, "lng": -97.7431 },
+            "country": "United States",
+            "country_code": "US",
+            "city": "Synthetic City",
+            "state": "Test State",
+            "tag": "home",
+            "default": true,
+            "map_data": { "library": "synthetic", "place_id": "docs-address-home" }
+          },
+          "carts": []
+        }
+      }
+    },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/users/9301/addresses/9401$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/users/9301/addresses/9402$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/users/9301/addresses$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/addresses/9402$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/order_options$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/search/searchbox/v1/suggest(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "suggestions": [] } },
+    { "method": "GET", "pattern": "^/search/searchbox/v1/retrieve/[^?]+(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "features": [] } }
+  ]
+}

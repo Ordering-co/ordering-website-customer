@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CAR-001",
+  "fixture": "manage-cart",
+  "route": "/store/synthetic-market",
+  "readiness": {
+    "selectors": ["[data-doc-control='cart-open']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "cart-valid-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='cart-popover']",
+      "file": "website-cart-valid-desktop.png",
+      "alt": "Desktop Website cart drawer with two valid synthetic products and checkout handoff"
+    },
+    {
+      "id": "cart-item-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='cart-product-row'][data-doc-product-id='8421']",
+      "file": "website-cart-item-details-desktop.png",
+      "alt": "Expanded cart item with a selected option, removed ingredient, and special instructions"
+    },
+    {
+      "id": "cart-empty-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='cart-popover']",
+      "file": "website-cart-empty-desktop.png",
+      "alt": "Empty Website cart drawer"
+    },
+    {
+      "id": "cart-valid-mobile",
+      "project": "mobile-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='cart-content']",
+      "file": "website-cart-valid-mobile.png",
+      "alt": "Mobile Website cart dialog with two valid synthetic products and checkout action"
+    }
+  ]
+}

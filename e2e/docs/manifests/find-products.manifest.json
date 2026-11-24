@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-BRW-002",
+  "fixture": "find-products",
+  "route": "/store/synthetic-market?lat=30.2672&lng=-97.7431&order_type=2",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "find-products-categories-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-menu-capture-frame']",
+      "file": "website-find-products-categories-desktop.png",
+      "alt": "Desktop business menu with category navigation and products grouped under Bowls and Drinks"
+    },
+    {
+      "id": "find-products-categories-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-menu-capture-frame']",
+      "file": "website-find-products-categories-mobile.png",
+      "alt": "Mobile business menu with scrollable category navigation and grouped products"
+    },
+    {
+      "id": "find-products-subcategory-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-category-products'][data-doc-category-id='8311']",
+      "file": "website-find-products-subcategory.png",
+      "alt": "Bowls menu filtered to products in the Warm Bowls subcategory"
+    },
+    {
+      "id": "find-products-category-popover-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='business-category-popover'][data-doc-variant='popover']",
+      "file": "website-find-products-category-popover-desktop.png",
+      "alt": "Desktop category popover with Bowls and Drinks navigation choices"
+    },
+    {
+      "id": "find-products-category-slide-bar-mobile",
+      "project": "mobile-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='business-category-popover'][data-doc-variant='bottom-sheet']",
+      "file": "website-find-products-category-slide-bar-mobile.png",
+      "alt": "Mobile category bottom sheet with a close action and menu category choices"
+    },
+    {
+      "id": "find-products-search-results-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-product-search']",
+      "file": "website-find-products-search-results-desktop.png",
+      "alt": "Desktop product search showing menu items that match a search term"
+    },
+    {
+      "id": "find-products-search-results-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-product-search']",
+      "file": "website-find-products-search-results-mobile.png",
+      "alt": "Mobile product search showing matching menu items in a focused overlay"
+    },
+    {
+      "id": "find-products-search-empty-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-product-search']",
+      "file": "website-find-products-search-empty.png",
+      "alt": "Product search with no matching menu items and a Clear filters action"
+    }
+  ]
+}

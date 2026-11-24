@@ -1,0 +1,112 @@
+{
+  "extends": "business-menu",
+  "runtimeConfig": {
+    "use_kiosk": false,
+    "franchiseSlug": "",
+    "isCancellation": false,
+    "use_project_domain": false,
+    "use_project_subdomain": false,
+    "store_google_analytics_id": "",
+    "store_segment_id": "",
+    "store_facebook_pixel_id": "",
+    "sentry_key": ""
+  },
+  "firstLoad": {
+    "configs": {
+      "custom_order_enabled": {"key": "custom_order_enabled", "value": "0"},
+      "analytics_enabled": {"key": "analytics_enabled", "value": "0"},
+      "track_id_google_analytics": {"key": "track_id_google_analytics", "value": ""},
+      "segment_track_id": {"key": "segment_track_id", "value": ""},
+      "facebook_id": {"key": "facebook_id", "value": ""},
+      "notifications_enabled": {"key": "notifications_enabled", "value": "0"}
+    },
+    "theme": {
+      "values": {
+        "tokens": {
+          "layout": {
+            "mode": "original"
+          }
+        },
+        "components": {
+          "business_listing_page": {
+            "base": {
+              "rows": 3
+            }
+          }
+        },
+        "visibility": {
+          "footer": false
+        },
+        "site": {
+          "mode": "marketplace",
+          "business_slug": "",
+          "franchise_slug": ""
+        }
+      }
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9801, "slug": "synthetic-single-store", "name": "Synthetic Single Store", "description": "A reserved documentation storefront.",
+            "header": "", "logo": "", "address": "100 Synthetic Mode Street", "location": { "lat": 30.2672, "lng": -97.7431 },
+            "open": true, "enabled": true, "today": { "enabled": true, "lapses": [] }, "timezone": "America/Chicago",
+            "delivery_price": 0, "distance": 1.1, "delivery_time": "00:25", "pickup_time": "00:15", "reviews": { "total": 4.8 },
+            "ribbon": { "enabled": false }, "offers": [], "types": [{ "id": 1, "name": "Restaurant" }], "configs": {}, "favorite": false
+          },
+          {
+            "id": 9802, "slug": "synthetic-franchise-store", "name": "Synthetic Franchise Store", "description": "A reserved participating location.",
+            "header": "", "logo": "", "address": "200 Synthetic Mode Avenue", "location": { "lat": 30.2678, "lng": -97.744 },
+            "open": true, "enabled": true, "today": { "enabled": true, "lapses": [] }, "timezone": "America/Chicago",
+            "delivery_price": 0, "distance": 1.8, "delivery_time": "00:30", "pickup_time": "00:20", "reviews": { "total": 4.7 },
+            "ribbon": { "enabled": false }, "offers": [], "types": [{ "id": 1, "name": "Restaurant" }], "configs": {}, "favorite": false
+          }
+        ],
+        "pagination": { "current_page": 1, "total_pages": 1, "total": 2, "page_size": 25 }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/franchises/9901(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "id": 9901, "name": "Synthetic Franchise", "enabled": true } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/(?:synthetic-single-store|synthetic-franchise-store|synthetic-kiosk-store|synthetic-alias)(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9801, "slug": "synthetic-single-store", "name": "Synthetic Mode Kitchen", "open": true, "enabled": true,
+          "header": "/e2e/docs/assets/synthetic-business-header.svg", "logo": "", "address": "100 Synthetic Mode Street",
+          "location": { "lat": 30.2672, "lng": -97.7431 }, "description": "A synthetic menu used to document Website presentation modes.",
+          "about": "Reserved documentation content.", "vertical": "food", "food": true, "timezone": "America/Chicago",
+          "today": { "enabled": true, "lapses": [] }, "delivery_price": 0, "service_fee": 0, "delivery_time": "00:25", "pickup_time": "00:15",
+          "minimum": 0, "reviews": { "total": 4.8, "reviews": [] }, "ribbon": { "enabled": false }, "offers": [], "gallery": [],
+          "professionals": [], "previously_products": [], "configs": [], "types": [{ "id": 1, "name": "Restaurant" }], "favorite": false,
+          "front_layout": "original", "lazy_load_products_recommended": false, "available_products_count": 2, "valid_service": true,
+          "categories": [{
+            "id": 9811, "slug": "mode-favorites", "name": "Mode favorites", "description": "Synthetic menu items", "rank": 1, "subcategories": [],
+            "products": [
+              { "id": 9821, "slug": "mode-bowl", "name": "Synthetic Mode Bowl", "description": "Reserved fixture vegetables and grains.", "price": 12, "category_id": 9811, "category": { "id": 9811, "slug": "mode-favorites" }, "extras": [], "inventoried": false, "quantity": 100, "featured": false, "rank": 1, "enabled": true },
+              { "id": 9822, "slug": "mode-drink", "name": "Synthetic Mode Drink", "description": "A reserved fixture beverage.", "price": 4, "category_id": 9811, "category": { "id": 9811, "slug": "mode-favorites" }, "extras": [], "inventoried": false, "quantity": 100, "featured": false, "rank": 2, "enabled": true }
+            ]
+          }]
+        }
+      }
+    }
+  ]
+}

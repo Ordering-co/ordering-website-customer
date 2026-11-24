@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-SUP-001",
+  "fixture": "help-content-pages",
+  "route": "/help",
+  "readiness": { "selectors": ["[data-doc-section='help']"], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 250, "network": { "quietMs": 350, "timeout": 8000 } },
+  "captures": [
+    { "id": "help-overview-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='help']", "capture_mode": "section", "file": "website-help-overview-desktop.png", "alt": "Desktop Website Help overview showing three support topics and one synthetic Last order card" },
+    { "id": "help-overview-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='help']", "capture_mode": "section", "file": "website-help-overview-mobile.png", "alt": "Mobile Website Help overview showing responsive support-topic choices and one synthetic Last order card" },
+    { "id": "help-topic-order-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='help']", "capture_mode": "section", "file": "website-help-topic-order-desktop.png", "alt": "Desktop Website Help with an order topic showing inert synthetic project guidance and breadcrumb" },
+    { "id": "help-topic-account-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='help']", "capture_mode": "section", "file": "website-help-topic-account-desktop.png", "alt": "Desktop Website Account and Payment Options topic showing inert synthetic project guidance" },
+    { "id": "help-topic-ordering-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='help']", "capture_mode": "section", "file": "website-help-topic-ordering-mobile.png", "alt": "Mobile Website Guide to Ordering topic showing responsive inert synthetic guidance" },
+    { "id": "pages-list-desktop", "project": "desktop-chromium", "route": "/pages", "selector": "[data-doc-section='pages-list']", "capture_mode": "section", "file": "website-pages-list-desktop.png", "alt": "Desktop Website Site Map showing standard destinations and one synthetic configured public page" },
+    { "id": "pages-list-mobile", "project": "mobile-chromium", "route": "/pages", "selector": "[data-doc-section='pages-list']", "capture_mode": "section", "file": "website-pages-list-mobile.png", "alt": "Mobile Website Site Map showing responsive standard destinations and one synthetic configured page" },
+    { "id": "content-page-desktop", "project": "desktop-chromium", "route": "/pages/docs-help-topic", "selector": "[data-doc-section='content-page']", "capture_mode": "section", "file": "website-content-page-desktop.png", "alt": "Desktop Website configured public content page showing inert synthetic guidance" },
+    { "id": "content-page-mobile", "project": "mobile-chromium", "route": "/pages/docs-help-topic", "selector": "[data-doc-section='content-page']", "capture_mode": "section", "file": "website-content-page-mobile.png", "alt": "Mobile Website configured public content page showing responsive inert synthetic guidance" },
+    { "id": "content-page-not-found-desktop", "project": "desktop-chromium", "route": "/pages/docs-missing-topic", "selector": "[data-doc-section='content-page']", "capture_mode": "section", "file": "website-content-page-not-found-desktop.png", "alt": "Desktop Website content page showing the bounded selected-page-not-found message and passive pages-list action" },
+    { "id": "localized-footer-desktop", "project": "desktop-chromium", "route": "/home", "selector": "[data-doc-section='localized-footer-content']", "capture_mode": "viewport", "file": "website-localized-footer-desktop.png", "alt": "Desktop Website home-page footer context showing inert synthetic localized public project content" }
+  ]
+}

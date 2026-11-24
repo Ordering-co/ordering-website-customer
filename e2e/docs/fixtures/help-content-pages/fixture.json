@@ -1,0 +1,49 @@
+{
+  "extends": "order-details-tracking",
+  "runtimeConfig": {
+    "disable_powered_by": true
+  },
+  "firstLoad": {
+    "configs": {
+      "powered_by_ordering_module": {"value": "0"}
+    },
+    "theme": {
+      "values": {
+        "visibility": {
+          "footer": false,
+          "menu.help": true
+        }
+      }
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-id&page=0&page_size=1&where=.*$",
+      "assert": { "count": 0 },
+      "response": {
+        "error": false,
+        "result": [{
+          "id": 8901,
+          "uuid": "docs-help-order",
+          "status": 1,
+          "delivery_type": 2,
+          "delivery_datetime": "2026-08-10 12:00:00",
+          "delivery_datetime_utc": "2026-08-10 17:00:00",
+          "business_id": 8101,
+          "business": { "id": 8101, "name": "Synthetic Help Kitchen", "slug": "synthetic-help-kitchen", "logo": "" },
+          "products": [{ "id": 8201, "product_id": 8201, "type": "item", "name": "Synthetic Help Item", "quantity": 1 }],
+          "summary": { "total": 12 }
+        }],
+        "pagination": { "current_page": 1, "page_size": 1, "total_pages": 1, "total": 1, "from": 1, "to": 1 }
+      }
+    },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/helpOrder$", "assert": { "count": 0 }, "response": { "error": false, "result": { "name": "Synthetic Order Help", "slug": "helpOrder", "enabled": true, "public": false, "body": "<h2>Synthetic order help</h2><p>Review your returned order details before choosing a support action.</p><ul><li><strong>Check the order status.</strong></li><li>Use the available contact option.</li></ul>" } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/helpAccountAndPayment$", "assert": { "count": 0 }, "response": { "error": false, "result": { "name": "Synthetic Account Help", "slug": "helpAccountAndPayment", "enabled": true, "public": false, "body": "<h2>Synthetic account and payment help</h2><p>Review the account and payment choices returned by this Website.</p><ul><li>Check your account details.</li><li><em>Payment choices can vary by order.</em></li></ul>" } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/helpOrderingGuide$", "assert": { "count": 0 }, "response": { "error": false, "result": { "name": "Synthetic Ordering Guide", "slug": "helpOrderingGuide", "enabled": true, "public": false, "body": "<h2>Synthetic guide to ordering</h2><p>Choose a location, browse a business, and review the cart before checkout.</p><ol><li>Select the available order type.</li><li>Review each returned item.</li></ol>" } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages$", "assert": { "count": 0 }, "response": { "error": false, "result": [{ "id": 9901, "name": "Synthetic Help Topic", "slug": "docs-help-topic", "enabled": true, "public": true }] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/docs-help-topic$", "assert": { "count": 0 }, "response": { "error": false, "result": { "name": "Synthetic Help Topic", "slug": "docs-help-topic", "enabled": true, "public": true, "body": "<h2>Synthetic Website guidance</h2><p>This reserved page explains a configured Website topic.</p><h3>Before continuing</h3><ul><li>Review the visible project guidance.</li><li>Return to the Site Map when needed.</li></ul>" } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/docs-missing-topic$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic page not found."] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/pages/footer$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic default footer unavailable."] } }
+  ]
+}

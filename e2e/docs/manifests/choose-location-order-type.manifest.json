@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-DIS-001",
+  "fixture": "choose-location-order-type",
+  "route": "/",
+  "readiness": {
+    "allowBrokenImages": true,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "choose-location-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='address-form']",
+      "file": "website-choose-location-desktop.png",
+      "alt": "Desktop address form showing a synthetic delivery-location suggestion"
+    },
+    {
+      "id": "choose-order-type-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='header-order-types']",
+      "file": "website-choose-order-type-desktop.png",
+      "alt": "Desktop order-type controls showing Delivery and Pickup"
+    },
+    {
+      "id": "choose-location-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='address-form']",
+      "file": "website-choose-location-mobile.png",
+      "alt": "Mobile address form with a selected synthetic delivery address"
+    },
+    {
+      "id": "choose-order-type-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='header-order-types']",
+      "file": "website-choose-order-type-mobile.png",
+      "alt": "Mobile order type capsule showing Delivery and Pickup choices"
+    }
+  ]
+}

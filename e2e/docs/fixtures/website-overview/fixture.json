@@ -1,0 +1,10 @@
+{
+  "extends": "common",
+  "routes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/banner(?:\\?.*)?$",
+      "response": { "error": false, "result": [] }
+    }
+  ]
+}

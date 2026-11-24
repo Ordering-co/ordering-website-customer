@@ -1,0 +1,72 @@
+{
+  "extends": "profile",
+  "firstLoad": {
+    "configs": {
+      "school_module_enabled": {"key": "school_module_enabled", "value": "1"}
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/schools/students$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9831,
+            "name": "Synthetic Student",
+            "lastname": "Fixture Learner",
+            "school_id": 9801,
+            "classroom_id": 9811,
+            "grade_id": 9821,
+            "allergies": [],
+            "dietary_tags": [],
+            "school": { "id": 9801, "name": "Synthetic Academy" },
+            "classroom": { "id": 9811, "name": "Fixture Classroom" },
+            "grade": { "id": 9821, "name": "Docs Grade" }
+          },
+          {
+            "id": 9832,
+            "name": "Docs Student",
+            "lastname": "Synthetic Learner",
+            "school_id": 9802,
+            "classroom_id": 9812,
+            "grade_id": 9822,
+            "allergies": [],
+            "dietary_tags": [],
+            "school": { "id": 9802, "name": "Fixture Learning Center" },
+            "classroom": { "id": 9812, "name": "Docs Classroom" },
+            "grade": { "id": 9822, "name": "Synthetic Grade" }
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/schools\\?params=\\*,classrooms,grades(?:&where=[^&]+)?&page=1&page_size=10$",
+      "assert": { "count": 0 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 9801,
+            "name": "Synthetic Academy",
+            "classrooms": [{ "id": 9811, "name": "Fixture Classroom" }],
+            "grades": [{ "id": 9821, "name": "Docs Grade" }]
+          },
+          {
+            "id": 9802,
+            "name": "Fixture Learning Center",
+            "classrooms": [{ "id": 9812, "name": "Docs Classroom" }],
+            "grades": [{ "id": 9822, "name": "Synthetic Grade" }]
+          }
+        ]
+      }
+    },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/schools/students$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic student creation was blocked."] } },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/schools/students/\\d+$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic student update was blocked."] } },
+    { "method": "PUT", "pattern": "^/v400/en/docsmarket/carts(?:/[^/?]+)?$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic cart update was blocked."] } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/orders(?:/.*)?$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic order write was blocked."] } }
+  ]
+}

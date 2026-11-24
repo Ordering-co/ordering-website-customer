@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CAR-004",
+  "fixture": "multi-cart",
+  "route": "/multi-cart",
+  "readiness": {
+    "selectors": ["[data-doc-control='cart-open']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 100,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "multi-cart-group-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='cart-popover']",
+      "file": "website-multi-cart-group-desktop.png",
+      "alt": "Desktop Website cart with two businesses, one grouped Checkout action, two per-business Checkout actions, and a combined total"
+    },
+    {
+      "id": "multi-cart-group-mobile",
+      "project": "mobile-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='cart-content']",
+      "file": "website-multi-cart-group-mobile.png",
+      "alt": "Mobile Website cart with two businesses, one grouped Checkout action, two per-business Checkout actions, and a combined total"
+    }
+  ]
+}

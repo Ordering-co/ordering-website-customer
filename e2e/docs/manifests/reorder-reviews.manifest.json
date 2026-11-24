@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ORD-004",
+  "fixture": "reorder-reviews",
+  "route": "/orders/docs-order-active",
+  "readiness": { "selectors": ["[data-doc-section='order-details']"], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 250, "network": { "quietMs": 350, "timeout": 7000 } },
+  "captures": [
+    { "id": "order-actions-terminal-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-details-terminal']", "capture_mode": "section", "file": "website-order-actions-terminal-desktop.png", "alt": "Desktop Website delivered order showing passive Review and Order again actions" },
+    { "id": "order-review-business-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-review-business']", "capture_mode": "section", "file": "website-order-review-business-desktop.png", "alt": "Desktop Website review dialog showing an unsubmitted synthetic business rating and comment choices" },
+    { "id": "order-review-business-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='order-review-business']", "capture_mode": "section", "file": "website-order-review-business-mobile.png", "alt": "Mobile Website review dialog showing a responsive unsubmitted synthetic business review" },
+    { "id": "order-review-product-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-review-product']", "capture_mode": "section", "file": "website-order-review-product-desktop.png", "alt": "Desktop Website product review stage showing one synthetic item before submission" },
+    { "id": "order-review-driver-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-review-driver']", "capture_mode": "section", "file": "website-order-review-driver-desktop.png", "alt": "Desktop Website driver review stage showing an unsubmitted synthetic rating form" },
+    { "id": "order-again-existing-cart-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-again-confirmation']", "capture_mode": "section", "file": "website-order-again-existing-cart-confirm-desktop.png", "alt": "Desktop Website confirmation warning that continuing Order again can remove current cart products" }
+  ]
+}

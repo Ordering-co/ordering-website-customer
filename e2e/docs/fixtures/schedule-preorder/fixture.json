@@ -1,0 +1,149 @@
+{
+  "extends": "browse-businesses",
+  "firstLoad": {
+    "configs": {
+      "order_types_allowed": {"value": "1|2|7|8"},
+      "unaddressed_order_types_allowed": {"value": "1|2|7|8"}
+    }
+  },
+  "authSession": {
+    "token": "docs-fixture-preorder-session-token",
+    "user": {
+      "id": 9101,
+      "name": "Synthetic Preorder Customer",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-preorder-session-token"}
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/fixture-bakery(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 8102,
+          "slug": "fixture-bakery",
+          "name": "Fixture Bakery",
+          "open": false,
+          "enabled": true,
+          "header": "",
+          "logo": "",
+          "address": "200 Synthetic Bakery Avenue",
+          "location": { "lat": 30.2678, "lng": -97.744 },
+          "description": "Synthetic breads available by preorder",
+          "timezone": "America/Chicago",
+          "today": { "enabled": false, "lapses": [] },
+          "schedule": [
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+            { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] }
+          ],
+          "delivery_price": 3,
+          "service_fee": 0,
+          "delivery_time": "00:35",
+          "pickup_time": "00:20",
+          "minimum": 0,
+          "reviews": { "total": 4.6, "reviews": [] },
+          "ribbon": { "enabled": false },
+          "offers": [],
+          "gallery": [],
+          "professionals": [],
+          "previously_products": [],
+          "configs": [],
+          "types": [{ "id": 2, "name": "Bakery" }],
+          "favorite": false,
+          "front_layout": "original",
+          "lazy_load_products_recommended": false,
+          "available_products_count": 0,
+          "valid_service": true,
+          "categories": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/8102/menus(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 8501,
+            "name": "Synthetic Bakery Menu",
+            "use_business_schedule": false,
+            "schedule": [
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+              { "enabled": false, "lapses": [] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] },
+              { "enabled": true, "lapses": [{ "open": { "hour": 8, "minute": 0 }, "close": { "hour": 18, "minute": 0 } }] }
+            ]
+          },
+          {
+            "id": 8502,
+            "name": "Synthetic Weekend Menu",
+            "use_business_schedule": true,
+            "schedule": []
+          }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "user_id": 9101,
+          "type": 1,
+          "moment": null,
+          "carts": []
+        }
+      }
+    },
+    {
+      "method": "PUT",
+      "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "user_id": 9101,
+          "type": 1,
+          "moment": "2026-08-11 15:00:00",
+          "carts": []
+        }
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9101(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9101,
+          "name": "Synthetic Preorder Customer",
+          "session": { "access_token": "docs-fixture-preorder-session-token" }
+        }
+      }
+    }
+  ]
+}

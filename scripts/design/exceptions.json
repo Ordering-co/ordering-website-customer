@@ -1,0 +1,7 @@
+{
+  "source": ".claude/skills/ordering-website-design/references/design-system.md › Recorded exceptions (THEMING.md §7). A new exception is added only with its reason and Sergio's approval; `count` is how many occurrences of the value in that file it exempts (in source order; icon and piece entries with the same file, rule and value use their counts in registry order; absent means 1) and raising it needs the same approval; a `detected: false` entry is recorded but the guard has no rule that could see it (a unitless z-index, a JS constant, a proportion).",
+  "literal": [],
+  "pieces": [
+  ],
+  "icon": []
+}

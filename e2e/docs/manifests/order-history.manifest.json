@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ORD-001",
+  "fixture": "order-history",
+  "route": "/profile/orders",
+  "readiness": { "selectors": ["[data-doc-section='order-history']"], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 250, "network": { "quietMs": 350, "timeout": 7000 } },
+  "captures": [
+    { "id": "order-history-overview-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-history']", "capture_mode": "section", "file": "website-order-history-overview-desktop.png", "alt": "Desktop Website My Orders page showing synthetic Upcoming, Active, and Past orders" },
+    { "id": "order-history-overview-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='order-history']", "capture_mode": "viewport", "file": "website-order-history-overview-mobile.png", "alt": "Mobile Website My Orders page showing responsive Upcoming, Active, and Past order sections" },
+    { "id": "order-history-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='order-history']", "capture_mode": "section", "file": "website-order-history-empty-desktop.png", "alt": "Desktop Website My Orders page showing the successful no-orders state and Order now action" }
+  ]
+}

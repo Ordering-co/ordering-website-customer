@@ -1,0 +1,88 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-order-details-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Orders",
+      "lastname": "Synthetic Customer",
+      "email": "docs-orders@example.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-order-details-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "general_date_format": {"key": "general_date_format", "value": "MM/DD/YYYY"},
+      "multi_business_checkout_progress_bar_style": {"key": "multi_business_checkout_progress_bar_style", "value": "individual"}
+    },
+    "theme": {
+      "values": {
+        "pages": {
+          "order_details": {
+            "sections": [
+              {
+                "key": "map",
+                "visible": false
+              }
+            ]
+          }
+        },
+        "visibility": {
+          "confirmation.driver.photo": false,
+          "orders.favorite": false,
+          "business.dummy_logo": false
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 8001, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 8002, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 8003, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [
+      { "id": 8011, "order_type_id": 1, "enabled": true, "required": true, "validation_field": { "id": 8001, "code": "name", "name": "Name", "type": "text" } },
+      { "id": 8012, "order_type_id": 1, "enabled": true, "required": true, "validation_field": { "id": 8002, "code": "lastname", "name": "Last name", "type": "text" } },
+      { "id": 8013, "order_type_id": 1, "enabled": true, "required": true, "validation_field": { "id": 8003, "code": "email", "name": "Email", "type": "email" } }
+    ] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": { "id": 9301, "name": "Synthetic Orders", "lastname": "Synthetic Customer", "email": "docs-orders@example.invalid", "cellphone": "2025550199", "country_phone_code": "1", "enabled": true, "email_verified": true, "phone_verified": true, "session": { "access_token": "docs-fixture-order-details-token" } } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 2 }, "response": { "error": false, "result": { "user_id": 9301, "type": 1, "carts": [] } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders/docs-order-active$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": {
+      "id": 8701, "uuid": "docs-order-active", "status": 7, "delivery_type": 1, "created_at": "2026-08-11 16:00:00", "delivery_datetime": "2026-08-11 18:00:00", "delivery_datetime_utc": "2026-08-11 23:00:00", "total": 19, "subtotal": 18, "summary": { "subtotal": 18, "tax": 0, "delivery_price": 1, "total": 19 },
+      "business_id": 8101, "business": { "id": 8101, "name": "Synthetic Kitchen", "slug": "synthetic-kitchen", "logo": "", "address": "100 Synthetic Market Street", "location": { "lat": 0, "lng": 0 } },
+      "customer": { "id": 9301, "name": "Synthetic Orders", "lastname": "Synthetic Customer", "email": "docs-orders@example.invalid", "cellphone": "2025550199", "address": "100 Synthetic Customer Avenue" },
+      "products": [{ "id": 8201, "product_id": 8201, "name": "Synthetic Bowl", "quantity": 1, "price": 18, "total": 18, "options": [{ "id": 8211, "name": "Synthetic Sauce", "quantity": 1, "price": 0 }], "ingredients": [] }],
+      "taxes": [], "fees": [], "offers": [], "payment_events": [], "wallets": [], "history": [], "unread_messages": 0, "driver": null, "driver_id": null, "external_driver_id": null, "reporting_data": { "at": { "status:7": "2026-08-11 16:30:00" } }
+    } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/business/8101\\?params=header,slug$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": { "id": 8101, "header": "", "slug": "synthetic-kitchen" } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders/8701/messages$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders/8702/messages$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders/undefined/messages$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": true, "result": ["Synthetic message history unavailable."] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/loyalty_plans$", "assert": { "minCount": 0, "maxCount": 2 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-&where=.*$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [
+      { "id": 8701, "uuid": "docs-order-one", "cart_group_id": "docs-group", "status": 7, "delivery_type": 1, "delivery_datetime": "2026-08-11 18:00:00", "delivery_datetime_utc": "2026-08-11 23:00:00", "total": 12, "subtotal": 10, "summary": { "subtotal": 10, "tax": 1, "delivery_price": 1, "total": 12 }, "business_id": 8101, "business": { "id": 8101, "name": "Synthetic Kitchen", "slug": "synthetic-kitchen", "logo": "", "address": "100 Synthetic Market Street" }, "customer": { "id": 9301, "name": "Synthetic Orders", "lastname": "Synthetic Customer", "email": "docs-orders@example.invalid", "cellphone": "2025550199", "address": "100 Synthetic Customer Avenue" }, "products": [{ "id": 8201, "name": "Synthetic Bowl", "quantity": 1, "price": 10, "total": 10 }], "taxes": [], "fees": [], "offers": [], "payment_events": [], "wallets": [], "history": [], "unread_messages": 0 },
+      { "id": 8702, "uuid": "docs-order-two", "cart_group_id": "docs-group", "status": 0, "delivery_type": 2, "delivery_datetime": "2026-08-11 18:30:00", "delivery_datetime_utc": "2026-08-11 23:30:00", "total": 9, "subtotal": 8, "summary": { "subtotal": 8, "tax": 1, "delivery_price": 0, "total": 9 }, "business_id": 8102, "business": { "id": 8102, "name": "Fixture Bakery", "slug": "fixture-bakery", "logo": "", "address": "200 Fixture Bakery Avenue" }, "customer": { "id": 9301, "name": "Synthetic Orders", "lastname": "Synthetic Customer", "email": "docs-orders@example.invalid", "cellphone": "2025550199", "address": "100 Synthetic Customer Avenue" }, "products": [{ "id": 8202, "name": "Fixture Pastry", "quantity": 1, "price": 8, "total": 8 }], "taxes": [], "fees": [], "offers": [], "payment_events": [], "wallets": [], "history": [], "unread_messages": 0 }
+    ], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 2 } } },
+    { "method": "POST", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "PUT", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "DELETE", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } }
+  ]
+}

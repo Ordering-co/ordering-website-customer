@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ORD-003",
+  "fixture": "tracking-only",
+  "route": "/orders/docs-order-active?hash=docs-fixture-guest-hash",
+  "readiness": {
+    "selectors": [
+      "[data-doc-section='order-tracking']"
+    ],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": {
+      "quietMs": 350,
+      "timeout": 7000
+    }
+  },
+  "captures": [
+    {
+      "id": "tracking-only-active-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='order-tracking']",
+      "capture_mode": "viewport",
+      "file": "website-tracking-only-active-mobile.png",
+      "alt": "Mobile tracking-only site showing the synthetic order badge, four-stage progress, and delivery details without menu or cart"
+    },
+    {
+      "id": "tracking-only-active-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='order-tracking']",
+      "capture_mode": "section",
+      "file": "website-tracking-only-active-desktop.png",
+      "alt": "Desktop tracking-only site showing the compact synthetic order tracking layout"
+    },
+    {
+      "id": "tracking-only-order-tab-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='order-tracking']",
+      "capture_mode": "viewport",
+      "file": "website-tracking-only-order-tab-mobile.png",
+      "alt": "Mobile tracking-only site showing the Your order tab with the synthetic totals breakdown, products and payment method"
+    },
+    {
+      "id": "tracking-only-terminal-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='order-tracking']",
+      "capture_mode": "viewport",
+      "file": "website-tracking-only-terminal-mobile.png",
+      "alt": "Mobile tracking-only site showing a delivered synthetic order with the satisfaction survey intro"
+    },
+    {
+      "id": "tracking-only-not-found-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='order-tracking-error']",
+      "capture_mode": "viewport",
+      "file": "website-tracking-only-not-found-mobile.png",
+      "alt": "Mobile tracking-only site showing the bounded order-not-found state with a go-home action"
+    },
+    {
+      "id": "tracking-only-home-mobile",
+      "project": "mobile-chromium",
+      "route": "/",
+      "selector": "[data-doc-section='tracking-home']",
+      "capture_mode": "viewport",
+      "file": "website-tracking-only-home-mobile.png",
+      "alt": "Mobile tracking-only site landing telling the customer to open the link they received"
+    }
+  ]
+}

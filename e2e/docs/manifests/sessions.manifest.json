@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-008",
+  "fixture": "sessions",
+  "route": "/sessions",
+  "readiness": {
+    "selectors": ["[data-doc-section='sessions-list']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "sessions-list-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-list']", "capture_mode": "section", "file": "website-sessions-list-desktop.png", "alt": "Desktop Website Security page showing two reserved synthetic sessions with one marked Current" },
+    { "id": "sessions-list-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='sessions-list']", "capture_mode": "viewport", "file": "website-sessions-list-mobile.png", "alt": "Mobile Website Security page showing reserved synthetic session dates and the Current marker" },
+    { "id": "session-delete-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-confirmation']", "capture_mode": "section", "file": "website-session-delete-confirm-desktop.png", "alt": "Desktop Website confirmation asking whether to delete one non-current session before acceptance" },
+    { "id": "sessions-delete-all-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-confirmation']", "capture_mode": "section", "file": "website-sessions-delete-all-confirm-desktop.png", "alt": "Desktop Website confirmation asking whether to delete all sessions before acceptance" },
+    { "id": "sessions-delete-others-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-confirmation']", "capture_mode": "section", "file": "website-sessions-delete-others-confirm-desktop.png", "alt": "Desktop Website confirmation asking whether to delete all sessions except the current one before acceptance" },
+    { "id": "sessions-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-list']", "capture_mode": "section", "file": "website-sessions-empty-desktop.png", "alt": "Desktop Website Security page showing that no managed sessions are present" },
+    { "id": "sessions-inactive-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='sessions-list']", "capture_mode": "section", "file": "website-sessions-inactive-desktop.png", "alt": "Desktop Website Security page showing the inactive managed-sessions state and activation action" }
+  ]
+}

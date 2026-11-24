@@ -1,0 +1,93 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-sessions-ready-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Sessions",
+      "lastname": "Synthetic Customer",
+      "email": "docs@e.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "session_strategy": "jwt_session",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-sessions-ready-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "plan_enterprise": {"key": "plan_enterprise", "value": "1"}
+    },
+    "validation_fields": [
+      {"id": 7701, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7702, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 7703, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 7711, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7701, "code": "name", "name": "Name", "type": "text" } },
+          { "id": 7712, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7702, "code": "lastname", "name": "Last name", "type": "text" } },
+          { "id": 7713, "order_type_id": 1, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 7703, "code": "email", "name": "Email", "type": "email" } }
+        ]
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": {
+          "id": 9301,
+          "name": "Synthetic Sessions",
+          "lastname": "Synthetic Customer",
+          "email": "docs@e.invalid",
+          "cellphone": "2025550199",
+          "country_phone_code": "1",
+          "session_strategy": "jwt_session",
+          "enabled": true,
+          "email_verified": true,
+          "phone_verified": true,
+          "session": { "access_token": "docs-fixture-sessions-ready-token" }
+        }
+      }
+    },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 2 }, "response": { "error": false, "result": { "user_id": 9301, "type": 2, "carts": [] } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9301/sessions$",
+      "assert": { "count": 1 },
+      "response": {
+        "error": false,
+        "result": [
+          { "id": 9601, "created_at": "2026-08-01T12:00:00Z", "valid_thru": "2026-09-01T12:00:00Z", "current": true },
+          { "id": 9602, "created_at": "2026-07-15T16:30:00Z", "valid_thru": "2026-08-15T16:30:00Z", "current": false }
+        ]
+      }
+    },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/sessions/9602$", "assert": { "count": 0 }, "response": { "error": false, "result": { "id": 9602 } } },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/sessions/9601$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic current session was not revoked."] } },
+    { "method": "DELETE", "pattern": "^/v400/en/docsmarket/users/9301/sessions/all$", "assert": { "count": 0 }, "response": { "error": false, "result": ["Synthetic other sessions were revoked."] } },
+    { "method": "POST", "pattern": "^/v400/en/docsmarket/auth/logout$", "assert": { "count": 0 }, "response": { "error": true, "result": ["Synthetic session remained active."] } }
+  ]
+}

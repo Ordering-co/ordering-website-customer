@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-003",
+  "fixture": "verification-profile-completion",
+  "route": "/home",
+  "readiness": {
+    "selectors": ["[data-doc-section='profile-completion'], [data-doc-section='user-verification']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "profile-completion-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='profile-completion']",
+      "capture_mode": "section",
+      "file": "website-profile-completion-desktop.png",
+      "alt": "Desktop Website Complete your profile gate with empty required Name and Last name fields, Continue action, and Logout action"
+    },
+    {
+      "id": "verification-email-desktop",
+      "project": "desktop-chromium",
+      "route": "/verify",
+      "selector": "[data-doc-section='user-verification'] [data-doc-control='verification-form']",
+      "capture_mode": "section",
+      "file": "website-verification-email-desktop.png",
+      "alt": "Desktop Website email verification page showing a reserved synthetic email address and the Send code action before delivery"
+    },
+    {
+      "id": "verification-phone-desktop",
+      "project": "desktop-chromium",
+      "route": "/verify",
+      "selector": "[data-doc-section='user-verification'] [data-doc-control='verification-form']",
+      "capture_mode": "section",
+      "file": "website-verification-phone-desktop.png",
+      "alt": "Desktop Website phone verification page showing a reserved synthetic phone number and the Send code action before delivery"
+    },
+    {
+      "id": "profile-completion-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='profile-completion']",
+      "capture_mode": "viewport",
+      "file": "website-profile-completion-mobile.png",
+      "alt": "Mobile Website Complete your profile gate with empty required Name and Last name fields and no submitted changes"
+    },
+    {
+      "id": "verification-email-mobile",
+      "project": "mobile-chromium",
+      "route": "/verify",
+      "selector": "[data-doc-section='user-verification']",
+      "capture_mode": "viewport",
+      "file": "website-verification-email-mobile.png",
+      "alt": "Mobile Website email verification page in the pre-send state with a reserved synthetic email address"
+    },
+    {
+      "id": "verification-phone-mobile",
+      "project": "mobile-chromium",
+      "route": "/verify",
+      "selector": "[data-doc-section='user-verification']",
+      "capture_mode": "viewport",
+      "file": "website-verification-phone-mobile.png",
+      "alt": "Mobile Website phone verification page in the pre-send state with a reserved synthetic phone number"
+    }
+  ]
+}

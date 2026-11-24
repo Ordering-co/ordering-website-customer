@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" role="img" aria-labelledby="title">
+  <title id="title">Synthetic Website logo</title>
+  <rect width="120" height="120" rx="20" fill="#fff"/>
+  <path d="M26 36h68v52H26z" fill="#dce8f5" stroke="#17324d" stroke-width="7"/>
+  <path d="M20 42l40-24 40 24" fill="none" stroke="#e35252" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M48 88V61h24v27" fill="#fff" stroke="#17324d" stroke-width="7"/>
+</svg>

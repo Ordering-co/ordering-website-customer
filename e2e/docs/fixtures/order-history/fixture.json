@@ -1,0 +1,78 @@
+{
+  "extends": "account",
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com"],
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "authSession": {
+    "token": "docs-fixture-order-history-token",
+    "user": {
+      "id": 9301,
+      "name": "Synthetic Orders",
+      "lastname": "Synthetic Customer",
+      "email": "docs-orders@example.invalid",
+      "cellphone": "2025550199",
+      "country_phone_code": "1",
+      "enabled": true,
+      "email_verified": true,
+      "phone_verified": true,
+      "session": {"access_token": "docs-fixture-order-history-token"}
+    }
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"value": "pickup"},
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "general_date_format": {"key": "general_date_format", "value": "MM/DD/YYYY"}
+    },
+    "theme": {
+      "values": {
+        "tokens": {
+          "layout": {
+            "mode": "original"
+          }
+        },
+        "visibility": {
+          "orders.business_logo": false,
+          "orders.business_tab": false,
+          "orders.products_tab": false,
+          "business.dummy_logo": false
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 8001, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 8002, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 8003, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    { "method": "GET", "pattern": "^/docsmarket/api/frontend/settings(?:\\?.*)?$", "assert": { "count": 0 }, "response": { "error": false, "result": {} } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/paymethods(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/validation_field_order_types(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": [
+      { "id": 8011, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 8001, "code": "name", "name": "Name", "type": "text" } },
+      { "id": 8012, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 8002, "code": "lastname", "name": "Last name", "type": "text" } },
+      { "id": 8013, "order_type_id": 2, "enabled": true, "required": true, "required_with_guest": false, "validation_field": { "id": 8003, "code": "email", "name": "Email", "type": "email" } }
+    ] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301(?:\\?.*)?$", "assert": { "count": 1 }, "response": { "error": false, "result": { "id": 9301, "name": "Synthetic Orders", "lastname": "Synthetic Customer", "email": "docs-orders@example.invalid", "cellphone": "2025550199", "country_phone_code": "1", "enabled": true, "email_verified": true, "phone_verified": true, "session": { "access_token": "docs-fixture-order-history-token" } } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/order_options(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 2 }, "response": { "error": false, "result": { "user_id": 9301, "type": 2, "carts": [] } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/users/9301/addresses(?:\\?.*)?$", "assert": { "minCount": 0, "maxCount": 1 }, "response": { "error": false, "result": [] } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-id&page=0&page_size=10&where=.*13.*$", "assert": { "count": 1 }, "response": { "error": false, "result": [
+      { "id": 8601, "uuid": "docs-order-upcoming", "status": 13, "delivery_type": 2, "delivery_datetime": "2026-08-20 12:30:00", "delivery_datetime_utc": "2026-08-20 17:30:00", "total": 14, "summary": { "total": 14 }, "favorite": false, "business_id": 8101, "business": { "id": 8101, "name": "Synthetic Kitchen", "slug": "synthetic-kitchen", "logo": "" }, "products": [{ "id": 8201, "product_id": 8201, "name": "Synthetic Bowl" }] }
+    ], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 1, "total": 1, "from": 1, "to": 1 } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-id&page=0&page_size=30&where=.*$", "assert": { "count": 1 }, "response": { "error": false, "result": [
+      { "id": 8602, "uuid": "docs-order-active", "status": 7, "delivery_type": 2, "delivery_datetime": "2026-08-11 14:00:00", "delivery_datetime_utc": "2026-08-11 19:00:00", "total": 21, "summary": { "total": 21 }, "favorite": false, "business_id": 8102, "business": { "id": 8102, "name": "Fixture Bakery", "slug": "fixture-bakery", "logo": "" }, "products": [{ "id": 8202, "product_id": 8202, "name": "Synthetic Pastry" }] }
+    ], "pagination": { "current_page": 1, "page_size": 30, "total_pages": 1, "total": 1, "from": 1, "to": 1 } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-id&page=0&page_size=10&where=.*1,2,5.*$", "assert": { "count": 1 }, "response": { "error": false, "result": [
+      { "id": 8603, "uuid": "docs-order-past", "status": 1, "delivery_type": 2, "delivery_datetime": "2026-08-01 12:00:00", "delivery_datetime_utc": "2026-08-01 17:00:00", "total": 19, "summary": { "total": 19 }, "favorite": false, "review": false, "cart": {}, "business_id": 8103, "business": { "id": 8103, "name": "Docs Cafe", "slug": "docs-cafe", "logo": "" }, "products": [{ "id": 8203, "product_id": 8203, "name": "Synthetic Lunch" }] }
+    ], "pagination": { "current_page": 1, "page_size": 10, "total_pages": 2, "total": 2, "from": 1, "to": 1 } } },
+    { "method": "GET", "pattern": "^/v400/en/docsmarket/orders\\?orderBy=-id&page=2&page_size=10&where=.*$", "assert": { "count": 0 }, "response": { "error": false, "result": [{ "id": 8604, "uuid": "docs-order-past-two", "status": 1, "delivery_type": 2, "delivery_datetime": "2026-07-20 12:00:00", "delivery_datetime_utc": "2026-07-20 17:00:00", "total": 11, "summary": { "total": 11 }, "favorite": false, "review": true, "business_id": 8104, "business": { "id": 8104, "name": "Example Market", "slug": "example-market", "logo": "" }, "products": [{ "id": 8204, "name": "Fixture Item" }] }], "pagination": { "current_page": 2, "page_size": 10, "total_pages": 2, "total": 2, "from": 2, "to": 2 } } },
+    { "method": "POST", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "PUT", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } },
+    { "method": "DELETE", "pattern": ".*", "assert": { "count": 0 }, "response": { "error": true, "result": ["Blocked"] } }
+  ]
+}

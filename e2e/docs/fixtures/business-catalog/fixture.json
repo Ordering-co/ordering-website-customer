@@ -1,0 +1,35 @@
+{
+  "extends": "common",
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"type": 1},
+      "unaddressed_order_types_allowed": {"key": "unaddressed_order_types_allowed", "value": "1|2"},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"},
+      "preorder_status_enabled": { "key": "preorder_status_enabled", "value": "1" },
+      "general_hour_format": {"key": "general_hour_format", "value": "hh:mm a"},
+      "format_number_decimal_separator": {"key": "format_number_decimal_separator", "value": "."},
+      "format_number_thousand_separator": {"key": "format_number_thousand_separator", "value": ","},
+      "use_parent_category": { "key": "use_parent_category", "value": "0" },
+      "location_default_latitude": {"key": "location_default_latitude", "value": "30.2672"},
+      "location_default_longitude": {"key": "location_default_longitude", "value": "-97.7431"}
+    },
+    "site": {
+      "business_url_template": "/store/:business_slug",
+      "product_url_template": "/store/:business_slug/:category_slug/:product_slug"
+    },
+    "theme": {
+      "values": {
+        "pages": {
+          "business": {
+            "sections": [
+              {"key": "near_business", "visible": false},
+              {"key": "order_it_again", "visible": false},
+              {"key": "business_header", "visible": true}
+            ]
+          }
+        },
+        "visibility": {"business.header.time": true, "business.header.reviews": true, "business.header.city": false, "business.header.sort": true}
+      }
+    }
+  }
+}

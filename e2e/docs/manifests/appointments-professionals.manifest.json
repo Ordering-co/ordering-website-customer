@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-004",
+  "fixture": "appointments-professionals",
+  "route": "/search",
+  "readiness": { "selectors": [], "allowBrokenImages": false, "imageTimeout": 2000, "settleMs": 300, "network": { "quietMs": 400, "timeout": 9000 } },
+  "captures": [
+    { "id": "appointments-list-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='appointments-list']", "capture_mode": "section", "file": "website-appointments-list-desktop.png", "alt": "Desktop Website appointments-oriented business list with synthetic address, service controls, and one available studio" },
+    { "id": "appointments-list-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='appointments-list']", "capture_mode": "viewport", "file": "website-appointments-list-mobile.png", "alt": "Mobile Website appointments-oriented business list with responsive synthetic discovery controls" },
+    { "id": "professionals-service-desktop", "project": "desktop-chromium", "route": "/store/synthetic-appointments/services/synthetic-consultation", "selector": "[data-doc-section='product-customization-dialog']", "capture_mode": "section", "file": "website-professionals-service-desktop.png", "alt": "Desktop Website synthetic service form with a selected professional, schedule requirement, and passive Book control" },
+    { "id": "professionals-service-mobile", "project": "mobile-chromium", "route": "/store/synthetic-appointments/services/synthetic-consultation", "selector": "[data-doc-section='product-customization-dialog']", "capture_mode": "viewport", "file": "website-professionals-service-mobile.png", "alt": "Mobile Website synthetic service form showing responsive professional and schedule choices before Book" },
+    { "id": "professional-profile-desktop", "project": "desktop-chromium", "route": "/store/synthetic-appointments", "selector": "[data-doc-section='professional-profile-dialog']", "capture_mode": "section", "file": "website-professional-profile-desktop.png", "alt": "Desktop Website professional availability profile with synthetic schedule and untouched Book action" },
+    { "id": "service-busy-desktop", "project": "desktop-chromium", "route": "/store/synthetic-appointments/services/synthetic-consultation", "selector": "[data-doc-section='product-customization-dialog']", "capture_mode": "section", "file": "website-service-busy-desktop.png", "alt": "Desktop Website synthetic service form showing a busy displayed time before booking" }
+  ]
+}

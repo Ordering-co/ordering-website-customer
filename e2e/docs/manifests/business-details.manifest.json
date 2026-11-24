@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-BRW-004",
+  "fixture": "business-details",
+  "route": "/store/synthetic-market?lat=30.2672&lng=-97.7431&order_type=2",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "business-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-menu-header']",
+      "file": "website-business-details-desktop.png",
+      "alt": "Desktop business header with address, business type, social links, rating, information button, service fee, and pickup time"
+    },
+    {
+      "id": "business-details-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-menu-header']",
+      "capture_mode": "viewport",
+      "file": "website-business-details-mobile.png",
+      "alt": "Mobile business page with order context, address, social links, rating, information button, service fee, and pickup time"
+    },
+    {
+      "id": "business-information-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-information-dialog']",
+      "file": "website-business-information-desktop.png",
+      "alt": "Desktop business information dialog with description, weekly schedule, fulfillment times, and a configured business photo"
+    },
+    {
+      "id": "business-information-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='business-information-dialog']",
+      "file": "website-business-information-mobile.png",
+      "alt": "Mobile business information dialog with description, weekly schedule, delivery time, and pickup time"
+    },
+    {
+      "id": "business-reviews-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-reviews-dialog']",
+      "file": "website-business-reviews-desktop.png",
+      "alt": "Business reviews dialog with synthetic customer ratings, dates, and comments"
+    },
+    {
+      "id": "business-closed-details-desktop",
+      "project": "desktop-chromium",
+      "route": "/store/fixture-bakery?lat=30.2672&lng=-97.7431&order_type=2",
+      "selector": "[data-doc-section='business-menu-header']",
+      "file": "website-business-closed-details-desktop.png",
+      "alt": "Closed business header with address, rating, information button, service fee, and pickup time"
+    },
+    {
+      "id": "business-professionals-entry-desktop",
+      "project": "desktop-chromium",
+      "route": "/store/synthetic-studio?lat=30.2672&lng=-97.7431&order_type=2",
+      "selector": "[data-doc-section='business-professionals']",
+      "file": "website-business-professionals-entry-desktop.png",
+      "alt": "Professional services business with an any-professional option and synthetic professional cards"
+    }
+  ]
+}

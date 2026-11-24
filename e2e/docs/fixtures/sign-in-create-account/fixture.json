@@ -1,0 +1,44 @@
+{
+  "extends": "account",
+  "localStorage": {
+    "local_phone_code": "+1"
+  },
+  "firstLoad": {
+    "configs": {
+      "email_password_login_enabled": {"key": "email_password_login_enabled", "value": "1"},
+      "phone_password_login_enabled": {"key": "phone_password_login_enabled", "value": "1"},
+      "twilio_service_enabled": {"key": "twilio_service_enabled", "value": "1"},
+      "opt_email_enabled": {"key": "opt_email_enabled", "value": "0"},
+      "otp_cellphone_enabled": {"key": "otp_cellphone_enabled", "value": "0"},
+      "whatsapp_otp_login_enabled": {"key": "whatsapp_otp_login_enabled", "value": "0"},
+      "email_otp_signup_enabled": {"key": "email_otp_signup_enabled", "value": "0"},
+      "phone_otp_signup_enabled": {"key": "phone_otp_signup_enabled", "value": "0"},
+      "full_details_signup_enabled": {"key": "full_details_signup_enabled", "value": "1"},
+      "spoonity_enabled": {"key": "spoonity_enabled", "value": "0"},
+      "security_recaptcha_signup": {"key": "security_recaptcha_signup", "value": "0"},
+      "facebook_login": {"key": "facebook_login", "value": "0"},
+      "business_signup_allow": {"key": "business_signup_allow", "value": "0"},
+      "driver_signup_allow": {"key": "driver_signup_allow", "value": "0"},
+      "terms_and_conditions": {"key": "terms_and_conditions", "value": "false"}
+    },
+    "validation_fields": [
+      {"id": 6101, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 6102, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 6103, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true}
+    ]
+  },
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/auth$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": ["Synthetic authentication was not completed."] }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": ["Synthetic signup was not completed."] }
+    }
+  ]
+}

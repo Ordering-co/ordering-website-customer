@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-001",
+  "fixture": "custom-orders",
+  "route": "/home",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 3000,
+    "settleMs": 250,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "custom-order-banner-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-banner']", "file": "website-custom-order-banner-desktop.png", "alt": "Desktop Website Custom order banner for starting a special synthetic delivery" },
+    { "id": "custom-order-step1-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step1-desktop.png", "alt": "Desktop Custom order Step 1 with blank pickup and a synthetic saved delivery address" },
+    { "id": "custom-order-step1-ready-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step1-ready-desktop.png", "alt": "Desktop Custom order Step 1 with synthetic pickup and delivery locations ready to continue" },
+    { "id": "custom-order-distance-exceeded-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-distance-exceeded-desktop.png", "alt": "Desktop Custom order Step 1 showing a configured distance exceeded warning" },
+    { "id": "custom-order-step2-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step2-desktop.png", "alt": "Desktop Custom order Step 2 with a blank product, Cash selected, and declared value before placement" },
+    { "id": "custom-order-step2-ready-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step2-ready-desktop.png", "alt": "Desktop Custom order Step 2 with one synthetic item and an enabled Place order action before submission" },
+    { "id": "custom-order-banner-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='custom-order-banner']", "file": "website-custom-order-banner-mobile.png", "alt": "Mobile Website Custom order banner for a special synthetic delivery" },
+    { "id": "custom-order-step1-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step1-mobile.png", "alt": "Mobile Custom order Step 1 with synthetic pickup and saved delivery locations" },
+    { "id": "custom-order-step2-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='custom-order-modal']", "file": "website-custom-order-step2-mobile.png", "alt": "Mobile Custom order Step 2 with a synthetic item and payment choices before placement" }
+  ]
+}

@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<!-- El mismo meta viewport que index.html -->
+<meta name="viewport" content="width=device-width, initial-scale=1, interactive-widget=resizes-content" />
+<title>Control de viewport (implementation notes / implementation notes)</title>
+<!--
+  Página de control, SIN la app: ni React, ni la tienda, ni imports. Nadie la importa, así que no entra en el build.
+  Sirve para saber si el viewport roto aparece también aquí (entonces es WebKit) o solo en la tienda (entonces es la web).
+  Uso: python3 -m http.server 3014 desde esta carpeta y abrir http://<ip>:3014/control.html en el dispositivo.
+  El panel es una copia en línea de src/ui/src/components/ViewportDebug/core.js (duplicado a propósito);
+  si cambias uno, cambia el otro.
+-->
+<style>
+  html, body { margin: 0; padding: 0; }
+  body { font: 16px/1.4 system-ui, sans-serif; color: #111; background: #fff; }
+  #block { width: 100%; box-sizing: border-box; border: 4px solid #d6001c; padding: 12px; background: #fff3f3; }
+  #block h1 { margin: 0 0 4px; font-size: 18px; }
+  #block p { margin: 0; }
+  #bar { position: fixed; left: 0; right: 0; bottom: 0; height: 56px; box-sizing: border-box; border-top: 4px solid #000; background: #0a7d3b; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+  /* relleno alto para poder hacer scroll; las marcas verticales cada 100 px muestran dónde acaba el layout */
+  #filler { height: 3000px; background: repeating-linear-gradient(90deg, rgba(0,0,0,.35) 0 1px, transparent 1px 100px), repeating-linear-gradient(180deg, rgba(0,0,0,.08) 0 40px, transparent 40px 80px); }
+  #filler p { margin: 0; padding: 12px; }
+</style>
+</head>
+<body>
+<div id="block">
+  <h1>Bloque width: 100%</h1>
+  <p>El borde rojo debe tocar los dos lados de la pantalla. Si falta el lado derecho, el layout es más estrecho que la ventana.</p>
+</div>
+<div id="filler"><p>Haz scroll. La barra verde es position: fixed; bottom: 0; left: 0; right: 0 y debe pegarse al borde inferior.</p></div>
+<div id="bar">Barra fixed bottom: 0</div>
+<script>
+(function () {
+// implementation notes / implementation notes, fase 1 (diagnóstico): instrumento de medición SOLO de desarrollo.
+//
+// Mide, sin tocar la app, qué cree el navegador que es su viewport (innerWidth, visualViewport, sondas CSS,
+// rects de las barras) para distinguir un viewport de WebKit atascado de un fallo de la web. No arregla nada.
+//
+// JS plano sobre el DOM, sin React y sin imports: no depende del árbol de la app ni la vuelve a renderizar.
+// `src/ui/src/components/ViewportDebug/control.html` lleva una copia en línea de este archivo (sin `export`); si cambias
+// uno, cambia el otro. Textos en español, sin t(): es una herramienta interna.
+
+const VIEWPORT_DEBUG_ID = 'ordering-viewport-debug'
+const LOG_LIMIT = 60
+// diferencia (px) a partir de la cual un derivado se marca como aviso
+const TOLERANCE = 2
+const TICK_MS = 250
+const EVENT_DELAYS = [100, 500, 1500]
+const EXPERIMENT_DELAYS = [100, 500]
+
+// ---------- formato ----------
+
+const round = (n) => (typeof n === 'number' && Number.isFinite(n) ? Math.round(n * 100) / 100 : null)
+const show = (n) => (round(n) === null ? 'n/d' : String(round(n)))
+const dim = (a, b) => `${show(a)}×${show(b)}`
+const two = (n) => String(n).padStart(2, '0')
+
+/** hh:mm:ss.mmm (hora local) */
+const formatTime = (date = new Date()) => `${two(date.getHours())}:${two(date.getMinutes())}:${two(date.getSeconds())}.${String(date.getMilliseconds()).padStart(3, '0')}`
+
+const rectOf = (el) => {
+  if (!el || typeof el.getBoundingClientRect !== 'function') return null
+  const r = el.getBoundingClientRect()
+  return { left: round(r.left), right: round(r.right), width: round(r.width), top: round(r.top), bottom: round(r.bottom) }
+}
+
+// ---------- sondas CSS ----------
+
+// position:fixed, invisibles, sin eventos y sin tamaño en el eje que no se mide: no alteran el layout.
+// La del borde inferior mide 0 de alto (en vez de 1 px): su rect.bottom es el mismo y no hace falta un literal.
+const PROBE_BASE = 'position:fixed;top:0;left:0;margin:0;padding:0;border:0;visibility:hidden;pointer-events:none;'
+const PROBES = [
+  { key: 'vw100', label: '100vw', css: 'width:100vw;height:0;', read: (r) => r.width, feature: ['width', '100vw'] },
+  { key: 'pct100', label: '100%', css: 'width:100%;height:0;', read: (r) => r.width, feature: ['width', '100%'] },
+  { key: 'vh100', label: '100vh', css: 'height:100vh;width:0;', read: (r) => r.height, feature: ['height', '100vh'] },
+  { key: 'dvh100', label: '100dvh', css: 'height:100dvh;width:0;', read: (r) => r.height, feature: ['height', '100dvh'] },
+  { key: 'svh100', label: '100svh', css: 'height:100svh;width:0;', read: (r) => r.height, feature: ['height', '100svh'] },
+  { key: 'lvh100', label: '100lvh', css: 'height:100lvh;width:0;', read: (r) => r.height, feature: ['height', '100lvh'] },
+  { key: 'bottom', label: 'fixed bottom:0', css: 'top:auto;bottom:0;width:0;height:0;', read: (r) => r.bottom, feature: null }
+]
+
+const createProbes = (parent, win) => {
+  const doc = win.document
+  const supports = (feature) => {
+    if (!feature) return true
+    try { return typeof win.CSS?.supports !== 'function' || win.CSS.supports(feature[0], feature[1]) } catch (e) { return true }
+  }
+  const nodes = PROBES.map((probe) => {
+    const el = doc.createElement('div')
+    el.setAttribute('aria-hidden', 'true')
+    el.style.cssText = PROBE_BASE + probe.css
+    parent.appendChild(el)
+    return { probe, el, ok: supports(probe.feature) }
+  })
+  return {
+    read: () => Object.fromEntries(nodes.map(({ probe, el, ok }) => [probe.key, ok ? round(probe.read(el.getBoundingClientRect())) : null]))
+  }
+}
+
+// ---------- lectura ----------
+
+/**
+ * Lee todo lo medible en este instante.
+ * targets: [{ key, label, find(doc) → Element|null }]
+ */
+const readMetrics = (win, targets = [], probes = null) => {
+  const doc = win.document
+  const root = doc.documentElement
+  const vv = win.visualViewport || null
+  const orientation = win.screen && win.screen.orientation ? win.screen.orientation : null
+  const portraitQuery = typeof win.matchMedia === 'function' ? win.matchMedia('(orientation: portrait)') : null
+  const meta = doc.querySelector('meta[name="viewport"]')
+  return {
+    iw: win.innerWidth,
+    ih: win.innerHeight,
+    ow: win.outerWidth,
+    oh: win.outerHeight,
+    vv: vv ? { w: vv.width, h: vv.height, top: vv.offsetTop, left: vv.offsetLeft, pageTop: vv.pageTop, pageLeft: vv.pageLeft, scale: vv.scale } : null,
+    cw: root.clientWidth,
+    ch: root.clientHeight,
+    sw: root.scrollWidth,
+    sh: root.scrollHeight,
+    screen: { w: win.screen ? win.screen.width : undefined, h: win.screen ? win.screen.height : undefined },
+    orientation: orientation ? { type: orientation.type, angle: orientation.angle } : null,
+    windowOrientation: 'orientation' in win ? win.orientation : null,
+    portrait: portraitQuery ? portraitQuery.matches : null,
+    dpr: win.devicePixelRatio,
+    scrollX: win.scrollX,
+    scrollY: win.scrollY,
+    touch: ((win.navigator && win.navigator.maxTouchPoints) || 0) > 0,
+    metaViewport: meta ? meta.getAttribute('content') : null,
+    keyboardOpen: root.hasAttribute('data-keyboard-open'),
+    probes: probes ? probes.read() : null,
+    rects: Object.fromEntries(targets.map((t) => [t.key, rectOf(t.find(doc))]))
+  }
+}
+
+// ---------- derivados ----------
+
+/**
+ * Lo que facilita leer las medidas. Cada ítem: { id, name, value, warn, message }.
+ * warn = difiere más de TOLERANCE; `warnings` son los mensajes de los ítems con warn.
+ * targets: [{ key, label, short?, right?, bottom? }] (right: debe llegar al borde derecho; bottom: al inferior).
+ */
+const computeDerived = (m, targets = []) => {
+  const items = []
+  const add = (id, name, value, warn, message) => items.push({ id, name, value: typeof value === 'string' ? value : value === null ? 'n/d' : show(value), warn: !!warn, message })
+  const off = (n) => n !== null && Math.abs(n) > TOLERANCE
+  const vis = m.vv ? m.vv.h + m.vv.top : null
+
+  for (const t of targets) {
+    const rect = m.rects[t.key]
+    const short = t.short || t.label
+    if (t.right) {
+      const gap = rect ? round(m.iw - rect.right) : null
+      add(`right-${t.key}`, `hueco der. ${short}`, gap, off(gap), `Hueco derecho de ${t.label}: ${show(gap)} (innerWidth ${show(m.iw)} − right ${rect ? show(rect.right) : 'n/d'})`)
+    }
+    if (t.bottom) {
+      const layout = rect ? round(m.ih - rect.bottom) : null
+      const visual = rect && vis !== null ? round(vis - rect.bottom) : null
+      add(`bottom-${t.key}`, `hueco inf. ${short} (ih)`, layout, off(layout), `Hueco inferior de ${t.label}: ${show(layout)} contra innerHeight ${show(m.ih)}`)
+      add(`bottom-vv-${t.key}`, `hueco inf. ${short} (vv)`, visual, off(visual), `Hueco inferior de ${t.label}: ${show(visual)} contra visualViewport.height + offsetTop ${show(vis)}`)
+    }
+  }
+
+  // innerWidth contra el ancho de pantalla que toca según la orientación (solo es señal en un móvil a pantalla completa)
+  const shortSide = Math.min(m.screen.w, m.screen.h)
+  const longSide = Math.max(m.screen.w, m.screen.h)
+  const portrait = m.portrait !== null ? m.portrait : m.iw < m.ih
+  const expected = Number.isFinite(shortSide) ? (portrait ? shortSide : longSide) : null
+  const screenDiff = expected === null ? null : round(m.iw - expected)
+  add('screen', `iw − pantalla (${expected === null ? 'n/d' : show(expected)})`, screenDiff, m.touch && off(screenDiff), `innerWidth ${show(m.iw)} ≠ ancho de pantalla ${show(expected)} para esta orientación`)
+
+  const scaled = m.vv ? round(m.iw - m.vv.w * m.vv.scale) : null
+  add('scaled', 'iw − vv.w·scale', scaled, off(scaled), `innerWidth ${show(m.iw)} ≠ visualViewport.width·scale ${m.vv ? show(m.vv.w * m.vv.scale) : 'n/d'}`)
+
+  const clientDiff = round(m.iw - m.cw)
+  add('client', 'iw − clientWidth', clientDiff, m.touch && off(clientDiff), `innerWidth ${show(m.iw)} ≠ documentElement.clientWidth ${show(m.cw)}`)
+
+  const overflow = round(m.sw - m.cw)
+  add('overflow', 'scrollW − clientW', overflow, off(overflow), `Scroll horizontal: scrollWidth ${show(m.sw)} > clientWidth ${show(m.cw)}`)
+
+  if (m.probes) {
+    const vw = m.probes.vw100 === null ? null : round(m.probes.vw100 - m.iw)
+    add('probe-vw', '100vw − iw', vw, off(vw), `La sonda 100vw (${show(m.probes.vw100)}) ≠ innerWidth ${show(m.iw)}`)
+    const pct = m.probes.pct100 === null ? null : round(m.probes.pct100 - m.cw)
+    add('probe-pct', '100% − clientW', pct, off(pct), `La sonda width:100% (${show(m.probes.pct100)}) ≠ clientWidth ${show(m.cw)}`)
+    const bottom = m.probes.bottom === null ? null : round(m.ih - m.probes.bottom)
+    add('probe-bottom', 'ih − sonda bottom:0', bottom, off(bottom), `El borde inferior fixed (sonda bottom:0) está ${show(bottom)} por encima de innerHeight`)
+    const bottomVv = m.probes.bottom === null || vis === null ? null : round(vis - m.probes.bottom)
+    add('probe-bottom-vv', 'vv.h+top − sonda', bottomVv, off(bottomVv), `El borde inferior fixed (sonda bottom:0) está ${show(bottomVv)} por encima de visualViewport.height + offsetTop`)
+  }
+
+  if (m.portrait !== null && m.iw !== m.ih) {
+    const mismatch = m.portrait !== (m.iw < m.ih)
+    add('portrait', 'orientation media', `${m.portrait ? 'portrait' : 'landscape'} / iw${m.iw < m.ih ? '<' : '>'}ih`, mismatch, `La media (orientation: portrait) dice ${m.portrait ? 'vertical' : 'horizontal'} pero innerWidth ${show(m.iw)} ${m.iw < m.ih ? '<' : '>'} innerHeight ${show(m.ih)}`)
+  }
+
+  return { items, warnings: items.filter((i) => i.warn).map((i) => i.message) }
+}
+
+// ---------- filas del panel ----------
+
+const field = (name, value, warn = false) => ({ name, value: String(value), warn: !!warn })
+
+/** Filas del panel: [{ id, label, fields: [{ name, value, warn }] }]. Pura: la prueban los tests. */
+const buildRows = (m, derived, targets = []) => {
+  const rows = []
+  rows.push({ id: 'win', label: 'window', fields: [field('inner', dim(m.iw, m.ih)), field('outer', dim(m.ow, m.oh))] })
+  rows.push({
+    id: 'vv',
+    label: 'visualViewport',
+    fields: m.vv
+      ? [field('w×h', dim(m.vv.w, m.vv.h)), field('offsetTop', show(m.vv.top)), field('offsetLeft', show(m.vv.left)), field('pageTop', show(m.vv.pageTop)), field('pageLeft', show(m.vv.pageLeft)), field('scale', show(m.vv.scale))]
+      : [field('', 'n/d')]
+  })
+  const overflow = derived.items.find((i) => i.id === 'overflow')
+  rows.push({ id: 'doc', label: 'docElement', fields: [field('client', dim(m.cw, m.ch)), field('scrollW', show(m.sw), overflow && overflow.warn), field('scrollH', show(m.sh)), field('scrollX,Y', `${show(m.scrollX)},${show(m.scrollY)}`)] })
+  rows.push({
+    id: 'screen',
+    label: 'screen',
+    fields: [
+      field('w×h', dim(m.screen.w, m.screen.h)),
+      field('orientation', m.orientation ? `${m.orientation.type} ${show(m.orientation.angle)}°` : 'n/d'),
+      field('window.orientation', m.windowOrientation === null ? 'n/d' : show(m.windowOrientation)),
+      field('portrait', m.portrait === null ? 'n/d' : String(m.portrait)),
+      field('dpr', show(m.dpr))
+    ]
+  })
+  if (m.probes) {
+    const warnOf = (id) => derived.items.some((i) => i.id === id && i.warn)
+    rows.push({
+      id: 'probes',
+      label: 'sondas CSS (px)',
+      fields: PROBES.map((p) => field(p.label, show(m.probes[p.key]), (p.key === 'vw100' && warnOf('probe-vw')) || (p.key === 'pct100' && warnOf('probe-pct')) || (p.key === 'bottom' && (warnOf('probe-bottom') || warnOf('probe-bottom-vv')))))
+    })
+  }
+  for (const t of targets) {
+    const r = m.rects[t.key]
+    rows.push({
+      id: `rect-${t.key}`,
+      label: t.label,
+      fields: r
+        ? [field('left', show(r.left)), field('right', show(r.right)), field('width', show(r.width)), field('top', show(r.top)), field('bottom', show(r.bottom))]
+        : [field('', 'no encontrado')]
+    })
+  }
+  rows.push({ id: 'meta', label: 'meta viewport', fields: [field('', m.metaViewport === null ? 'no hay' : m.metaViewport), field('teclado', m.keyboardOpen ? 'abierto' : 'cerrado')] })
+  rows.push({ id: 'derived', label: 'derivados', fields: derived.items.map((i) => field(i.name, i.value, i.warn)) })
+  return rows
+}
+
+// ---------- instantánea compacta (la del registro) ----------
+
+/**
+ * compact: [{ key, label, mode: 'rect' | 'right' }]
+ * -> { iw, ih, vv, cw, ch, screen, orientation, rects: { key: rect | null }, parts: [string] }
+ */
+const compactSnapshot = (m, compact = []) => {
+  const rects = Object.fromEntries(compact.map((c) => [c.key, m.rects[c.key] || null]))
+  const parts = [
+    `iw ${dim(m.iw, m.ih)}`,
+    m.vv ? `vv ${dim(m.vv.w, m.vv.h)}@${show(m.vv.top)} ×${show(m.vv.scale)}` : 'vv n/d',
+    `doc ${dim(m.cw, m.ch)}`,
+    `scr ${dim(m.screen.w, m.screen.h)}`,
+    m.orientation ? `${m.orientation.type} ${show(m.orientation.angle)}°` : 'orient n/d',
+    ...compact.map((c) => {
+      const r = rects[c.key]
+      if (!r) return `${c.label} no encontrado`
+      return c.mode === 'right' ? `${c.label} R${show(r.right)}` : `${c.label} L${show(r.left)} R${show(r.right)} T${show(r.top)} B${show(r.bottom)}`
+    })
+  ]
+  return { iw: m.iw, ih: m.ih, vv: m.vv, cw: m.cw, ch: m.ch, screen: m.screen, orientation: m.orientation, rects, parts }
+}
+
+const compactText = (snap) => snap.parts.join('  ')
+
+// ---------- DOM ----------
+
+const h = (doc, tag, attrs = {}, ...children) => {
+  const el = doc.createElement(tag)
+  for (const [k, v] of Object.entries(attrs)) {
+    if (v === null || v === undefined || v === false) continue
+    if (k === 'class') el.className = v
+    else el.setAttribute(k, v === true ? '' : v)
+  }
+  for (const c of children) el.append(c)
+  return el
+}
+
+// Todo en em/ch/%/keywords: sin literales de tamaño. Colores: las variables --ot-* de la tienda publicadas en :root,
+// con colores de sistema como respaldo (la página de control no las tiene).
+const STYLE = (id) => `
+#${id}, #${id} * { box-sizing: border-box; }
+#${id} { position: fixed; top: 0; left: 0; width: 0; height: 0; margin: 0; padding: 0; border: 0; overflow: visible; z-index: 2147483000; pointer-events: none; font: small/1.35 system-ui, sans-serif; font-variant-numeric: tabular-nums; color: var(--ot-color-text, CanvasText); text-align: left; }
+#${id} .vd-panel, #${id} .vd-pill { position: fixed; left: max(0.4em, env(safe-area-inset-left, 0em)); top: max(0.4em, env(safe-area-inset-top, 0em)); pointer-events: auto; border: thin solid var(--ot-color-border-strong, GrayText); border-radius: var(--ot-radius-md, 0.5em); background: var(--ot-color-surface, Canvas); background: color-mix(in srgb, var(--ot-color-surface, Canvas) 95%, transparent); box-shadow: var(--ot-shadow-md, none); }
+#${id}[data-pos='bottom'] .vd-panel, #${id}[data-pos='bottom'] .vd-pill { top: auto; bottom: max(0.4em, env(safe-area-inset-bottom, 0em)); }
+#${id} .vd-panel { width: min(70ch, calc(100% - 0.8em - env(safe-area-inset-left, 0em) - env(safe-area-inset-right, 0em))); max-height: 62%; overflow: auto; overscroll-behavior: contain; padding: 0.5em; }
+#${id} .vd-pill { padding: 0.5em 0.8em; min-height: 3em; font: inherit; color: inherit; cursor: pointer; touch-action: manipulation; }
+#${id} .vd-bar { display: flex; flex-wrap: wrap; gap: 0.4em; margin-bottom: 0.4em; }
+#${id} .vd-btn { font: inherit; color: var(--ot-color-text, CanvasText); background: var(--ot-color-surface-alt, ButtonFace); border: thin solid var(--ot-color-border-strong, ButtonBorder); border-radius: var(--ot-radius-sm, 0.3em); padding: 0.5em 0.8em; min-height: 3em; cursor: pointer; touch-action: manipulation; }
+#${id} .vd-btn:focus-visible, #${id} .vd-pill:focus-visible { outline: 0.2em solid var(--ot-color-primary, Highlight); outline-offset: 0.1em; }
+#${id} .vd-title { margin: 0.5em 0 0.2em; font-weight: 700; }
+#${id} .vd-status { min-height: 1.35em; color: var(--ot-color-text-muted, GrayText); }
+#${id} .vd-alerts { margin: 0 0 0.3em; padding: 0; list-style: none; }
+#${id} .vd-alerts li { margin: 0.15em 0; padding: 0.15em 0.4em; border-radius: var(--ot-radius-sm, 0.3em); font-weight: 700; background: var(--ot-color-danger-subtle, Mark); color: var(--ot-color-danger-text, MarkText); overflow-wrap: anywhere; }
+#${id} .vd-alerts li.vd-ok { background: none; color: var(--ot-color-text-muted, GrayText); font-weight: 400; }
+#${id} .vd-row { display: grid; grid-template-columns: 7.5em minmax(0, 1fr); gap: 0.5em; padding: 0.2em 0; border-top: thin solid var(--ot-color-border, GrayText); }
+#${id} .vd-l { font-weight: 600; overflow-wrap: anywhere; }
+#${id} .vd-fields { display: flex; flex-wrap: wrap; gap: 0.1em 0.9em; min-width: 0; }
+#${id} .vd-f { white-space: nowrap; }
+#${id} .vd-f[data-long] { white-space: normal; overflow-wrap: anywhere; }
+#${id} .vd-n { color: var(--ot-color-text-muted, GrayText); }
+#${id} .vd-v { font-weight: 600; }
+#${id} .vd-f[data-warn] { padding: 0 0.3em; border-radius: var(--ot-radius-sm, 0.3em); background: var(--ot-color-danger-subtle, Mark); color: var(--ot-color-danger-text, MarkText); }
+#${id} .vd-f[data-warn] .vd-n { color: inherit; }
+#${id} .vd-f[data-warn] .vd-v { font-weight: 800; }
+#${id} .vd-lab { margin-top: 0.4em; padding: 0.4em; border: thin dashed var(--ot-color-border-strong, GrayText); border-radius: var(--ot-radius-sm, 0.3em); }
+#${id} .vd-lab p { margin: 0 0 0.4em; color: var(--ot-color-text-muted, GrayText); }
+#${id} .vd-log { margin: 0; padding: 0; list-style: none; font-size: smaller; }
+#${id} .vd-e { padding: 0.25em 0; border-top: thin solid var(--ot-color-border, GrayText); }
+#${id} .vd-e b { font-weight: 800; }
+#${id} .vd-time { color: var(--ot-color-text-muted, GrayText); }
+#${id} .vd-parts { display: flex; flex-wrap: wrap; gap: 0 0.8em; }
+#${id} .vd-parts span { white-space: nowrap; }
+#${id} .vd-follow { padding-left: 1em; }
+#${id} .vd-follow .vd-chg { font-weight: 800; background: var(--ot-color-warning-subtle, Mark); color: var(--ot-color-warning-text, MarkText); }
+#${id} .vd-copy { width: 100%; height: 10em; margin-top: 0.4em; font: smaller/1.3 ui-monospace, monospace; color: var(--ot-color-text, CanvasText); background: var(--ot-color-surface, Canvas); border: thin solid var(--ot-color-border-strong, GrayText); }
+`
+
+/**
+ * Crea el overlay. Devuelve { unmount, record, refresh, getLog, getReport, root }.
+ * options: { win, targets, compact, mountTo }
+ *   targets: [{ key, label, short?, find(doc), right?, bottom? }]
+ *   compact: [{ key, label, mode: 'rect' | 'right' }]  (lo que lleva cada entrada del registro)
+ */
+const createViewportDebug = ({ win = window, targets = [], compact = [], mountTo } = {}) => {
+  const doc = win.document
+  const parent = mountTo || doc.body
+  const cleanups = []
+  const timers = new Set()
+  const log = []
+  let minimized = false
+  let position = 'top'
+  let lastText = ''
+  let lastRecordAt = 0
+  let alive = true
+
+  const root = h(doc, 'div', { id: VIEWPORT_DEBUG_ID, 'data-pos': position, 'data-testid': VIEWPORT_DEBUG_ID })
+  root.append(h(doc, 'style', {}, STYLE(VIEWPORT_DEBUG_ID)))
+  parent.appendChild(root)
+  const probes = createProbes(root, win)
+
+  const later = (fn, ms) => {
+    const id = setTimeout(() => { timers.delete(id); if (alive) fn() }, ms)
+    timers.add(id)
+  }
+  const listen = (target, type, fn, opts) => {
+    if (!target || typeof target.addEventListener !== 'function') return
+    target.addEventListener(type, fn, opts)
+    cleanups.push(() => target.removeEventListener(type, fn, opts))
+  }
+
+  const measure = () => readMetrics(win, targets, probes)
+  const raf = (fn) => (typeof win.requestAnimationFrame === 'function' ? win.requestAnimationFrame(fn) : setTimeout(fn, 16))
+
+  // ---- DOM del panel ----
+  const status = h(doc, 'div', { class: 'vd-status', role: 'status' })
+  const alerts = h(doc, 'ul', { class: 'vd-alerts' })
+  const alertsTitle = h(doc, 'div', { class: 'vd-title' }, 'Avisos')
+  const rowsBox = h(doc, 'div', {})
+  const logBox = h(doc, 'ol', { class: 'vd-log' })
+  const logTitle = h(doc, 'div', { class: 'vd-title' }, 'Registro')
+  const copyBox = h(doc, 'div', {})
+
+  const button = (label, onClick, extra = {}) => {
+    const b = h(doc, 'button', { type: 'button', class: 'vd-btn', ...extra }, label)
+    listen(b, 'click', onClick)
+    return b
+  }
+
+  const pill = h(doc, 'button', { type: 'button', class: 'vd-pill', 'aria-label': 'Expandir el panel de viewport' })
+  listen(pill, 'click', () => setMinimized(false))
+  const panel = h(doc, 'div', { class: 'vd-panel', role: 'region', 'aria-label': 'Viewport debug' })
+
+  const setMinimized = (value) => {
+    minimized = value
+    panel.hidden = value
+    pill.hidden = !value
+    refresh()
+  }
+  const toggleBtn = button('Minimizar', () => setMinimized(true))
+  const posBtn = button('Mover abajo', () => {
+    position = position === 'top' ? 'bottom' : 'top'
+    root.setAttribute('data-pos', position)
+    posBtn.textContent = position === 'top' ? 'Mover abajo' : 'Mover arriba'
+  })
+  const copyBtn = button('Copiar JSON', () => copyReport())
+  const clearBtn = button('Limpiar registro', () => { log.length = 0; renderLog() })
+
+  const experiments = [
+    { label: 'scrollBy(0,1) y vuelta', event: 'Prueba scrollBy(0,1) y vuelta', run: () => { win.scrollBy({ top: 1, left: 0, behavior: 'instant' }); win.scrollBy({ top: -1, left: 0, behavior: 'instant' }) } },
+    {
+      label: 'Forzar reflow',
+      event: 'Prueba reflow (body display none)',
+      run: () => {
+        const body = doc.body
+        const previous = body.style.display
+        body.style.display = 'none'
+        void body.offsetHeight
+        body.style.display = previous
+      }
+    },
+    {
+      label: 'Reescribir meta viewport',
+      event: 'Prueba reescribir meta viewport',
+      run: () => {
+        const meta = doc.querySelector('meta[name="viewport"]')
+        if (!meta) return 'no hay meta viewport'
+        const content = meta.getAttribute('content')
+        const holder = meta.parentNode
+        const next = meta.nextSibling
+        meta.remove()
+        const fresh = doc.createElement('meta')
+        fresh.setAttribute('name', 'viewport')
+        fresh.setAttribute('content', content)
+        holder.insertBefore(fresh, next)
+        return `mismo content: ${content}`
+      }
+    },
+    { label: 'Disparar resize', event: 'Prueba dispatchEvent(resize)', run: () => { win.dispatchEvent(new win.Event('resize')) } }
+  ]
+  const lab = h(
+    doc,
+    'div',
+    { class: 'vd-lab' },
+    h(doc, 'p', {}, 'Pruebas: no arreglan nada por sí solas. Registran el antes y +100/+500 ms después.'),
+    h(doc, 'div', { class: 'vd-bar' }, ...experiments.map((x) => button(x.label, () => {
+      const entry = record(x.event, 'antes', EXPERIMENT_DELAYS)
+      const note = x.run()
+      if (note) { entry.detail = `antes; ${note}`; renderLog() }
+    })))
+  )
+
+  panel.append(
+    h(doc, 'div', { class: 'vd-bar' }, toggleBtn, posBtn, copyBtn, clearBtn),
+    status,
+    copyBox,
+    alertsTitle,
+    alerts,
+    rowsBox,
+    lab,
+    logTitle,
+    logBox
+  )
+  pill.hidden = true
+  root.append(panel, pill)
+
+  // ---- render ----
+  const rowEls = new Map()
+  let alertsKey = ''
+  let pillKey = ''
+  let last = null
+
+  const renderFields = (el, fields) => {
+    el.textContent = ''
+    for (const f of fields) {
+      const long = f.value.length > 24
+      const span = h(doc, 'span', { class: 'vd-f', 'data-warn': f.warn, 'data-long': long })
+      if (f.name) span.append(h(doc, 'span', { class: 'vd-n' }, `${f.name} `))
+      span.append(h(doc, 'span', { class: 'vd-v' }, f.value))
+      el.append(span)
+    }
+  }
+
+  const refresh = () => {
+    if (!alive) return null
+    const m = measure()
+    const derived = computeDerived(m, targets)
+    last = { m, derived }
+    const pillText = `VP ${dim(m.iw, m.ih)}${derived.warnings.length ? `, ${derived.warnings.length} avisos` : ''}`
+    if (pillText !== pillKey) { pillKey = pillText; pill.textContent = pillText }
+    if (minimized) return last
+    const key = JSON.stringify(derived.warnings)
+    if (key !== alertsKey) {
+      alertsKey = key
+      alerts.textContent = ''
+      alertsTitle.textContent = `Avisos (${derived.warnings.length}), difieren más de ${TOLERANCE} px`
+      if (!derived.warnings.length) alerts.append(h(doc, 'li', { class: 'vd-ok' }, 'Ninguna diferencia a la vista.'))
+      for (const w of derived.warnings) alerts.append(h(doc, 'li', {}, w))
+    }
+    for (const row of buildRows(m, derived, targets)) {
+      const json = JSON.stringify(row.fields)
+      let entry = rowEls.get(row.id)
+      if (!entry) {
+        const fieldsEl = h(doc, 'div', { class: 'vd-fields' })
+        const el = h(doc, 'div', { class: 'vd-row', 'data-row': row.id }, h(doc, 'div', { class: 'vd-l' }, row.label), fieldsEl)
+        rowsBox.append(el)
+        entry = { el, fieldsEl, json: '' }
+        rowEls.set(row.id, entry)
+      }
+      if (entry.json !== json) { entry.json = json; renderFields(entry.fieldsEl, row.fields) }
+    }
+    return last
+  }
+
+  const partsEl = (parts, against) => {
+    const box = h(doc, 'div', { class: 'vd-parts' })
+    parts.forEach((p, i) => box.append(h(doc, 'span', { class: against && against[i] !== p ? 'vd-chg' : '' }, p)))
+    return box
+  }
+
+  const renderLog = () => {
+    logBox.textContent = ''
+    for (const e of log) {
+      const li = h(doc, 'li', { class: 'vd-e', 'data-event': e.event })
+      li.append(h(doc, 'div', {}, h(doc, 'span', { class: 'vd-time' }, `${e.time} `), h(doc, 'b', {}, e.event), e.detail ? ` ${e.detail}` : ''))
+      li.append(partsEl(e.snap.parts))
+      for (const f of e.follow) {
+        const row = h(doc, 'div', { class: 'vd-follow' }, h(doc, 'span', { class: 'vd-time' }, `${f.time} `), h(doc, 'b', {}, `+${f.delay}ms`))
+        row.append(partsEl(f.snap.parts, e.snap.parts))
+        li.append(row)
+      }
+      logBox.append(li)
+    }
+    logTitle.textContent = `Registro (${log.length}, máx. ${LOG_LIMIT}; lo nuevo arriba)`
+  }
+
+  // ---- registro ----
+  const record = (event, detail = '', delays = EVENT_DELAYS) => {
+    const snap = compactSnapshot(measure(), compact)
+    const entry = { time: formatTime(), event, detail, snap, follow: [] }
+    log.unshift(entry)
+    if (log.length > LOG_LIMIT) log.length = LOG_LIMIT
+    lastText = compactText(snap)
+    lastRecordAt = Date.now()
+    for (const delay of delays) {
+      later(() => {
+        if (!log.includes(entry)) return
+        const after = compactSnapshot(measure(), compact)
+        entry.follow.push({ delay, time: formatTime(), snap: after })
+        lastText = compactText(after)
+        lastRecordAt = Date.now()
+        renderLog()
+        refresh()
+      }, delay)
+    }
+    renderLog()
+    refresh()
+    return entry
+  }
+
+  const onTrusted = (event) => (event && event.isTrusted === false ? 'sintético' : '')
+  const simple = (name) => (event) => record(name, onTrusted(event))
+
+  let scrollQueued = false
+  const onScroll = (name) => () => {
+    if (scrollQueued) return
+    scrollQueued = true
+    raf(() => {
+      scrollQueued = false
+      if (!alive) return
+      // un scroll solo se registra si cambió algo medible (viewport, visualViewport, rects), no por moverse
+      if (compactText(compactSnapshot(measure(), compact)) !== lastText) record(name)
+    })
+  }
+
+  listen(win, 'resize', simple('resize'))
+  listen(win, 'orientationchange', (e) => record('orientationchange', `window.orientation ${win.orientation === undefined ? 'n/d' : win.orientation} ${onTrusted(e)}`.trim()))
+  listen(win, 'scroll', onScroll('scroll'), { passive: true })
+  listen(win, 'pageshow', (e) => record('pageshow', `persisted=${!!e.persisted}`))
+  listen(win, 'pagehide', (e) => record('pagehide', `persisted=${!!e.persisted}`))
+  listen(doc, 'visibilitychange', () => record('visibilitychange', doc.visibilityState))
+  if (win.screen && win.screen.orientation) {
+    listen(win.screen.orientation, 'change', () => record('screen.orientation change', `${win.screen.orientation.type} ${win.screen.orientation.angle}°`))
+  }
+  if (win.visualViewport) {
+    listen(win.visualViewport, 'resize', simple('visualViewport resize'))
+    listen(win.visualViewport, 'scroll', onScroll('visualViewport scroll'))
+  }
+  if (typeof win.matchMedia === 'function') {
+    const mq = win.matchMedia('(orientation: portrait)')
+    if (mq) {
+      const onMq = (e) => record('matchMedia orientation change', `portrait=${e && typeof e.matches === 'boolean' ? e.matches : mq.matches}`)
+      if (typeof mq.addEventListener === 'function') listen(mq, 'change', onMq)
+      else if (typeof mq.addListener === 'function') {
+        mq.addListener(onMq)
+        cleanups.push(() => mq.removeListener(onMq))
+      }
+    }
+  }
+
+  // Refresco barato cada TICK_MS; un cambio que ningún evento anunció también se anota.
+  const tick = setInterval(() => {
+    if (doc.hidden) return
+    refresh()
+    if (compactText(compactSnapshot(measure(), compact)) !== lastText && Date.now() - lastRecordAt > 400) record('cambio sin evento')
+  }, TICK_MS)
+  cleanups.push(() => clearInterval(tick))
+
+  // ---- copiar ----
+  const getReport = () => {
+    const state = refresh() || last
+    return {
+      generatedAt: new Date().toISOString(),
+      url: win.location.href,
+      userAgent: win.navigator.userAgent,
+      snapshot: state.m,
+      warnings: state.derived.warnings,
+      derived: state.derived.items,
+      log: log.map((e) => ({ time: e.time, event: e.event, detail: e.detail, snapshot: e.snap.parts, compact: { ...e.snap, parts: undefined }, follow: e.follow.map((f) => ({ delay: `+${f.delay}ms`, time: f.time, snapshot: f.snap.parts })) }))
+    }
+  }
+
+  const setStatus = (text) => { status.textContent = text }
+  const copyReport = async () => {
+    const text = JSON.stringify(getReport(), null, 2)
+    copyBox.textContent = ''
+    try {
+      await win.navigator.clipboard.writeText(text)
+      setStatus(`Copiado (${text.length} caracteres)`)
+    } catch (e) {
+      // sin portapapeles (p. ej. http en la LAN): un textarea de solo lectura para seleccionar y copiar a mano
+      const area = h(doc, 'textarea', { class: 'vd-copy', readonly: true, 'aria-label': 'JSON para copiar' })
+      area.value = text
+      copyBox.append(area)
+      area.focus()
+      area.select()
+      setStatus('No se pudo copiar solo: selecciona el texto de abajo y cópialo.')
+    }
+  }
+
+  lastText = compactText(compactSnapshot(measure(), compact))
+  renderLog()
+  refresh()
+
+  const unmount = () => {
+    if (!alive) return
+    alive = false
+    timers.forEach(clearTimeout)
+    timers.clear()
+    cleanups.forEach((fn) => fn())
+    cleanups.length = 0
+    root.remove()
+  }
+
+  return { unmount, record, refresh, getLog: () => log, getReport, root }
+}
+
+createViewportDebug({
+  win: window,
+  targets: [
+    { key: 'block', label: 'Bloque 100%', short: 'bloque', find: function (doc) { return doc.getElementById('block') }, right: true },
+    { key: 'bar', label: 'Barra fixed', short: 'barra', find: function (doc) { return doc.getElementById('bar') }, right: true, bottom: true }
+  ],
+  compact: [
+    { key: 'bar', label: 'barra', mode: 'rect' },
+    { key: 'block', label: 'bloque', mode: 'right' }
+  ]
+})
+})()
+</script>
+</body>
+</html>

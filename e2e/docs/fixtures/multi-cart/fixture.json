@@ -1,0 +1,107 @@
+{
+  "extends": "manage-cart",
+  "runtimeConfig": {
+    "app_id": "docs-fixture-website-app",
+    "app_internal_name": "website"
+  },
+  "apiOrigins": ["https://api.docs.invalid", "https://google-redirect.plugins.orderingplus.com", "https://static.addtoany.com", "https://js.stripe.com"],
+  "firstLoad": {
+    "configs": {
+      "checkout_multi_business_enabled": {"value": "1"}
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/cart_groups$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "uuid": "synthetic-cart-group-4401" } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/synthetic-cart-group-4401(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "uuid": "synthetic-cart-group-4401", "status": "pending", "carts": [], "balance": 0 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/synthetic-cart-group-4401/prepare(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/synthetic-existing-group-a(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "uuid": "synthetic-existing-group-a", "status": "pending", "carts": [], "balance": 0 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/synthetic-existing-group-a/prepare(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/undefined(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "uuid": "synthetic-undefined-boundary", "status": "pending", "carts": [], "balance": 0 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/cart_groups/undefined/prepare(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v3/?(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "transport": {
+        "contentType": "application/javascript",
+        "body": "window.Stripe = window.Stripe || function () { return {}; };"
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/users/9201/wallets(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business_types(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/businesses(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 6 },
+      "response": { "error": false, "result": [], "pagination": { "current_page": 1, "total_pages": 1, "total": 0 } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/8401(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 3 },
+      "response": { "error": false, "result": { "id": 8401, "slug": "synthetic-business-8401", "name": "Synthetic North Kitchen", "configs": [] } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/carts/synthetic-multi-cart-(?:a|b)/upselling(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/8501(?:\\?.*)?$",
+      "response": { "error": false, "result": { "id": 8501, "slug": "synthetic-business-8501", "name": "Fixture South Kitchen", "configs": [] } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/business/(?:8401|8501)/products(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 2 },
+      "response": { "error": false, "result": [] }
+    }
+  ]
+}

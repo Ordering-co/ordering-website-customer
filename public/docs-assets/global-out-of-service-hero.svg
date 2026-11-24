@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 500" role="img" aria-labelledby="title desc">
+  <title id="title">Synthetic archived Website background</title>
+  <desc id="desc">Abstract geometric background reserved for documentation captures.</desc>
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#17324d"/><stop offset="1" stop-color="#496b8c"/></linearGradient></defs>
+  <rect width="1440" height="500" fill="url(#g)"/>
+  <circle cx="180" cy="80" r="220" fill="#fff" opacity=".08"/><circle cx="1260" cy="460" r="310" fill="#fff" opacity=".06"/>
+  <path d="M0 390L360 170l300 210 320-260 460 270v110H0z" fill="#fff" opacity=".08"/>
+</svg>

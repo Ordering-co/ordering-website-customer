@@ -1,0 +1,8 @@
+import React from 'react'
+
+export const Bad = ({ on }) => (
+  <div className='ui:bg-primary ui:p-md'>
+    <span className={`ui:text-body ${on ? 'ui:font-bold' : ''}`} />
+    <i className={cn('ui:max-mobile:hidden', 'ui:[border:var(--ui-x)]')} />
+  </div>
+)

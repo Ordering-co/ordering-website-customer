@@ -1,0 +1,7 @@
+import React from 'react'
+
+// prose and keys that are not Tailwind classes: ui: was, an object key, a label
+export const Good = () => {
+  const config = { ui: true, 'ui': 1, title: 'ui: a label' }
+  return <div className='legacy-class' data-ui={config.ui}>ui:</div>
+}

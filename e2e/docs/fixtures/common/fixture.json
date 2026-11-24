@@ -1,0 +1,125 @@
+{
+  "runtimeConfig": {
+    "project": "docsmarket",
+    "app_name": "Ordering Demo Market",
+    "use_marketplace": false,
+    "businessSlug": "",
+    "useOptimizeLoad": true,
+    "cookie_consent_enabled": false,
+    "api": {
+      "url": "https://api.docs.invalid",
+      "language": "en",
+      "version": "v400"
+    },
+    "socket": {
+      "url": "https://sockets.docs.invalid"
+    }
+  },
+  "apiOrigins": ["https://api.docs.invalid"],
+  "geo": {
+    "country_code": "US"
+  },
+  "firstLoad": {
+    "configs": {
+      "default_order_type": {"key": "default_order_type", "value": "delivery"},
+      "order_types_allowed": {"key": "order_types_allowed", "value": "1|2"},
+      "show_login_account": {"key": "show_login_account", "value": "1"},
+      "powered_by_ordering_module": {"key": "powered_by_ordering_module", "value": "1"}
+    },
+    "features": {},
+    "site": {
+      "name": "Ordering Demo Market",
+      "description": "A synthetic storefront used only for documentation."
+    },
+    "theme": {
+      "version": 2,
+      "values": {
+        "pages": {
+          "business_listing": {
+            "sections": [
+              {"key": "highest_rated", "visible": false},
+              {"key": "featured", "visible": false}
+            ]
+          }
+        }
+      }
+    },
+    "validation_fields": []
+  },
+  "edgeXhr": {
+    "language": "en",
+    "project": "docsmarket",
+    "translations": {
+      "error": false,
+      "result": {}
+    },
+    "languages_default": {
+      "error": false,
+      "result": [
+        {"id": 1, "code": "en", "rtl": false}
+      ]
+    }
+  },
+  "routes": [],
+  "fallbackRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/languages(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": [
+          {
+            "id": 1,
+            "code": "en",
+            "rtl": false
+          }
+        ]
+      },
+      "query": {
+        "where": "[{\"attribute\":\"enabled\",\"value\":true}]"
+      },
+      "assert": {
+        "maxCount": 1
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages/homeContent2(_en)?(?:\\?.*)?$",
+      "response": {
+        "error": true,
+        "result": []
+      },
+      "query": {},
+      "assert": {
+        "maxCount": 2
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/configs(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": {}
+      },
+      "query": {
+        "where": "[{\"attribute\":\"key\",\"value\":[\"add_product_with_one_click\"]}]",
+        "mode": "dictionary"
+      },
+      "assert": {
+        "maxCount": 1
+      }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages(?:\\?.*)?$",
+      "response": {
+        "error": false,
+        "result": []
+      },
+      "query": {},
+      "assert": {
+        "maxCount": 1
+      }
+    }
+  ]
+}

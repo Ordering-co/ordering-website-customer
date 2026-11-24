@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-003",
+  "fixture": "school-student-ordering",
+  "route": "/profile?view=students",
+  "readiness": {
+    "selectors": ["[data-doc-section='user-profile'][data-doc-state='ready']", "[data-doc-section='school-students']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 400, "timeout": 8000 }
+  },
+  "captures": [
+    { "id": "school-students-list-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='school-students']", "capture_mode": "section", "file": "website-school-students-list-desktop.png", "alt": "Desktop Website My students profile showing two synthetic students and their school, classroom, and grade" },
+    { "id": "school-students-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='school-students']", "capture_mode": "section", "file": "website-school-students-empty-desktop.png", "alt": "Desktop Website My students profile showing the successful empty state and passive Add student action" },
+    { "id": "school-student-add-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='school-student-dialog']", "capture_mode": "section", "file": "website-school-student-add-desktop.png", "alt": "Desktop Website Add student form with blank name fields and a school selector before submission" },
+    { "id": "school-student-edit-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='school-student-dialog']", "capture_mode": "section", "file": "website-school-student-edit-desktop.png", "alt": "Desktop Website Edit student form showing one synthetic student and school details before saving" },
+    { "id": "school-students-list-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='school-students']", "capture_mode": "viewport", "file": "website-school-students-list-mobile.png", "alt": "Mobile Website My students profile showing a responsive synthetic student list" },
+    { "id": "school-student-add-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='school-student-dialog']", "capture_mode": "viewport", "file": "website-school-student-add-mobile.png", "alt": "Mobile Website Add student form with blank fields and a responsive school selector before submission" }
+  ]
+}

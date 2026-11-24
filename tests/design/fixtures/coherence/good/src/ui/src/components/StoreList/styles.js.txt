@@ -1,0 +1,6 @@
+import styled from 'styled-components'
+
+export const List = styled.ul`
+  padding: ${props => props.theme.space.md};
+  color: var(--ot-text);
+`

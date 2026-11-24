@@ -1,0 +1,94 @@
+{
+  "extends": "account",
+  "runtimeConfig": {
+    "use_kiosk": false,
+    "franchiseSlug": "",
+    "store_google_analytics_id": "",
+    "store_segment_id": "",
+    "store_facebook_pixel_id": "",
+    "sentry_key": ""
+  },
+  "firstLoad": {
+    "configs": {
+      "business_signup_allow": {"key": "business_signup_allow", "value": "1"},
+      "driver_signup_allow": {"key": "driver_signup_allow", "value": "1"},
+      "business_signup_enabled_default": {"key": "business_signup_enabled_default", "value": "0"},
+      "driver_signup_enabled_default": {"key": "driver_signup_enabled_default", "value": "0"},
+      "full_details_signup_enabled": {"key": "full_details_signup_enabled", "value": "1"},
+      "email_otp_signup_enabled": {"key": "email_otp_signup_enabled", "value": "0"},
+      "phone_otp_signup_enabled": {"key": "phone_otp_signup_enabled", "value": "0"},
+      "whatsapp_otp_login_enabled": {"key": "whatsapp_otp_login_enabled", "value": "0"},
+      "twilio_service_enabled": {"key": "twilio_service_enabled", "value": "0"},
+      "security_recaptcha_signup": {"key": "security_recaptcha_signup", "value": "0"},
+      "terms_and_conditions": {"key": "terms_and_conditions", "value": "false"},
+      "notifications_enabled": {"key": "notifications_enabled", "value": "0"},
+      "analytics_enabled": {"key": "analytics_enabled", "value": "0"},
+      "track_id_google_analytics": {"key": "track_id_google_analytics", "value": ""},
+      "segment_track_id": {"key": "segment_track_id", "value": ""},
+      "facebook_id": {"key": "facebook_id", "value": ""},
+      "use_alternative_to_google_maps": {"key": "use_alternative_to_google_maps", "value": "1"}
+    },
+    "theme": {
+      "values": {
+        "visibility": {
+          "footer": false
+        },
+        "site": {
+          "third_party_code": {
+            "head": "",
+            "body": ""
+          },
+          "mode": "marketplace",
+          "business_slug": "",
+          "franchise_slug": ""
+        }
+      }
+    },
+    "validation_fields": [
+      {"id": 9911, "code": "name", "name": "Name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 9912, "code": "middle_name", "name": "Middle name", "type": "text", "validate": "checkout", "enabled": false, "required": false},
+      {"id": 9913, "code": "lastname", "name": "Last name", "type": "text", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 9914, "code": "second_lastname", "name": "Second last name", "type": "text", "validate": "checkout", "enabled": false, "required": false},
+      {"id": 9915, "code": "email", "name": "Email", "type": "email", "validate": "checkout", "enabled": true, "required": true},
+      {"id": 9916, "code": "cellphone", "name": "Mobile phone", "type": "text", "validate": "checkout", "enabled": false, "required": false}
+    ]
+  },
+  "appendRoutes": [
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages/signup_business_en(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages/signup_business(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "enabled": true, "public": true, "body": "" } }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages/signup-driver-en(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": true, "result": [] }
+    },
+    {
+      "method": "GET",
+      "pattern": "^/v400/en/docsmarket/pages/signup-driver(?:\\?.*)?$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": { "error": false, "result": { "enabled": true, "public": true, "body": "" } }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/users$",
+      "assert": { "count": 0 },
+      "response": { "error": true, "result": ["Synthetic application submission is disabled."] }
+    },
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/(?:codes/generate|auth/sms/twilio(?:/verify)?)$",
+      "assert": { "count": 0 },
+      "response": { "error": true, "result": ["Synthetic verification is disabled."] }
+    }
+  ]
+}

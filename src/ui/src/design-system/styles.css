@@ -1,0 +1,38 @@
+/* The design system's one Tailwind sheet; the pieces in components/ import it
+   (the app's entry never does). Tailwind compiles only this file (vite.config.js
+   filters the plugin to it): src/index.css and the third-party sheets go past
+   untouched.
+   - `ui:` prefix, no preflight: the app's own global styles are not reset;
+   - `source(none)` + one `@source`: only the pieces' classes are generated;
+   - the theme is the generated one (pnpm theme:css-catalog): Tailwind's own
+     scales are cleared, every name is a token of the web's theme or a shadcn
+     alias of one, each reading its `--ot-*` runtime variable
+     (tokens/ThemeCssVariables.jsx), so a theme swap and a portal both paint;
+   - the theme's phone cut is `ui:max-mobile:`; the intrinsic tab tracks also
+     retain their compact layout at the existing 480px boundary. */
+@import 'tailwindcss/theme' layer(theme) prefix(ui);
+@import 'tailwindcss/utilities' layer(utilities) source(none);
+@import './tokens/tokens.tailwind.generated.css';
+@import './components/Button.css';
+@source './components';
+
+/* A touch can leave :hover set in WebKit. Group the condition so Tailwind
+   can also negate it for not-hover. */
+@custom-variant hover {
+  &:hover {
+    @media ((hover: hover) and (pointer: fine)) {
+      @slot;
+    }
+  }
+}
+@custom-variant fine-hover (@media (hover: hover) and (pointer: fine));
+
+@custom-variant max-tab-compact (@media (max-width: 480px));
+/* the narrowest phones: the cut `Select narrowCap` uses (a fluid cap below it, none above) */
+@custom-variant max-narrow (@media (max-width: 380px));
+
+/* The least text size of a field on a phone (iOS zooms the page into a smaller one).
+   The same number as MOBILE_FIELD_MIN_TEXT of styles/Rules, which a test keeps equal. */
+:root {
+  --ui-field-min-text: 16px;
+}

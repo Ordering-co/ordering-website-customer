@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CON-002",
+  "fixture": "business-driver-signup",
+  "route": "/signup_business",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 3000,
+    "settleMs": 250,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "applications-business-desktop",
+      "project": "desktop-chromium",
+      "route": "/signup_business",
+      "selector": "[data-doc-section='application-business']",
+      "file": "website-application-business-desktop.png",
+      "alt": "Desktop Website business application with blank Name, Last name, Email, and Password fields"
+    },
+    {
+      "id": "applications-business-mobile",
+      "project": "mobile-chromium",
+      "route": "/signup_business",
+      "selector": "[data-doc-section='application-business']",
+      "file": "website-application-business-mobile.png",
+      "alt": "Mobile Website business application with blank identity, email, and password fields"
+    },
+    {
+      "id": "applications-driver-desktop",
+      "project": "desktop-chromium",
+      "route": "/signup-driver",
+      "selector": "[data-doc-section='application-driver']",
+      "file": "website-application-driver-desktop.png",
+      "alt": "Desktop Website driver application with blank Name, Last name, Email, and Password fields"
+    },
+    {
+      "id": "applications-driver-mobile",
+      "project": "mobile-chromium",
+      "route": "/signup-driver",
+      "selector": "[data-doc-section='application-driver']",
+      "file": "website-application-driver-mobile.png",
+      "alt": "Mobile Website driver application with blank identity, email, and password fields"
+    }
+  ]
+}

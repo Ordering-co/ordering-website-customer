@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-CAR-005",
+  "fixture": "multi-checkout",
+  "route": "/multi-checkout/synthetic-cart-group-4401",
+  "readiness": {
+    "selectors": [
+      "[data-doc-section='multi-checkout']",
+      "[data-doc-section='multi-checkout-details']",
+      "[data-doc-section='multi-checkout-payment']",
+      "[data-doc-section='multi-checkout-order-summary']"
+    ],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 150,
+    "network": { "quietMs": 300, "timeout": 7000 }
+  },
+  "captures": [
+    {
+      "id": "multi-checkout-overview-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='multi-checkout']",
+      "capture_mode": "viewport",
+      "file": "website-multi-checkout-overview-desktop.png",
+      "alt": "Desktop multi-business checkout with synthetic customer details, two business carts, payment choices, combined total, and disabled Place Order action"
+    },
+    {
+      "id": "multi-checkout-details-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='multi-checkout-details']",
+      "capture_mode": "section",
+      "file": "website-multi-checkout-details-desktop.png",
+      "alt": "Desktop multi-business checkout showing a synthetic customer address, customer details, and Cash and Card on delivery choices"
+    },
+    {
+      "id": "multi-checkout-review-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='multi-checkout-review-and-submit']",
+      "capture_mode": "section",
+      "file": "website-multi-checkout-review-desktop.png",
+      "alt": "Desktop multi-business checkout showing expanded synthetic order summaries for two businesses, combined total, and disabled Place Order action"
+    },
+    {
+      "id": "multi-checkout-overview-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='multi-checkout']",
+      "capture_mode": "viewport",
+      "file": "website-multi-checkout-overview-mobile.png",
+      "alt": "Mobile multi-business checkout with synthetic details, two inert payment choices, two business cart headers, and the combined total"
+    }
+  ]
+}

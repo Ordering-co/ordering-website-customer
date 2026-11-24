@@ -1,0 +1,160 @@
+{
+  "webkit": [
+    "cart-tooltip.spec.js",
+    "input-touch-reserve.spec.js",
+    "layers-stack.spec.js",
+    "sdk-field-focus.spec.js",
+    "sidebar-focus.spec.js",
+    "touch-hover.spec.js"
+  ],
+  "groups": {
+    "checkout": {
+      "paths": [
+        "src/pages/Checkout/",
+        "src/ui/src/components/Checkout/",
+        "src/ui/src/components/PayForm/",
+        "src/ui/src/components/PaymentOption*",
+        "src/ui/src/components/Cart*",
+        "src/ui/src/components/MultiCart/",
+        "src/ui/src/components/Address*",
+        "src/ui/src/components/Delivery*",
+        "src/pages/Address*",
+        "src/utils/guestCheckout.js"
+      ],
+      "specs": [
+        "address-suggestions.spec.js",
+        "bottom-bars.spec.js",
+        "button-review-cart.spec.js",
+        "button-review-order.spec.js",
+        "cart-tooltip.spec.js",
+        "checkout-rtl.spec.js",
+        "delivery-reload.spec.js",
+        "m9-maps.spec.js",
+        "order-context.spec.js",
+        "pieces-choice.spec.js",
+        "pieces-input-fields.spec.js",
+        "pieces-overlay.spec.js",
+        "product-modal-interaction.spec.js",
+        "product-modal-regressions.spec.js",
+        "product-modal.spec.js",
+        "pz-c-regressions.spec.js",
+        "store-page.spec.js",
+        "store-sticky-width.spec.js",
+        "submit-state.spec.js",
+        "touch-hover.spec.js"
+      ]
+    },
+    "catalog": {
+      "paths": [
+        "src/pages/Business*",
+        "src/ui/src/components/Business*",
+        "src/ui/src/components/RenderProductsLayout/",
+        "src/ui/src/components/Product*",
+        "src/ui/src/components/ListingFilters/",
+        "src/utils/searchQueryLocation.js",
+        "src/utils/businessTime.js"
+      ],
+      "specs": [
+        "bottom-bars.spec.js",
+        "button-review-busy.spec.js",
+        "button-review-cart.spec.js",
+        "button-review-field.spec.js",
+        "button-review-order.spec.js",
+        "button-review-phone.spec.js",
+        "button-review-ratings.spec.js",
+        "button-review-store.spec.js",
+        "cart-tooltip.spec.js",
+        "copy-wrap.spec.js",
+        "listing-filters.spec.js",
+        "m9-maps.spec.js",
+        "order-context.spec.js",
+        "piece-override.spec.js",
+        "pieces-choice.spec.js",
+        "pieces-input-fields.spec.js",
+        "product-modal-interaction.spec.js",
+        "product-modal-regressions.spec.js",
+        "product-modal.spec.js",
+        "product-share.spec.js",
+        "product-sheet-top.spec.js",
+        "pz-c-regressions.spec.js",
+        "review-fix2.spec.js",
+        "signup-width.spec.js",
+        "store-page.spec.js",
+        "store-search.spec.js",
+        "store-sticky-width.spec.js"
+      ]
+    },
+    "account": {
+      "paths": [
+        "src/pages/Signup/",
+        "src/pages/Login/",
+        "src/pages/Profile/",
+        "src/ui/src/components/Signup*",
+        "src/ui/src/components/Login*",
+        "src/ui/src/components/UserProfile*",
+        "src/ui/src/components/Inbox*"
+      ],
+      "specs": [
+        "button-review-busy.spec.js",
+        "button-review-field.spec.js",
+        "button-review-phone.spec.js",
+        "cart-tooltip.spec.js",
+        "checkout-rtl.spec.js",
+        "delivery-reload.spec.js",
+        "inbox-viewport.spec.js",
+        "input-code.spec.js",
+        "pieces-choice.spec.js",
+        "pieces-input-fields.spec.js",
+        "product-modal-interaction.spec.js",
+        "product-modal-regressions.spec.js",
+        "product-modal.spec.js",
+        "signup-width.spec.js",
+        "store-page.spec.js",
+        "submit-state.spec.js"
+      ]
+    },
+    "foundation": {
+      "paths": [],
+      "specs": [
+        "button-icon-slots.spec.js",
+        "button-review-ratings.spec.js",
+        "button-variants.spec.js",
+        "design-system.spec.js",
+        "dialog-band.spec.js",
+        "dialog-focus.spec.js",
+        "dialog-keyboard.spec.js",
+        "dialog-return-focus.spec.js",
+        "favorites-tabs.spec.js",
+        "header-row.spec.js",
+        "input-touch-reserve.spec.js",
+        "layers-stack.spec.js",
+        "pieces-actions.spec.js",
+        "pieces-choice.spec.js",
+        "pieces-overlay.spec.js",
+        "pieces-pz1.spec.js",
+        "pieces-rating.spec.js",
+        "preview-direction.spec.js",
+        "preview-portals.spec.js",
+        "pz-c-regressions.spec.js",
+        "rating-wide-gap.spec.js",
+        "review-fix2.spec.js",
+        "sdk-field-focus.spec.js",
+        "sidebar-focus.spec.js",
+        "touch-areas.spec.js"
+      ]
+    },
+    "landing": {
+      "paths": [
+        "src/pages/Landing/",
+        "src/components/MenuHomeRoutes/",
+        "src/utils/marketingHome.js"
+      ],
+      "specs": [
+        "landing-franchise-flow.spec.js",
+        "landing-franchise.spec.js",
+        "landing-one-store-states.spec.js",
+        "landing-one-store.spec.js"
+      ]
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "extends": "multi-cart",
+  "firstLoad": {
+    "configs": {
+      "driver_tip_enabled": {"key": "driver_tip_enabled", "value": "0"},
+      "wallet_enabled": {"key": "wallet_enabled", "value": "0"},
+      "cash_wallet": {"key": "cash_wallet", "value": "0"},
+      "multi_business_checkout_show_combined_delivery_fee": {"key": "multi_business_checkout_show_combined_delivery_fee", "value": "1"},
+      "multi_business_checkout_show_combined_driver_tip": {"key": "multi_business_checkout_show_combined_driver_tip", "value": "0"}
+    }
+  },
+  "appendRoutes": [
+    {
+      "method": "POST",
+      "pattern": "^/v400/en/docsmarket/cart_groups/synthetic-cart-group-4401/place$",
+      "assert": { "minCount": 0, "maxCount": 1 },
+      "response": {
+        "error": true,
+        "result": ["Synthetic multi-checkout stopped before order creation."]
+      }
+    }
+  ]
+}

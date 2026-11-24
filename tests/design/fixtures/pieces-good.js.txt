@@ -1,0 +1,20 @@
+import React from 'react'
+import styled from 'styled-components'
+import { Button } from '~ui/src/design-system/components/Button'
+import { Dialog } from '~ui/src/design-system/components/Dialog'
+import { Switch } from '~ui/src/styles/Switch'
+
+// a button, an input and styled.button in a comment are not code
+const note = 'press the button <button> in the string'
+const Wrap = styled.div`
+  display: flex;
+`
+export const Good = () => (
+  <Wrap>
+    <Button>Go</Button>
+    <Dialog />
+    <Switch />
+    <select><option /></select>
+    <buttonGroup />
+  </Wrap>
+)

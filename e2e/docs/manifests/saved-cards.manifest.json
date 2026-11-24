@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-ACC-006",
+  "fixture": "saved-cards",
+  "route": "/profile/cards",
+  "readiness": {
+    "selectors": ["[data-doc-section='saved-cards']"],
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 200,
+    "network": { "quietMs": 350, "timeout": 7000 }
+  },
+  "captures": [
+    { "id": "saved-cards-list-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='saved-cards']", "capture_mode": "section", "file": "website-saved-cards-list-desktop.png", "alt": "Desktop Website My cards page showing two reserved synthetic card references and delete controls" },
+    { "id": "saved-cards-list-mobile", "project": "mobile-chromium", "selector": "[data-doc-section='saved-cards']", "capture_mode": "viewport", "file": "website-saved-cards-list-mobile.png", "alt": "Mobile Website My cards page showing two reserved synthetic card references" },
+    { "id": "saved-cards-empty-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='saved-cards']", "capture_mode": "section", "file": "website-saved-cards-empty-desktop.png", "alt": "Desktop Website My cards page showing that no saved cards are present" },
+    { "id": "saved-cards-unavailable-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='saved-cards']", "capture_mode": "section", "file": "website-saved-cards-unavailable-desktop.png", "alt": "Desktop Website My cards page showing that saved cards are unavailable for this store" },
+    { "id": "saved-card-delete-confirm-desktop", "project": "desktop-chromium", "selector": "[data-doc-section='saved-card-delete-confirmation']", "capture_mode": "section", "file": "website-saved-card-delete-confirm-desktop.png", "alt": "Desktop Website confirmation asking whether to delete a reserved synthetic saved card before acceptance" }
+  ]
+}

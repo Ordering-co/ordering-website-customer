@@ -1,0 +1,5 @@
+import React from 'react'
+import { Button } from '~ui/src/design-system/components/Button'
+import { Form } from './styles'
+
+export const PayForm = () => <Form><Button>Place order</Button></Form>

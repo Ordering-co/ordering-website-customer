@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-GEN-001",
+  "fixture": "website-overview",
+  "route": "/",
+  "readiness": {
+    "allowBrokenImages": true,
+    "imageTimeout": 2000,
+    "network": { "quietMs": 250, "timeout": 3000 }
+  },
+  "captures": [
+    {
+      "id": "website-home-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='website-home-hero']",
+      "file": "website-overview-home-desktop.png",
+      "alt": "Ordering Website home page with a delivery location field and Search button"
+    },
+    {
+      "id": "website-home-mobile",
+      "project": "mobile-chromium",
+      "selector": "[data-doc-section='website-home-hero']",
+      "file": "website-overview-home-mobile.png",
+      "alt": "Mobile Ordering Website home page with location search and account options"
+    }
+  ]
+}

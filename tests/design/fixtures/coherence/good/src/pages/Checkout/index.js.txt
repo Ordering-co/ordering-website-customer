@@ -1,0 +1,12 @@
+import React from 'react'
+import { PayForm } from '~ui/src/components/PayForm'
+import { Cart } from '~ui/src/components/Cart'
+import { Totals } from '~ui/src/components/Totals'
+
+export const Checkout = () => (
+  <>
+    <PayForm />
+    <Cart />
+    <Totals />
+  </>
+)

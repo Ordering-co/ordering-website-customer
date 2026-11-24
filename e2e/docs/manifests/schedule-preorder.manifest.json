@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "article_id": "WEB-BRW-005",
+  "fixture": "schedule-preorder",
+  "route": "/search?lat=30.2672&lng=-97.7431&order_type=1",
+  "readiness": {
+    "allowBrokenImages": false,
+    "imageTimeout": 2000,
+    "settleMs": 250,
+    "network": { "quietMs": 300, "timeout": 5000 }
+  },
+  "captures": [
+    {
+      "id": "preorder-entry-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='businesses-list']",
+      "file": "website-preorder-entry-desktop.png",
+      "alt": "Desktop business results with a closed business available for preorder"
+    },
+    {
+      "id": "preorder-type-desktop",
+      "project": "desktop-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='business-preorder-dialog']",
+      "file": "website-preorder-type-desktop.png",
+      "alt": "Preorder dialog with Business menu and Business hours scheduling choices"
+    },
+    {
+      "id": "preorder-menu-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-preorder']",
+      "file": "website-preorder-menu-desktop.png",
+      "alt": "Standard preorder flow using a selected business menu schedule"
+    },
+    {
+      "id": "preorder-closed-day-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-preorder']",
+      "file": "website-preorder-closed-day-desktop.png",
+      "alt": "Preorder flow showing that the selected menu is unavailable on a chosen day"
+    },
+    {
+      "id": "preorder-time-slots-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-preorder']",
+      "file": "website-preorder-time-slots-desktop.png",
+      "alt": "Preorder flow with available pickup time slots for a selected date"
+    },
+    {
+      "id": "preorder-selected-desktop",
+      "project": "desktop-chromium",
+      "selector": "[data-doc-section='business-preorder']",
+      "file": "website-preorder-selected-desktop.png",
+      "alt": "Completed preorder schedule with the selected date and time and Go to menu action"
+    },
+    {
+      "id": "preorder-selected-mobile",
+      "project": "mobile-chromium",
+      "capture_mode": "viewport",
+      "selector": "[data-doc-section='business-preorder-dialog']",
+      "file": "website-preorder-selected-mobile.png",
+      "alt": "Mobile preorder dialog with a selected pickup date and time"
+    }
+  ]
+}
